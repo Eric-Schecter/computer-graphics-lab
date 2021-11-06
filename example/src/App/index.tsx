@@ -1,5 +1,5 @@
 // import styles from './index.module.scss';
-import { Page } from '../Page';
+import Page from '@youyouzone/react-sdf';
 
 export const App = () => {
   return <Page >

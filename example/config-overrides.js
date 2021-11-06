@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = function override(config, env) {
   const loaders = config.module.rules.find(rule => Array.isArray(rule.oneOf)).oneOf;
   const index = loaders.length - 2;
@@ -13,6 +15,6 @@ module.exports = function override(config, env) {
     test: /\.worker\.ts$/,
     use: { loader: 'worker-loader' },
   })
-
+  config.resolve.alias['react'] = path.resolve("./node_modules/react")
   return config;
 }

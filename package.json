@@ -17,7 +17,7 @@
   "keywords": [
     "react-component",
     "sdf",
-    "shadfer"
+    "shader"
   ],
   "browserslist": {
     "production": [
@@ -32,10 +32,10 @@
     ]
   },
   "devDependencies": {
-    "@types/react": "^16.9.45",
-    "@types/three": "^0.129.1",
-    "@youyouzone/shader-loader": "^0.0.7",
-    "react-reconciler": "^0.26.2",
+    "@types/react": "^17.0.34",
+    "@types/react-reconciler": "^0.26.4",
+    "@youyouzone/shader-loader": "^0.0.8",
+    "react-reconciler": "^0.25.1",
     "ts-loader": "^9.2.3",
     "typescript": "^3.7.5",
     "webpack": "^5.40.0",
@@ -44,5 +44,5 @@
   "peerDependencies": {
     "react": "^16.13.1"
   },
-  "homepage": "https://github.com/Eric-Schecter/react-obj-loader"
+  "homepage": "https://github.com/Eric-Schecter/react-sdf"
 }
