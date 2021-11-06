@@ -1,0 +1,48 @@
+{
+  "name": "@youyouzone/react-sdf",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "prebuild": "rm -rf lib",
+    "build": "webpack",
+    "precommit": "npm version patch --no-git-tag-version",
+    "commit": "git add . && git commit -m $1",
+    "premypublish": "npm run build && npm run precommit",
+    "publish-git": "git push -u origin master",
+    "publish-npm": "npm publish",
+    "mypublish": "git add . && git commit -m $1",
+    "postmypublish": "npm run publish-git && npm run publish-npm"
+  },
+  "keywords": [
+    "react-component",
+    "sdf",
+    "shadfer"
+  ],
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.45",
+    "@types/three": "^0.129.1",
+    "@youyouzone/shader-loader": "^0.0.7",
+    "react-reconciler": "^0.26.2",
+    "ts-loader": "^9.2.3",
+    "typescript": "^3.7.5",
+    "webpack": "^5.40.0",
+    "webpack-cli": "^4.7.2"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1"
+  },
+  "homepage": "https://github.com/Eric-Schecter/react-obj-loader"
+}
