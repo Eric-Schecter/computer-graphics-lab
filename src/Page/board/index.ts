@@ -36,6 +36,7 @@ export class Board {
   }
   public stop = () => {
     cancelAnimationFrame(this.timer);
+    this.gl && this.destory(this.gl);
   }
   private update = (gl: WebGL2RenderingContext) => {
     if (!this.program) { return }

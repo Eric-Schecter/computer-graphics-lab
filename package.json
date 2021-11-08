@@ -12,7 +12,8 @@
     "publish-git": "git push -u origin master",
     "publish-npm": "npm publish",
     "mypublish": "git add . && git commit -m $1",
-    "postmypublish": "npm run publish-git && npm run publish-npm"
+    "postmypublish": "npm run publish-git && npm run publish-npm",
+    "start":"npm run build && cd example && npm run start"
   },
   "keywords": [
     "react-component",

@@ -58,8 +58,9 @@ vec3 render(Ray ray){
           ray=Ray(position+epsilon*reflection,reflection);
           
       }else{
-          vec3 spotlight=spotLight(ray.direction,light.direction);
-          col+=mask*(ambient+spotlight);
+          // vec3 spotlight=spotLight(ray.direction,light.direction);
+          // col+=mask*(ambient+spotlight);
+          col+=mask*ambient;
           break;
       }
   }
