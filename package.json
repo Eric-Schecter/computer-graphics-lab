@@ -1,6 +1,7 @@
 {
   "name": "@youyouzone/react-sdf",
   "version": "0.0.1",
+  "description": "A React renderer to help create SDF",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -10,7 +11,7 @@
     "commit": "git add . && git commit -m $1",
     "premypublish": "npm run build && npm run precommit",
     "publish-git": "git push -u origin master",
-    "publish-npm": "npm publish",
+    "publish-npm": "npm publish --access public",
     "mypublish": "git add . && git commit -m $1",
     "postmypublish": "npm run publish-git && npm run publish-npm",
     "start": "npm run build && cd example && npm run start"
@@ -20,6 +21,8 @@
     "sdf",
     "shader"
   ],
+  "author": "Eric Huang <eric199002@icloud.com>",
+  "license": "MIT",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -45,5 +48,8 @@
   "peerDependencies": {
     "react": "^16.13.1"
   },
+  "files": [
+    "lib"
+  ],
   "homepage": "https://github.com/Eric-Schecter/react-sdf"
 }
