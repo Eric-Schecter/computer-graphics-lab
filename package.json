@@ -51,8 +51,5 @@
   "files": [
     "lib"
   ],
-  "homepage": "https://github.com/Eric-Schecter/react-sdf",
-  "dependencies": {
-    "@youyouzone/react-sdf": "^0.0.1"
-  }
+  "homepage": "https://github.com/Eric-Schecter/react-sdf"
 }
