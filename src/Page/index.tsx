@@ -1,21 +1,23 @@
-import React, { ReactNode, useEffect, useRef } from 'react';
+import React, { CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import Renderer from './renderer';
-import { Board } from './board';
+import { World } from './world';
 
 type Props = {
-  children?: ReactNode
+  children?: ReactNode,
+  style?: CSSProperties,
+  className?:string
 }
 
-export const Page = ({ children }: Props) => {
+export const Page = ({ children, style,className }: Props) => {
   const ref = useRef<HTMLCanvasElement>(null);
-  const refBoard = useRef<Board>();
+  const refBoard = useRef<World>();
 
   useEffect(() => {
     const canvas = ref.current;
     if (!canvas) { return }
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
-    refBoard.current = new Board(canvas);
+    refBoard.current = new World(canvas);
     return () => refBoard.current?.stop();
   }, [ref])
 
@@ -25,7 +27,8 @@ export const Page = ({ children }: Props) => {
   }, [children, refBoard])
 
   return <div
-    style={{ width: '100vw', height: '100vh' }}
+    style={style}
+    className={className}
   >
     <canvas ref={ref} style={{ width: '100%', height: '100%' }} />
   </div>

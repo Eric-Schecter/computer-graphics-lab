@@ -1,7 +1,7 @@
 import * as vertexShader from './vertexShader.vert';
 import * as fragmentShader from './fragmentShader.frag';
 
-export class Board {
+export class World {
   private timer: number = 0;
   private program: WebGLProgram | null = null;
   private gl: WebGL2RenderingContext | null = null;

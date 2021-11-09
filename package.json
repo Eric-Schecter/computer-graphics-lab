@@ -1,6 +1,6 @@
 {
   "name": "@youyouzone/react-sdf",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -13,7 +13,7 @@
     "publish-npm": "npm publish",
     "mypublish": "git add . && git commit -m $1",
     "postmypublish": "npm run publish-git && npm run publish-npm",
-    "start":"npm run build && cd example && npm run start"
+    "start": "npm run build && cd example && npm run start"
   },
   "keywords": [
     "react-component",

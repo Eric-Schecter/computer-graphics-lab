@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import Reconciler from 'react-reconciler';
-import { Board } from './board';
+import { World } from './world';
 import { createShader } from './createShader';
 import { Instance } from './types';
 
@@ -8,7 +8,7 @@ const data= new Set<Instance>();
 
 const debounce = () => {
   let timer: ReturnType<typeof setTimeout>;
-  return (parent: Board, child: Instance) => {
+  return (parent: World, child: Instance) => {
     data.add(child)
     clearTimeout(timer);
     timer = setTimeout(() => {
@@ -138,7 +138,7 @@ const HostConfig: any = {
   },
   // mutation
   appendChild,
-  appendChildToContainer(parent: Board, child: Instance) {
+  appendChildToContainer(parent: World, child: Instance) {
     appendChild(parent, child)
   },
   commitTextUpdate(...args: any[]) {
@@ -194,7 +194,7 @@ const HostConfig: any = {
 const reconciler = Reconciler(HostConfig);
 
 const Renderer = {
-  render: (component: ReactNode, container: Board) => {
+  render: (component: ReactNode, container: World) => {
     const root = reconciler.createContainer(container, 0, false, null);
     reconciler.updateContainer(component, root, null);
   }
