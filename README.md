@@ -42,7 +42,7 @@ export const App = () => {
 ```
 
 ## Examples
-[https://react-sdf.netlify.app]https://react-sdf.netlify.app  
+[https://react-sdf.netlify.app](https://react-sdf.netlify.app) 
 
 ## License
 This project is licensed under [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
