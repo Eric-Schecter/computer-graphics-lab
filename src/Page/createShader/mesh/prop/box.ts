@@ -14,7 +14,6 @@ export class BoxParameters extends Parameters {
   constructor(data: InstanceProps) {
     super();
     this.handleUndefined(data);
-    this.handleUndefined(data);
     this.generateGeometryStr();
     this.generateMaterialStr();
   }
