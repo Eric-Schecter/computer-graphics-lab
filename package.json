@@ -40,9 +40,9 @@
     "@types/react-reconciler": "^0.26.4",
     "@youyouzone/shader-loader": "^0.0.8",
     "react-reconciler": "^0.25.1",
-    "ts-loader": "^9.2.3",
+    "ts-loader": "^8.0.7",
     "typescript": "^3.7.5",
-    "webpack": "^5.40.0",
+    "webpack": "4.44.2",
     "webpack-cli": "^4.7.2"
   },
   "peerDependencies": {
