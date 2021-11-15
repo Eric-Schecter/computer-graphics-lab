@@ -27,7 +27,7 @@ Shape rayMarching(Ray ray){
       distance+=res.x;
       material=res.y;
   }
-  return Shape(distance,materials[int(material)]);
+  return Shape(distance,spheres[int(material)].material);
 }
 
 vec3 render(Ray ray){
@@ -40,7 +40,7 @@ vec3 render(Ray ray){
       Shape res=rayMarching(ray);
       vec3 position=ray.origin+ray.direction*res.x;
       vec3 normal=calcNormal(position);
-      if(res.y!=materials[0]){
+      if(res.y!=spheres[0].material){
           vec3 view=-ray.direction;
           float nov=saturate(dot(normal,view));
           float nol=saturate(dot(normal,light.direction));
@@ -48,7 +48,7 @@ vec3 render(Ray ray){
           vec3 fresnel=F_Schlick(f0,nov);
           mask*=fresnel;
           
-          if(rayMarching(Ray(position+epsilon*light.direction,light.direction)).y==materials[0]){
+          if(rayMarching(Ray(position+epsilon*light.direction,light.direction)).y==spheres[0].material){
               col+=nol*light.color
               *res.y.color*res.y.diffuse
               *(1.-fresnel)*mask/fresnel;

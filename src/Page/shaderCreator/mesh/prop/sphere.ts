@@ -29,7 +29,7 @@ export class SphereParameters extends Parameters {
   }
   protected generateGeometryStr = () => {
     const { id } = this._data;
-    const name = `geometries[${id}].`;
+    const name = `spheres[${id}].geometry.`;
     // const { position, radius } = this._data;
     // const [x, y, z] = Object.values(position).map(d => this.int2float(d));;
     // const r = this.int2float(radius);

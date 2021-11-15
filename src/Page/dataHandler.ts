@@ -31,20 +31,14 @@ export class DataHandler {
 
   private handleData = (key: string, id: number) => {
     switch (key) {
-      case 'position': {
-        return `geometries[${id}].${key}`;
-      }
+      case 'position':
       case 'radius': {
-        return `geometries[${id}].${key}`;
+        return `spheres[${id}].geometry.${key}`;
       }
-      case 'color': {
-        return `materials[${id}].${key}`;
-      }
-      case 'diffuse': {
-        return `materials[${id}].${key}`;
-      }
+      case 'color':
+      case 'diffuse':
       case 'specular': {
-        return `materials[${id}].${key}`;
+        return `spheres[${id}].material.${key}`;
       }
     }
     return '';
