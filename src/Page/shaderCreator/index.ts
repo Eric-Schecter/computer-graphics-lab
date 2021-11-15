@@ -37,23 +37,23 @@ const lights = [
 const effects = [
   schlick
 ]
-
-const meshGenerator = new MeshGenerator();
-
-const createShader = (data: Set<Instance>, settings = {}) => {
-  const meshes = meshGenerator.generate(data);
-  const shaderArr = [
-    ...prefix,
-    ...defines,
-    ...uniforms,
-    ...structs,
-    ...lights,
-    ...effects,
-    postprocess,
-    meshes,
-    main
-  ];
-  return shaderArr.join('\n');
+export class ShaderCreator {
+  private meshGenerator = new MeshGenerator();
+  public create = (data: Set<Instance>, settings = {}) =>{
+    const meshes = this.meshGenerator.generate(data);
+    const shaderArr = [
+      ...prefix,
+      ...defines,
+      ...uniforms,
+      ...structs,
+      ...lights,
+      ...effects,
+      postprocess,
+      meshes,
+      main
+    ];
+    const shader = shaderArr.join('\n');
+    console.log(shader)
+    return shader;
+  }
 }
-
-export { createShader };

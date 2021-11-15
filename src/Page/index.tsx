@@ -5,10 +5,10 @@ import { World } from './world';
 type Props = {
   children?: ReactNode,
   style?: CSSProperties,
-  className?:string
+  className?: string
 }
 
-export const Page = ({ children, style,className }: Props) => {
+export const Page = ({ children, style, className }: Props) => {
   const ref = useRef<HTMLCanvasElement>(null);
   const refBoard = useRef<World>();
 

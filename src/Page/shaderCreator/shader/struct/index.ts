@@ -3,11 +3,13 @@ import * as camera from './camera.glsl';
 import * as light from './light.glsl';
 import * as shape from './shape.glsl';
 import * as material from './material.glsl';
+import * as geometry from './geometry.glsl';
 
 export const structs = [
   ray,
   camera,
   material,
+  geometry,
   shape,
   light
 ]

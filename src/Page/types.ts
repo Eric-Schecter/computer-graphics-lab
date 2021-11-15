@@ -1,3 +1,5 @@
+import { World } from "./world";
+
 class Vector3 {
   public x = 0;
   public y = 0;
@@ -28,8 +30,6 @@ type BoxProp = {
   size: Size
 } & Props
 
-type Instance = SphereInstance | BoxInstance;
-
 type SphereInstance = {
   type: 'sphere',
   props: SphereProp,
@@ -39,6 +39,13 @@ type BoxInstance = {
   type: 'box',
   props: BoxProp,
 }
+
+type BasicInstance = {
+  id: number,
+  world?: World,
+}
+type Instance = BasicInstance & (SphereInstance | BoxInstance);
+
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -50,5 +57,7 @@ declare global {
 
 type InstanceProps = { [prop: string]: any };
 
-export { Vector3,Size };
-export type { Instance, SphereProp, BoxProp, SphereInstance, InstanceProps };
+type UniformData = number[] | number | { [prop: string]: number };
+
+export { Vector3, Size };
+export type { Instance, SphereProp, BoxProp, SphereInstance, InstanceProps,UniformData };

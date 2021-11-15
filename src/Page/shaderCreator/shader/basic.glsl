@@ -78,8 +78,13 @@ mat3 setupCamera(Camera camera){
 
 void main()
 {
+  vec3 cameraPos = vec3(sin(uTime) * 2.,1., 2.);
+  vec3 lookat = vec3(0.,1.,0.);
+  float rotation = 0.;
+  
   vec2 uv=(gl_FragCoord.xy*2.-uResolution.xy)/uResolution.y;
-  Camera camera = Camera(vec3(sin(uTime) * 2.,1., cos(uTime) * 2.),vec3(0.,1.,0.),0.);
+  Camera camera = Camera(cameraPos,lookat,rotation);
+
   mat3 viewMatrix=setupCamera(camera);
   vec3 direction=viewMatrix*normalize(vec3(uv,1.));
   Ray ray=Ray(camera.pos,direction);

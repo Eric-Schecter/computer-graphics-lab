@@ -11,11 +11,10 @@ export class GeometryGenerator implements Generator {
   }
   `
   private getGeos = (data: Set<Parameters>) => {
-    const geometries = [];
-    for (const instance of data) {
-      geometries.push(instance.geometry);
-    }
-    return geometries.map((d, i) => `res=opUnion(res,vec2(${d},${i + 1}.));`).join('\n');
+    return Array.from(data.values())
+      .map(d => d.geometry)
+      .map((d, i) => `res=opUnion(res,vec2(${d},${i + 1}.));`)
+      .join('\n');
   }
   public generate = (data: Set<Parameters>) => {
     return `

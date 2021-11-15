@@ -1,5 +1,9 @@
 import * as vertexShader from './vertexShader.vert';
 import * as fragmentShader from './fragmentShader.frag';
+import { Instance } from '../types';
+import { ShaderCreator } from '../shaderCreator';
+import { UniformHandler } from './uniformHandler';
+import { Observer, UniformObserverable } from './uniformObserverable';
 
 export class World {
   private timer: number = 0;
@@ -7,9 +11,10 @@ export class World {
   private gl: WebGL2RenderingContext | null = null;
   private vert: WebGLShader | null = null;
   private frag: WebGLShader | null = null;
-  private needUpdate = true;
-  constructor(canvas: HTMLCanvasElement) {
-    const { width, height } = canvas;
+  private uniformHandler = new UniformHandler();
+  private uniformObserverable = new UniformObserverable(this.uniformHandler);
+  private shaderCreator = new ShaderCreator();
+  constructor(private canvas: HTMLCanvasElement) {
     // init webgl
     this.gl = canvas.getContext('webgl2');
     if (!this.gl) {
@@ -31,35 +36,30 @@ export class World {
       console.log('create program failed');
       return;
     }
-
-    this.draw(this.gl, width, height);
+    this.uniformObserverable.add(new Observer('uTime', () => performance.now() / 1000));
+    this.draw();
   }
   public stop = () => {
     cancelAnimationFrame(this.timer);
     this.gl && this.destory(this.gl);
   }
-  private update = (gl: WebGL2RenderingContext) => {
-    if (!this.program) { return }
-    const uTime = gl.getUniformLocation(this.program, 'uTime');
-    const time = performance.now() / 1000;
-    gl.uniform1f(uTime, time);
+  private update = () => {
+    this.uniformObserverable.update();
   }
-  private draw = (gl: WebGL2RenderingContext, width: number, height: number) => {
-    if (this.needUpdate) {
-      this.initPosition(gl);
-      this.initUniforms(gl, width, height);
-      this.needUpdate = false;
+  private draw = () => {
+    if (this.gl) {
+      this.gl.clearColor(0, 0, 0, 1);
+      this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+      this.update();
+      this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
     }
-    gl.clearColor(0, 0, 0, 1);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-    this.update(gl);
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
-    this.timer = requestAnimationFrame(() => this.draw(gl, width, height));
+    this.timer = requestAnimationFrame(this.draw);
   }
-  private initUniforms = (gl: WebGL2RenderingContext, width: number, height: number) => {
+  private initUniforms = (gl: WebGL2RenderingContext) => {
     if (!this.program) { return }
-    const uResolution = gl.getUniformLocation(this.program, 'uResolution');
-    gl.uniform2f(uResolution, width, height);
+    this.uniformHandler.init(gl, this.program);
+    const { width, height } = this.canvas;
+    this.uniformHandler.update('uResolution', [width, height]);
   }
   private initPosition = (gl: WebGL2RenderingContext) => {
     if (!this.program) { return }
@@ -92,12 +92,12 @@ export class World {
     gl.useProgram(program);
     return program;
   }
-  private addLineNumbers( string:string ) {
-    const lines = string.split( '\n' );
-    for ( let i = 0; i < lines.length; i ++ ) {
-      lines[ i ] = ( i + 1 ) + ': ' + lines[ i ];
+  private addLineNumbers(string: string) {
+    const lines = string.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      lines[i] = (i + 1) + ': ' + lines[i];
     }
-    return lines.join( '\n' );
+    return lines.join('\n');
   }
   private createShader = (gl: WebGL2RenderingContext, type: number, shaderStr: string) => {
     const shader = gl.createShader(type);
@@ -123,19 +123,24 @@ export class World {
     this.program = null;
     return true;
   }
-  public updateShader = (shader: string) => {
-    if (!this.gl || !this.vert) { return }
+  public updateShader = (data: Set<Instance>) => {
+    if (!this.gl) { return }
+    const shader = this.shaderCreator.create(data);
     const result = this.destory(this.gl);
     if (!result) {
       console.log('destory webgl fail');
       return;
     }
     this.frag = this.createShader(this.gl, this.gl.FRAGMENT_SHADER, shader);
-    if (!this.frag) {
+    if (!this.frag || !this.vert) {
       console.log('create fragmenetShader failed');
       return;
     }
     this.program = this.initProgram(this.gl, this.vert, this.frag);
-    this.needUpdate = true;
+    this.initPosition(this.gl);
+    this.initUniforms(this.gl);
+  }
+  public updateParameters = ({ name, data }: any) => {
+    this.uniformHandler.update(name, data);
   }
 }
