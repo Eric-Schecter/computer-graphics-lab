@@ -22,20 +22,15 @@ export abstract class Parameters {
         ? min
         : num;
   }
-  protected handleUndefined = (id:number,data: InstanceProps) => {
+  protected handleUndefined = (id: number) => {
     this._data.id = id;
-    const keys = Object.keys(this._data);
-    const self = this._data as InstanceProps;
-    keys.forEach(key => self[key] = data[key] !== undefined ? data[key] : self[key]);
+    // const keys = Object.keys(this._data);
+    // const self = this._data as InstanceProps;
+    // keys.forEach(key => self[key] = data[key] !== undefined ? data[key] : self[key]);
   }
-  // protected generateMaterialStr = () => {
-  //   const { color, diffuse, specular } = this._data;
-  //   const c = Object.values(color).map(d => this.int2float(this.clamp(d, 0, 1)));
-  //   this._material = `Material(vec3(${c[0]},${c[1]},${c[2]}),${this.int2float(diffuse)},${this.int2float(specular)})`;
-  // }
-  protected abstract generateMaterialStr: () => void;
   protected abstract generateGeometryStr: () => void;
   protected abstract generateUnifromStr: () => void;
+  protected abstract generateMaterialStr: () => void;
   public get sdf() {
     return this._sdf;
   }
@@ -45,7 +40,7 @@ export abstract class Parameters {
   public get material() {
     return this._material;
   }
-  public get uniform(){
+  public get uniform() {
     return this._uniform;
   }
 }

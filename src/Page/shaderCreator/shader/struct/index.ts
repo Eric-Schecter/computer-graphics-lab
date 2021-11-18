@@ -4,12 +4,14 @@ import * as light from './light.glsl';
 import * as shape from './shape.glsl';
 import * as material from './material.glsl';
 import * as sphere from './sphere.glsl';
+import * as hitinfo from './hitinfo.glsl';
 
 export const structs = [
   ray,
   camera,
-  material,
+  hitinfo,
+  // material,
   sphere,
-  shape,
-  light
+  // shape,
+  // light,
 ]

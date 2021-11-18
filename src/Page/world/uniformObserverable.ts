@@ -1,14 +1,15 @@
 import { UniformData } from "../types";
 import { UniformHandler } from "./uniformHandler";
+import { UniformUpdateable } from "./updater";
 
 interface Updateable {
   update(unifromHandler: UniformHandler): void;
 }
 
 export class Observer implements Updateable {
-  constructor(private _name: string, private cb: () => UniformData) { }
+  constructor(private _name: string, private updater: UniformUpdateable) { }
   public update = (unifromHandler: UniformHandler) => {
-    unifromHandler.update(this._name, this.cb());
+    unifromHandler.update(this._name, this.updater.update());
   }
   public get name() {
     return this._name;

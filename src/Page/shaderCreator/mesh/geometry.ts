@@ -3,8 +3,8 @@ import { Parameters } from "./prop";
 
 export class GeometryGenerator implements Generator {
   private start = `
-  vec2 scene(vec3 p){
-    vec2 res=vec2(1e10,0.);
+  HitInfo scene(Ray ray){
+    HitInfo res = HitInfo(Geometry(1e10,vec3(0.)),defaultMaterial);
   `
   private end = `
     return res;
@@ -12,8 +12,7 @@ export class GeometryGenerator implements Generator {
   `
   private getGeos = (data: Set<Parameters>) => {
     return Array.from(data.values())
-      .map(d => d.geometry)
-      .map((d, i) => `res=opUnion(res,vec2(${d},${i + 1}.));`)
+      .map(({ geometry, material }) => `res=opUnion(res,HitInfo(${geometry},${material}));`)
       .join('\n');
   }
   public generate = (data: Set<Parameters>) => {

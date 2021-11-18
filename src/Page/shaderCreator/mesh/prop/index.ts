@@ -5,10 +5,10 @@ import { SphereParameters } from './sphere';
 export { Parameters } from './parameters';
 
 export class PropGenerator {
-  public generate = ({ type, props,id }: Instance) => {
+  public generate = ({ type,id }: Instance) => {
     switch (type) {
-      case 'sphere': return new SphereParameters(id,props);
-      case 'box': return new BoxParameters(id,props);
+      case 'sphere': return new SphereParameters(id);
+      case 'box': return new BoxParameters(id);
     }
   }
 }

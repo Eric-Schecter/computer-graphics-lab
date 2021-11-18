@@ -4,6 +4,7 @@ import { Instance } from '../types';
 import { ShaderCreator } from '../shaderCreator';
 import { UniformHandler } from './uniformHandler';
 import { Observer, UniformObserverable } from './uniformObserverable';
+import { UFrameUpdater, UTimeUpdater } from './updater';
 
 export class World {
   private timer: number = 0;
@@ -36,7 +37,8 @@ export class World {
       console.log('create program failed');
       return;
     }
-    this.uniformObserverable.add(new Observer('uTime', () => performance.now() / 1000));
+    this.uniformObserverable.add(new Observer('uTime', new UTimeUpdater()));
+    this.uniformObserverable.add(new Observer('uFrame', new UFrameUpdater()));
     this.draw();
   }
   public stop = () => {
@@ -53,7 +55,7 @@ export class World {
       this.update();
       this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
     }
-    this.timer = requestAnimationFrame(this.draw);
+    // this.timer = requestAnimationFrame(this.draw);
   }
   private initUniforms = (gl: WebGL2RenderingContext) => {
     if (!this.program) { return }
@@ -139,8 +141,12 @@ export class World {
     this.program = this.initProgram(this.gl, this.vert, this.frag);
     this.initPosition(this.gl);
     this.initUniforms(this.gl);
+
+    this.draw();
   }
   public updateParameters = ({ name, data }: any) => {
     this.uniformHandler.update(name, data);
+
+    this.draw();
   }
 }

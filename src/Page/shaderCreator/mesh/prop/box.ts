@@ -13,17 +13,12 @@ export class BoxParameters extends Parameters {
   }
   private uniformName = 'uBoxParams';
   protected _sdf = sdf;
-  constructor(id:number,data: InstanceProps) {
+  constructor(id:number) {
     super();
-    this.handleUndefined(id,data);
-    this.generateUnifromStr();
-    this.generateMaterialStr();
+    this._data.id = id;
+    // this.handleUndefined(id);
+    // this.generateUnifromStr();
     this.generateGeometryStr();
-  }
-  protected generateMaterialStr = () => {
-    const { color, diffuse, specular } = this._data;
-    const c = Object.values(color).map(d => this.int2float(this.clamp(d, 0, 1)));
-    this._material = `Material(vec3(${c[0]},${c[1]},${c[2]}),${this.int2float(diffuse)},${this.int2float(specular)})`;
   }
   protected generateGeometryStr = () => {
     const { position, size } = this._data;
@@ -36,4 +31,5 @@ export class BoxParameters extends Parameters {
     const size = 11;
     this._uniform = `uniform float[${size}] ${this.uniformName}${id};`;
   }
+  protected generateMaterialStr = () =>{}
 }

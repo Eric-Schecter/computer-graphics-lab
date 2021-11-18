@@ -10,7 +10,6 @@ import { UniformGenerator } from "./uniform";
 export class MeshGenerator implements Generator {
   private base = opUnion;
   private sdfs = new SDFGenerator();
-  // private material = new MaterialGenerator();
   private geometry = new GeometryGenerator();
   private prop = new PropGenerator();
   private uniform = new UniformGenerator();

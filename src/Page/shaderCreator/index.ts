@@ -6,6 +6,12 @@ import * as main from './shader/basic.glsl';
 
 import * as postprocess from './shader/postprocess/postprocess.glsl';
 
+import * as translate from './shader/math/translate.glsl';
+
+import * as sphIntersection from './shader/intersection/sphere.glsl';
+
+import * as randomVector from './shader/randomVector.glsl';
+
 import { MeshGenerator } from './mesh';
 import { Instance } from '../types';
 import { structs } from './shader/struct';
@@ -28,6 +34,11 @@ const defines = [
 const uniforms = [
   'uniform vec2 uResolution;',
   'uniform float uTime;',
+  'uniform float uFrame;',
+]
+
+const maths = [
+  translate
 ]
 
 const lights = [
@@ -39,13 +50,16 @@ const effects = [
 ]
 export class ShaderCreator {
   private meshGenerator = new MeshGenerator();
-  public create = (data: Set<Instance>, settings = {}) =>{
+  public create = (data: Set<Instance>, settings = {}) => {
     const meshes = this.meshGenerator.generate(data);
     const shaderArr = [
       ...prefix,
       ...defines,
       ...uniforms,
       ...structs,
+      randomVector,
+      sphIntersection,
+      ...maths,
       ...lights,
       ...effects,
       postprocess,
