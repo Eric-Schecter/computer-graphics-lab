@@ -34,6 +34,6 @@ export class SphereParameters extends Parameters {
   protected generateMaterialStr = () =>{
     const { id } = this._data;
     const name = `spheres[${id}].material.`;
-    this._material = `Material(${name}color,vec3(1.))`;
+    this._material = `Material(${name}color,${name}emissive)`;
   }
 }

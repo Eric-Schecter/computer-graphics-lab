@@ -8,8 +8,7 @@ class Vector3 {
 
 type Material = {
   color: Vector3,
-  diffuse: number,
-  specular: number,
+  emissive: Vector3,
 }
 
 type Props = {
@@ -60,4 +59,4 @@ type InstanceProps = { [prop: string]: any };
 type UniformData = number[] | number | { [prop: string]: number };
 
 export { Vector3, Size };
-export type { Instance, SphereProp, BoxProp, SphereInstance, InstanceProps,UniformData };
+export type { Instance, SphereProp, BoxProp, SphereInstance, InstanceProps, UniformData };

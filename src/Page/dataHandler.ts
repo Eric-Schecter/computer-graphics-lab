@@ -4,7 +4,7 @@ import { World } from "./world";
 
 class Parameters {
   protected type = '';
-  protected materialKeywords = new Set<string>(['color', 'diffuse', 'specular']);
+  protected materialKeywords = new Set<string>(['color', 'emissive']);
   protected geometryKeywords = new Set<string>(['position']);
   constructor(protected id: number) { }
   public handleData = (key: string) => {

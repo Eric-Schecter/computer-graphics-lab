@@ -5,10 +5,10 @@ export const App = () => {
   const [data, setData] = useState<any[]>([]);
   useEffect(() => {
     const sample: any[] = [
-      { position: { x: 180, y: 90, z: 0 }, radius: 90, color: { x: Math.random(), y: Math.random(), z: Math.random() }, diffuse: 1, specular: 0.01 },
-      { position: { x: -180, y: 90, z: 0 }, radius: 90, color: { x: Math.random(), y: Math.random(), z: Math.random()}, diffuse: 1, specular: 0.01 },
-      { position: { x: 0, y: 90, z: 0 }, radius: 90, color: {x: Math.random(), y: Math.random(), z: Math.random() }, diffuse: 1, specular: 0.01 },
-      { position: { x: 0, y: -10000, z: 0 }, radius: 10000, color: { x: Math.random(), y: Math.random(), z: Math.random()}, diffuse: 1, specular: 0.01 },
+      { position: { x: 180, y: 90, z: 0 }, radius: 90, color: { x: Math.random(), y: Math.random(), z: Math.random() }, emissive: { x: 0, y: 0, z: 0 } },
+      { position: { x: -180, y: 90, z: 0 }, radius: 90, color: { x: Math.random(), y: Math.random(), z: Math.random() }, emissive: { x: 0, y: 0, z: 0 } },
+      { position: { x: 0, y: 90, z: 0 }, radius: 90, color: { x: Math.random(), y: Math.random(), z: Math.random() }, emissive: { x: 0.7, y: 0.7, z: 0.7 } },
+      { position: { x: 0, y: -10000, z: 0 }, radius: 10000, color: { x: Math.random(), y: Math.random(), z: Math.random() }, emissive: { x: 0, y: 0, z: 0 } },
     ];
     const outterRadius = 300;
     const radius = 20;
@@ -18,19 +18,18 @@ export const App = () => {
       const theta = Math.PI * 2 / count * i;
       return {
         position: { x: Math.cos(theta) * outterRadius + random(-1, 1) * radius, y: radius, z: Math.sin(theta) * outterRadius + random(-1, 1) * radius },
-        radius: radius, color: { x: Math.random(), y: Math.random(), z: Math.random() }, diffuse: 1, specular: 0.01
+        radius: radius, color: { x: Math.random(), y: Math.random(), z: Math.random() }, emissive: { x: 0, y: 0, z: 0 }
       };
     })
     setData([...sample, ...randomBalls]);
   }, [])
 
   return <Page style={{ width: '100%', height: '100vh' }}>
-    {data.map(({ position, radius, color, diffuse, specular }) => <sphere
+    {data.map(({ position, radius, color, emissive}) => <sphere
       position={position}
       radius={radius}
       color={color}
-      diffuse={diffuse}
-      specular={specular}
+      emissive={emissive}
     />)}
   </Page>
 }

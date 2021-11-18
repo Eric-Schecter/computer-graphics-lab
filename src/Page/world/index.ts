@@ -55,7 +55,7 @@ export class World {
       this.update();
       this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
     }
-    // this.timer = requestAnimationFrame(this.draw);
+    this.timer = requestAnimationFrame(this.draw);
   }
   private initUniforms = (gl: WebGL2RenderingContext) => {
     if (!this.program) { return }
