@@ -3,7 +3,7 @@
 </p>
 
 # React-SDF
-A React renderer to help create SDF.  
+A React renderer to implement pathtracing.  
 
 ## Usage
 
