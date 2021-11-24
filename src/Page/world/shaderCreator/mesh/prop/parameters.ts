@@ -7,7 +7,6 @@ export abstract class Parameters {
     diffuse: 1,
     specular: 0,
   };
-  protected _sdf = '';
   protected _geometry = '';
   protected _material = '';
   protected _uniform = '';
@@ -31,9 +30,6 @@ export abstract class Parameters {
   protected abstract generateGeometryStr: () => void;
   protected abstract generateUnifromStr: () => void;
   protected abstract generateMaterialStr: () => void;
-  public get sdf() {
-    return this._sdf;
-  }
   public get geometry() {
     return this._geometry;
   }
