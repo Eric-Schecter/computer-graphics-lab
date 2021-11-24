@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
 import Reconciler, { FiberRoot, Fiber } from 'react-reconciler';
-import { World } from './world';
-import { Instance } from './types';
+import { World } from '../world';
+import { Instance } from '../types';
 import { DataHandler } from './dataHandler';
 import { Comparator } from './comparator';
-import { InstanceProps } from '..';
+import { InstanceProps } from '../types';
 
 const dataHandler = new DataHandler();
 const comparator = new Comparator();

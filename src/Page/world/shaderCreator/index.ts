@@ -13,7 +13,7 @@ import * as sphIntersection from './shader/intersection/sphere.glsl';
 import * as randomVector from './shader/randomVector.glsl';
 
 import { MeshGenerator } from './mesh';
-import { Instance } from '../types';
+import { Instance } from '../../types';
 import { structs } from './shader/struct';
 
 const prefix = [
@@ -34,7 +34,9 @@ const defines = [
 const uniforms = [
   'uniform vec2 uResolution;',
   'uniform float uTime;',
-  'uniform float uFrame;',
+  'uniform int uFrame;',
+  'uniform sampler2D uPixel;',
+  'uniform vec3 uCameraPos;'
 ]
 
 const maths = [
@@ -63,7 +65,7 @@ export class ShaderCreator {
       ...lights,
       ...effects,
       postprocess,
-      meshes,
+      ...meshes,
       main
     ];
     const shader = shaderArr.join('\n');

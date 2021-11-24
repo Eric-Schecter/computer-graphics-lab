@@ -8,6 +8,6 @@ precision highp int;
 out highp vec4 pc_fragColor;
 
 void main()
-{   
-    gl_FragColor=vec4(1.);
+{
+    gl_FragColor=vec4(0.);
 }

@@ -1,5 +1,5 @@
 vec3 render(Ray ray,uint rngState){
-    vec3 col = vec3(0.);
+    vec3 col = vec3(0.1);
     vec3 mask = vec3(1.);
     const int iteration = 5;
     for(int i =0;i<iteration;i++){    
@@ -31,7 +31,7 @@ mat3 setupCamera(Camera camera){
 void main()
 {
   const float ratio = 2.;
-  vec3 cameraPos = vec3(300.,400.,600.) /ratio;
+  vec3 cameraPos = uCameraPos /ratio;
   vec3 lookat = vec3(0.,100.,0.)/ratio;
   float rotation = 0.;
 
@@ -47,5 +47,9 @@ void main()
   vec3 col=render(ray,rngState);
   vec2 coord=gl_FragCoord.xy/uResolution.xy;
   col=postEffects(col,coord);
+
+  vec3 lastFrameColor = texture(uPixel, gl_FragCoord.xy / uResolution.xy).rgb;
+  col = mix(lastFrameColor, col, 1.0 / float(uFrame+1));
+
   gl_FragColor=vec4(col,1.);
 }

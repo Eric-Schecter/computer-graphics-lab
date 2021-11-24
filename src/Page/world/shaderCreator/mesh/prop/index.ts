@@ -1,4 +1,4 @@
-import { Instance } from '../../../types';
+import { Instance } from '../../../../types';
 import { BoxParameters } from './box';
 import { SphereParameters } from './sphere';
 

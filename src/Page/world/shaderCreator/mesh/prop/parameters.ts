@@ -1,4 +1,4 @@
-import { InstanceProps, Vector3 } from "../../../types";
+import { InstanceProps, Vector3 } from "../../../../types";
 
 export abstract class Parameters {
   protected _data = {

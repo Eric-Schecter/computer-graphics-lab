@@ -1,6 +1,6 @@
 import React, { CSSProperties, ReactNode, useEffect, useRef } from 'react';
 import Renderer from './renderer';
-import { World } from './world';
+import { World } from './World';
 
 type Props = {
   children?: ReactNode,
@@ -18,7 +18,7 @@ export const Page = ({ children, style, className }: Props) => {
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
     refBoard.current = new World(canvas);
-    return () => refBoard.current?.stop();
+    return () => refBoard.current?.destory();
   }, [ref])
 
   useEffect(() => {

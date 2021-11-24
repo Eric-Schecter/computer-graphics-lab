@@ -1,6 +1,5 @@
-import { Instance, InstanceProps } from "..";
-import { World } from "./world";
-
+import { Instance, InstanceProps } from "../types";
+import { World } from "../world";
 
 class Parameters {
   protected type = '';

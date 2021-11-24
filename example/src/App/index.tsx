@@ -25,11 +25,19 @@ export const App = () => {
   }, [])
 
   return <Page style={{ width: '100%', height: '100vh' }}>
-    {data.map(({ position, radius, color, emissive}) => <sphere
-      position={position}
-      radius={radius}
-      color={color}
-      emissive={emissive}
-    />)}
+    {/* {data.map(({ position, radius, color, emissive }, i) =>
+      <sphere
+        key={i}
+        position={position}
+        radius={radius}
+        color={color}
+        emissive={emissive}
+      />)} */}
+    <box
+      position={{ x: 0, y: 0, z: 0 }}
+      size={{ width: 10, height: 10, depth: 10 }}
+      color={{ x: 1, y: 0, z: 0 }}
+      emissive={{ x: 1, y: 1, z: 1 }}
+    />
   </Page>
 }

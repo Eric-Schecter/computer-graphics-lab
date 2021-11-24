@@ -1,4 +1,4 @@
-import { World } from "./world";
+import { World } from "./World";
 
 class Vector3 {
   public x = 0;
@@ -12,6 +12,7 @@ type Material = {
 }
 
 type Props = {
+  key: number,
   position: Vector3,
 } & Material
 
@@ -56,7 +57,7 @@ declare global {
 
 type InstanceProps = { [prop: string]: any };
 
-type UniformData = number[] | number | { [prop: string]: number };
+type UniformData = number[] | number | { [prop: string]: number } | WebGLTexture;
 
 export { Vector3, Size };
 export type { Instance, SphereProp, BoxProp, SphereInstance, InstanceProps, UniformData };

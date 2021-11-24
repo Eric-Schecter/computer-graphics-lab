@@ -1,10 +1,10 @@
-import { Instance } from "../../types";
+import { Instance } from "../../../types";
 import { Generator } from "./generator";
 import { GeometryGenerator } from "./geometry";
 import { MaterialGenerator } from "./material";
 import * as opUnion from '../shader/opUnion.glsl';
 import { SDFGenerator } from "./sdf";
-import { PropGenerator,Parameters } from "./prop";
+import { PropGenerator, Parameters } from "./prop";
 import { UniformGenerator } from "./uniform";
 
 export class MeshGenerator implements Generator {
@@ -18,12 +18,12 @@ export class MeshGenerator implements Generator {
     for (const d of data) {
       handledData.add(this.prop.generate(d))
     }
-    
-    return `
-    ${this.uniform.generate(handledData)}
-    ${this.base}
-    ${this.sdfs.generate(handledData)}
-    ${this.geometry.generate(handledData)}
-    `
+
+    return [
+      ...this.uniform.generate(handledData),
+      this.base,
+      // ...this.sdfs.generate(handledData),
+      ...this.geometry.generate(handledData)
+    ]
   }
 }

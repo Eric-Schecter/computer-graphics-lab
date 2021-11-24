@@ -1,6 +1,5 @@
-import { UniformData } from "../types";
 import { UniformHandler } from "./uniformHandler";
-import { UniformUpdateable } from "./updater";
+import { UniformUpdateable } from "../updater";
 
 interface Updateable {
   update(unifromHandler: UniformHandler): void;

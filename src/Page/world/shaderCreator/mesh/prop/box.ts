@@ -1,4 +1,4 @@
-import { InstanceProps, Size, Vector3 } from "../../../types";
+import { InstanceProps, Size, Vector3 } from "../../../../types";
 import { Parameters } from "./parameters";
 import * as sdf from '../../shader/sdf/box.glsl';
 
