@@ -1,7 +1,6 @@
 import { Instance } from "../../../types";
 import { Generator } from "./generator";
 import { GeometryGenerator } from "./geometry";
-import { MaterialGenerator } from "./material";
 import * as opUnion from '../shader/opUnion.glsl';
 import { PropGenerator, Parameters } from "./prop";
 import { UniformGenerator } from "./uniform";
