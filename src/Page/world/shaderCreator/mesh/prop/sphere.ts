@@ -10,7 +10,6 @@ export class SphereParameters extends Parameters {
     diffuse: 1,
     specular: 0,
   }
-  private uniformName = 'uSphereParams';
   constructor(id:number) {
     super();
     this._data.id = id;
@@ -23,11 +22,6 @@ export class SphereParameters extends Parameters {
     const { id } = this._data;
     const name = `spheres[${id}].geometry.`;
     this._geometry = `sphIntersection(ray,${name}position,${name}radius)`;
-  }
-  protected generateUnifromStr = () => {
-    const { id } = this._data;
-    this.uniformName = this.uniformName + id;
-    this._uniform = `uniform Material ${this.uniformName};`;
   }
   protected generateMaterialStr = () =>{
     const { id } = this._data;

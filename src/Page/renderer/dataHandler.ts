@@ -1,47 +1,13 @@
 import { Instance, InstanceProps } from "../types";
 import { World } from "../world";
-
-class Parameters {
-  protected type = '';
-  protected materialKeywords = new Set<string>(['color', 'emissive']);
-  protected geometryKeywords = new Set<string>(['position']);
-  constructor(protected id: number) { }
-  public handleData = (key: string) => {
-    if (this.materialKeywords.has(key)) {
-      return `${this.type}[${this.id}].material.${key}`;
-    }
-    if (this.geometryKeywords.has(key)) {
-      return `${this.type}[${this.id}].geometry.${key}`;
-    }
-    return '';
-  }
-}
-
-class Sphere extends Parameters {
-  protected type = 'spheres';
-  constructor(protected id: number) {
-    super(id);
-    this.geometryKeywords.add('radius');
-  }
-}
-
-class Box extends Parameters {
-  protected type = 'boxes';
-  constructor(protected id: number) {
-    super(id);
-    this.geometryKeywords.add('size');
-  }
-}
+import { Box } from "./parameters/box";
+import { Sphere } from "./parameters/sphere";
 
 class ParametersFactory {
   public build = (type: Instance['type'], id: number) => {
     switch (type) {
-      case 'box': {
-        return new Box(id);
-      }
-      case 'sphere':{
-        return new Sphere(id);
-      }
+      case 'box':  return new Box(id);
+      case 'sphere':return new Sphere(id);
     }
   }
 }

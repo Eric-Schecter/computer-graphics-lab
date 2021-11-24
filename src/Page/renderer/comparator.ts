@@ -19,7 +19,6 @@ export class Comparator {
       const isChangedValue = !isObjectOld && !isObjectNew && oldVal !== newVal;
       const compareObjAndVal = (isObjectOld && !isObjectNew) || (!isObjectOld && isObjectNew);
       if (isChangedObject || isChangedValue || compareObjAndVal) {
-        console.log(oldVal, newVal, isChangedObject, isChangedValue, compareObjAndVal, 11)
         mark = true;
         if (layer === 0) {
           result[key] = newVal;

@@ -28,15 +28,11 @@ export abstract class Parameters {
     // keys.forEach(key => self[key] = data[key] !== undefined ? data[key] : self[key]);
   }
   protected abstract generateGeometryStr: () => void;
-  protected abstract generateUnifromStr: () => void;
   protected abstract generateMaterialStr: () => void;
   public get geometry() {
     return this._geometry;
   }
   public get material() {
     return this._material;
-  }
-  public get uniform() {
-    return this._uniform;
   }
 }

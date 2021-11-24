@@ -10,7 +10,6 @@ export class BoxParameters extends Parameters {
     diffuse: 1,
     specular: 0,
   }
-  private uniformName = 'uBoxParams';
   constructor(id:number) {
     super();
     this._data.id = id;
@@ -23,11 +22,6 @@ export class BoxParameters extends Parameters {
     const { id } = this._data;
     const name = `boxes[${id}].geometry.`;
     this._geometry = `boxIntersection(ray,${name}position,${name}size)`;
-  }
-  protected generateUnifromStr = () => {
-    const { id } = this._data;
-    const size = 11;
-    this._uniform = `uniform float[${size}] ${this.uniformName}${id};`;
   }
   protected generateMaterialStr = () =>{
     const { id } = this._data;
