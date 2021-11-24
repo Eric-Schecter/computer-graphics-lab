@@ -1,4 +1,5 @@
-import { UniformData } from '../../types';
+import { Instance, UniformData } from '../../types';
+import { ShaderCreator } from '../shaderCreator';
 import { UniformHandler } from './uniformHandler';
 import { Observer, UniformObserverable } from './uniformObserverable';
 
@@ -95,7 +96,9 @@ export class Program {
   public updateParameters = (name: string, data: UniformData) => {
     this.uniformHandler.update(name, data);
   }
-  public updateShader = (shader: string) => {
+  public updateShader = (data: Set<Instance>, shaderCreator: ShaderCreator) => {
+    const settings = {}; // todo get settings from data
+    const shader = shaderCreator.create(data, settings, this.uniformObserverable.infos);
     const frag = this.createShader(this.gl, this.gl.FRAGMENT_SHADER, shader);
     if (!frag) { return; }
     this.gl.detachShader(this.program, this.fragmentShader);
@@ -164,7 +167,7 @@ class FrameBufferHandler {
 }
 
 export class ComputeProgram extends Program {
-  private frameBufferHandler = new FrameBufferHandler(this.gl, this.width,this.height);
+  private frameBufferHandler = new FrameBufferHandler(this.gl, this.width, this.height);
   public draw = () => {
     this.gl.useProgram(this.program);
     this.gl.clearColor(0, 0, 0, 1);

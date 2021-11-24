@@ -20,6 +20,11 @@ type SphereProp = {
   radius: number
 } & Props
 
+type CameraProp = {
+  lookat: Vector3,
+  rotation: number,
+} & Props
+
 class Size {
   public width = 1;
   public height = 1;
@@ -51,6 +56,7 @@ declare global {
     interface IntrinsicElements {
       sphere: Partial<SphereProp>,
       box: Partial<BoxProp>,
+      camera: Partial<CameraProp>,
     }
   }
 }

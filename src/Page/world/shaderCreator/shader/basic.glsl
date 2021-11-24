@@ -30,19 +30,20 @@ mat3 setupCamera(Camera camera){
 
 void main()
 {
-  const float ratio = 2.;
-  vec3 cameraPos = uCameraPos /ratio;
-  vec3 lookat = vec3(0.,100.,0.)/ratio;
+  vec3 cameraPos = uCameraPos;
+  vec3 lookat = vec3(0.,50.,0.);
   float rotation = 0.;
+  float fov = 50. / 180. * PI;
 
   uint rngState = uint(uint(gl_FragCoord.x) * uint(1973) + uint(gl_FragCoord.y) * uint(9277) + uint(uFrame) * uint(26699)) | uint(1);
   
   vec2 uv=(gl_FragCoord.xy*2.-uResolution.xy)/uResolution.y;
-  Camera camera = Camera(cameraPos,lookat,rotation);
+  Camera camera = Camera(cameraPos,lookat,rotation,fov);
 
   mat3 viewMatrix=setupCamera(camera);
-  float fov = 50. / 180. * PI;
-  vec3 direction=viewMatrix*normalize(vec3(uv * fov,1.));
+
+  vec3 direction=viewMatrix*normalize(vec3(uv * camera.fov,1.));
+  
   Ray ray=Ray(camera.pos,direction);
   vec3 col=render(ray,rngState);
   vec2 coord=gl_FragCoord.xy/uResolution.xy;

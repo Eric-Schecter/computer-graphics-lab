@@ -6,12 +6,15 @@ interface Updateable {
 }
 
 export class Observer implements Updateable {
-  constructor(private _name: string, private updater: UniformUpdateable) { }
+  constructor(private _name: string, private _type: string, private updater: UniformUpdateable) { }
   public update = (unifromHandler: UniformHandler) => {
     unifromHandler.update(this._name, this.updater.update());
   }
   public get name() {
     return this._name;
+  }
+  public get type() {
+    return this._type;
   }
 }
 
@@ -28,5 +31,8 @@ export class UniformObserverable implements Updateable {
   }
   public remove = (name: string) => {
     this.observers.delete(name);
+  }
+  public get infos() {
+    return Array.from(this.observers.values()).map(({ name, type }) => { return { name, type } });
   }
 }

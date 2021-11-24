@@ -8,9 +8,6 @@ import * as postprocess from './shader/postprocess/postprocess.glsl';
 
 import * as translate from './shader/math/translate.glsl';
 
-import * as sphIntersection from './shader/intersection/sphere.glsl';
-import * as boxIntersection from './shader/intersection/box.glsl';
-
 import * as randomVector from './shader/randomVector.glsl';
 
 import { MeshGenerator } from './mesh';
@@ -32,13 +29,13 @@ const defines = [
   '#define saturate(x)clamp(x,0.,1.)',
 ]
 
-const uniforms = [
-  'uniform vec2 uResolution;',
-  'uniform float uTime;',
-  'uniform int uFrame;',
-  'uniform sampler2D uPixel;',
-  'uniform vec3 uCameraPos;'
-]
+// const uniforms = [
+//   'uniform vec2 uResolution;',
+//   'uniform float uTime;',
+//   'uniform int uFrame;',
+//   'uniform sampler2D uPixel;',
+//   'uniform vec3 uCameraPos;'
+// ]
 
 const maths = [
   translate
@@ -53,8 +50,9 @@ const effects = [
 ]
 export class ShaderCreator {
   private meshGenerator = new MeshGenerator();
-  public create = (data: Set<Instance>, settings = {}) => {
+  public create = (data: Set<Instance>, settings = {}, infos: Array<{ name: string, type: string }>) => {
     const meshes = this.meshGenerator.generate(data);
+    const uniforms = infos.map(({name, type}) => `uniform ${type} ${name};`)
     const shaderArr = [
       ...prefix,
       ...defines,
@@ -62,10 +60,8 @@ export class ShaderCreator {
       ...structs,
       ...maths,
       randomVector,
-      sphIntersection,
-      boxIntersection,
-      ...lights,
-      ...effects,
+      // ...lights,
+      // ...effects,
       postprocess,
       ...meshes,
       main

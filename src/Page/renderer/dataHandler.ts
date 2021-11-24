@@ -1,3 +1,5 @@
+//handle data from react side to renderer side
+
 import { Instance, InstanceProps } from "../types";
 import { World } from "../world";
 import { Box } from "./parameters/box";
@@ -6,8 +8,8 @@ import { Sphere } from "./parameters/sphere";
 class ParametersFactory {
   public build = (type: Instance['type'], id: number) => {
     switch (type) {
-      case 'box':  return new Box(id);
-      case 'sphere':return new Sphere(id);
+      case 'box': return new Box(id);
+      case 'sphere': return new Sphere(id);
     }
   }
 }

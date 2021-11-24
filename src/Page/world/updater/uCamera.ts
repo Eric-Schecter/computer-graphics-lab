@@ -3,6 +3,6 @@ import { UniformUpdateable } from "./updateable";
 export class UCamera implements UniformUpdateable{
   constructor(){}
   public update = () =>{
-    return [0,100,600];
+    return [0,50,300];
   }
 }
