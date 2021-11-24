@@ -4,6 +4,7 @@ import * as light from './light.glsl';
 import * as shape from './shape.glsl';
 import * as material from './material.glsl';
 import * as sphere from './sphere.glsl';
+import * as box from './box.glsl';
 import * as hitinfo from './hitinfo.glsl';
 
 export const structs = [
@@ -12,6 +13,7 @@ export const structs = [
   hitinfo,
   // material,
   sphere,
+  box,
   // shape,
   // light,
 ]

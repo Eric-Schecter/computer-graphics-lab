@@ -3,13 +3,11 @@ import { Generator } from "./generator";
 import { GeometryGenerator } from "./geometry";
 import { MaterialGenerator } from "./material";
 import * as opUnion from '../shader/opUnion.glsl';
-import { SDFGenerator } from "./sdf";
 import { PropGenerator, Parameters } from "./prop";
 import { UniformGenerator } from "./uniform";
 
 export class MeshGenerator implements Generator {
   private base = opUnion;
-  private sdfs = new SDFGenerator();
   private geometry = new GeometryGenerator();
   private prop = new PropGenerator();
   private uniform = new UniformGenerator();
@@ -22,7 +20,6 @@ export class MeshGenerator implements Generator {
     return [
       ...this.uniform.generate(handledData),
       this.base,
-      // ...this.sdfs.generate(handledData),
       ...this.geometry.generate(handledData)
     ]
   }

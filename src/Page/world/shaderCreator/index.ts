@@ -9,6 +9,7 @@ import * as postprocess from './shader/postprocess/postprocess.glsl';
 import * as translate from './shader/math/translate.glsl';
 
 import * as sphIntersection from './shader/intersection/sphere.glsl';
+import * as boxIntersection from './shader/intersection/box.glsl';
 
 import * as randomVector from './shader/randomVector.glsl';
 
@@ -59,9 +60,10 @@ export class ShaderCreator {
       ...defines,
       ...uniforms,
       ...structs,
+      ...maths,
       randomVector,
       sphIntersection,
-      ...maths,
+      boxIntersection,
       ...lights,
       ...effects,
       postprocess,

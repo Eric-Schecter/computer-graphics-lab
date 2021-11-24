@@ -1,6 +1,5 @@
 import { InstanceProps, Size, Vector3 } from "../../../../types";
 import { Parameters } from "./parameters";
-import * as sdf from '../../shader/sdf/box.glsl';
 
 export class BoxParameters extends Parameters {
   protected _data = {
@@ -12,24 +11,27 @@ export class BoxParameters extends Parameters {
     specular: 0,
   }
   private uniformName = 'uBoxParams';
-  protected _sdf = sdf;
   constructor(id:number) {
     super();
     this._data.id = id;
     // this.handleUndefined(id);
     // this.generateUnifromStr();
+    this.generateMaterialStr();
     this.generateGeometryStr();
   }
   protected generateGeometryStr = () => {
-    const { position, size } = this._data;
-    const [x, y, z] = Object.values(position).map(d => this.int2float(d));
-    const [w, h, d] = Object.values(size).map(d => this.int2float(d));
-    this._geometry = `sdBox(p-vec3(${x},${y},${z}),vec3(${w},${h},${d}))`;
+    const { id } = this._data;
+    const name = `boxes[${id}].geometry.`;
+    this._geometry = `boxIntersection(ray,${name}position,${name}size)`;
   }
   protected generateUnifromStr = () => {
     const { id } = this._data;
     const size = 11;
     this._uniform = `uniform float[${size}] ${this.uniformName}${id};`;
   }
-  protected generateMaterialStr = () =>{}
+  protected generateMaterialStr = () =>{
+    const { id } = this._data;
+    const name = `boxes[${id}].material.`;
+    this._material = `Material(${name}color,${name}emissive)`;
+  }
 }

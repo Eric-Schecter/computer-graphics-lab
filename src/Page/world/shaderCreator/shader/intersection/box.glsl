@@ -1,4 +1,4 @@
-Geometry boxIntersection(Ray ray,vec3 size,vec3 p)
+Geometry boxIntersection(Ray ray,vec3 p,vec3 size)
 {
   mat4 txi=translate(p);
   mat4 txx=inverse(txi);

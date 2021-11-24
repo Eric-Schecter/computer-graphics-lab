@@ -1,6 +1,5 @@
 import { InstanceProps, Vector3 } from "../../../../types";
 import { Parameters } from "./parameters";
-import * as sdf from '../../shader/sdf/sphere.glsl';
 
 export class SphereParameters extends Parameters {
   protected _data = {
@@ -12,7 +11,6 @@ export class SphereParameters extends Parameters {
     specular: 0,
   }
   private uniformName = 'uSphereParams';
-  protected _sdf = sdf;
   constructor(id:number) {
     super();
     this._data.id = id;
