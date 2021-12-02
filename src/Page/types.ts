@@ -23,6 +23,7 @@ type SphereProp = {
 type CameraProp = {
   lookat: Vector3,
   rotation: number,
+  fov: number,
 } & Props
 
 class Size {
@@ -49,7 +50,23 @@ type BasicInstance = {
   id: number,
   world?: World,
 }
-type Instance = BasicInstance & (SphereInstance | BoxInstance);
+
+type LightProp = {
+
+}
+
+type MeshInstance = SphereInstance | BoxInstance;
+
+type LightInstance = {
+  type: 'light',
+  props: LightProp
+};
+type CameraInstance = {
+  type: 'camera',
+  props: CameraProp
+}
+
+type Instance = BasicInstance & (MeshInstance | CameraInstance | LightInstance);
 
 declare global {
   namespace JSX {

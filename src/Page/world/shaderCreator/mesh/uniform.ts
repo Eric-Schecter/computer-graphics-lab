@@ -1,11 +1,10 @@
-import { Generator } from "./generator";
-import { Parameters } from "./prop";
+import { Object3D } from "../../component";
 
-export class UniformGenerator implements Generator {
-  public generate = (data: Set<Parameters>) => {
+export class UniformGenerator  {
+  public generate = (data: Set<Object3D>) => {
     return [
-      `uniform Sphere spheres[${data.size + 1}];`,
-      `uniform Box boxes[${data.size + 1}];`,
+      `uniform Sphere spheres[${data.size + 1 + 1}];`,
+      `uniform Box boxes[${data.size + 1 + 1}];`,
     ];
     //todo set corrent size
     // const result = new Set<string>();

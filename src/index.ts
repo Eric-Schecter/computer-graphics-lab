@@ -1,4 +1,4 @@
-export * from './Page/types';
+export * from './page/types';
 
-import { Page } from './Page';
+import { Page } from './page';
 export default Page;

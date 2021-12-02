@@ -1,35 +1,26 @@
 //generate mesh shader by data
 
-import { Instance } from "../../../types";
-import { Generator } from "./generator";
 import { GeometryGenerator } from "./geometry";
-import * as opUnion from '../shader/opUnion.glsl';
-import * as sphIntersection from '../shader/intersection/sphere.glsl';
-import * as boxIntersection from '../shader/intersection/box.glsl';
-import { PropGenerator, Parameters } from "./prop";
+import * as opUnion from '../../shader/opUnion.glsl';
+// import { Parameters } from "./prop";
 import { UniformGenerator } from "./uniform";
+import { IntersectionGenerator } from "./intersection";
+import { Mesh } from "../../component";
 
-export class MeshGenerator implements Generator {
-  private base = opUnion;
+export class MeshGenerator{
+  private base = opUnion; // draw order: nearest
   private geometry = new GeometryGenerator();
-  private prop = new PropGenerator();
   private uniform = new UniformGenerator();
-  public generate = (data: Set<Instance>) => {
-    const handledData = new Set<Parameters>();
-    const intersections = new Set<string>();
-    for (const d of data) {
-      handledData.add(this.prop.generate(d));
-      switch (d.type) {
-        case 'box': { intersections.add(boxIntersection); break }
-        case 'sphere': { intersections.add(sphIntersection); break }
-      }
-    }
-
+  private intersection = new IntersectionGenerator();
+  private members = new Set<Mesh>();
+  public generate = (meshes:Mesh[]) => {
+    this.members.clear();
+    meshes.forEach(mesh=>this.members.add(mesh));
     return [
-      ...this.uniform.generate(handledData),
       this.base,
-      ...intersections,
-      ...this.geometry.generate(handledData)
+      ...this.uniform.generate(this.members),
+      ...this.intersection.generate(this.members),
+      ...this.geometry.generate(this.members)
     ]
   }
 }

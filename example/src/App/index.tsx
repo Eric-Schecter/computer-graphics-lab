@@ -1,4 +1,5 @@
 import Page from '@youyouzone/react-sdf';
+import { useEffect, useState } from 'react';
 
 const rawData = [
   { position: { x: 0, y: 200, z: 0 }, size: { width: 100, height: 1, depth: 50 }, color: { x: 0.7, y: 0.7, z: 0.7 }, emissive: { x: 1, y: 1, z: 1 } },
@@ -11,9 +12,33 @@ const rawData = [
 ]
 
 export const App = () => {
-
-  return <Page style={{ width: '100%', height: '100vh' }}>
-    {/* <camera position={{ x: 0, y: 50, z: 300 }} lookat={{ x: 0, y: 50, z: 0 }} rotation={0} fov={50 / 180 * Math.PI} /> */}
+  const down = () => {
+    console.log('down')
+  }
+  const move = () => {
+    console.log('move')
+  }
+  const up = () => {
+    console.log('up')
+  }
+  // const [rotation,setRotation] = useState(0);
+  // useEffect(()=>{
+  //   setTimeout(() => {
+  //     setRotation(Math.PI/4);
+  //   }, 2000);
+  // },[])
+  return <Page
+    style={{ width: '100%', height: '100vh' }}
+  // onMouseDown={down}
+  // onMouseMove={move}
+  // onMouseUp={up}
+  >
+    <camera
+      position={{ x: 0, y: 50, z: 250 }}
+      lookat={{ x: 0, y: 50, z: 0 }}
+      rotation={0}
+      fov={50 / 180 * Math.PI}
+    />
     {rawData.map(({ position, size, color, emissive }, i) =>
       <box
         key={i}

@@ -1,18 +1,17 @@
-import * as schlick from './shader/effect/schlick.glsl';
+import * as schlick from '../shader/effect/schlick.glsl';
 
-import * as spotlight from './shader/light/spotlight.glsl';
+import * as spotlight from '../shader/light/spotlight.glsl';
 
-import * as main from './shader/basic.glsl';
+import * as main from '../shader/basic.glsl';
 
-import * as postprocess from './shader/postprocess/postprocess.glsl';
+import * as postprocess from '../shader/postprocess/postprocess.glsl';
 
-import * as translate from './shader/math/translate.glsl';
+import * as translate from '../shader/math/translate.glsl';
 
-import * as randomVector from './shader/randomVector.glsl';
+import * as randomVector from '../shader/randomVector.glsl';
 
-import { MeshGenerator } from './mesh';
-import { Instance } from '../../types';
-import { structs } from './shader/struct';
+import { structs } from '../shader/struct';
+import { Scene } from '../scene';
 
 const prefix = [
   '#version 300 es',
@@ -29,35 +28,27 @@ const defines = [
   '#define saturate(x)clamp(x,0.,1.)',
 ]
 
-// const uniforms = [
-//   'uniform vec2 uResolution;',
-//   'uniform float uTime;',
-//   'uniform int uFrame;',
-//   'uniform sampler2D uPixel;',
-//   'uniform vec3 uCameraPos;'
-// ]
-
 const maths = [
   translate
 ]
 
-const lights = [
-  spotlight
-]
+// const lights = [
+//   spotlight
+// ]
 
-const effects = [
-  schlick
-]
+// const effects = [
+//   schlick
+// ]
+
 export class ShaderCreator {
-  private meshGenerator = new MeshGenerator();
-  public create = (data: Set<Instance>, settings = {}, infos: Array<{ name: string, type: string }>) => {
-    const meshes = this.meshGenerator.generate(data);
+  public create = (scene:Scene, settings = {}, infos: Array<{ name: string, type: string }>) => {
+    const meshes = scene.generate();
     const uniforms = infos.map(({name, type}) => `uniform ${type} ${name};`)
     const shaderArr = [
       ...prefix,
       ...defines,
-      ...uniforms,
       ...structs,
+      ...uniforms,
       ...maths,
       randomVector,
       // ...lights,

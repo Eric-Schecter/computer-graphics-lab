@@ -2,11 +2,11 @@ import { ReactNode } from 'react';
 import Reconciler, { FiberRoot, Fiber } from 'react-reconciler';
 import { World } from '../world';
 import { Instance } from '../types';
-import { DataHandler } from './dataHandler';
+import { DataTransfer } from './dataTransfer';
 import { Comparator } from './comparator';
 import { InstanceProps } from '../types';
 
-const dataHandler = new DataHandler();
+let dataHandler: DataTransfer;
 const comparator = new Comparator();
 
 const debounce = () => {
@@ -66,10 +66,10 @@ const HostConfig: any = {
   },
   commitUpdate(instance: Instance, changedProps: { [prop: string]: any }, type: string, oldProps: any, newProps: any, fiber: Fiber) {
     console.log("commitUpdate", changedProps, instance, fiber);
-    const world = instance.world;
-    if (world) {
-      dataHandler.updateParams(world, oldProps, newProps, changedProps);
+    if(instance.world){
+      dataHandler.updateParams(instance.world,oldProps, newProps, changedProps);
     }
+
   },
   shouldSetTextContent(...args: any[]) {
     console.log("shouldSetTextContent", args);
@@ -202,11 +202,13 @@ const HostConfig: any = {
 
 const reconciler = Reconciler(HostConfig);
 let root: FiberRoot = null;
+let world:World;
 const Renderer = {
   render: (component: ReactNode, container: World) => {
     //init
+    console.log(container===world,1111111)
     if (!root) {
-      dataHandler.clear();
+      dataHandler = new DataTransfer(container);
       root = reconciler.createContainer(container, 0, false, null);
     }
     //update

@@ -1,7 +1,6 @@
-import { Generator } from "./generator";
-import { Parameters } from "./prop";
+import { Mesh } from "../../component";
 
-export class GeometryGenerator implements Generator {
+export class GeometryGenerator  {
   private start = [
     'HitInfo scene(Ray ray){',
     'HitInfo res = HitInfo(Geometry(1e10,vec3(0.)),defaultMaterial);'
@@ -10,15 +9,15 @@ export class GeometryGenerator implements Generator {
     'return res;',
     '}'
   ]
-  private getGeos = (data: Set<Parameters>) => {
+  private getGeos = (data: Set<Mesh>) => {
     return Array.from(data.values())
       .map(({ geometry, material }) => `res=opUnion(res,HitInfo(${geometry},${material}));`)
   }
-  public generate = (data: Set<Parameters>) => {
+  public generate = (data: Set<Mesh>) => {
     return [
       ...this.start,
       ...this.getGeos(data),
       ...this.end
-    ];
+    ]
   }
 }

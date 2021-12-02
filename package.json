@@ -51,5 +51,8 @@
   "files": [
     "lib"
   ],
-  "homepage": "https://github.com/Eric-Schecter/react-sdf"
+  "homepage": "https://github.com/Eric-Schecter/react-sdf",
+  "dependencies": {
+    "react-merge-refs": "^1.1.0"
+  }
 }
