@@ -30,9 +30,7 @@ export const App = () => {
     { position: { x: -50, y: -20, z: 50 }, size: { width: 30, height: 60, depth: 30 }, color: { x: 0.5, y: 0.3, z: 0.6 }, emissive: { x: 0, y: 0, z: 0 }, roughness: 0, specular: 0 },
   ]
 
-  return <Page
-    style={{ width: '100%', height: '100vh' }}
-  >
+  return <Page style={{ width: '100%', height: '100vh' }}>
     <Camera
       position={{ x: 0, y: 50, z: 250 }}
       lookat={{ x: 0, y: 50, z: 0 }}
