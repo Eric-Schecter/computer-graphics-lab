@@ -32,7 +32,6 @@ export const App = () => {
       />
     )}
     <sphere
-      ref={ref}
       position={{ x: 50, y: -50, z: 0 }}
       radius={50}
       color={{ x: 0.5, y: 0.3, z: 0.6 }}
