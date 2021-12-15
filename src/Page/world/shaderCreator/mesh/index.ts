@@ -5,7 +5,7 @@ import * as opUnion from '../../shader/opUnion.glsl';
 // import { Parameters } from "./prop";
 import { UniformGenerator } from "./uniform";
 import { IntersectionGenerator } from "./intersection";
-import { Mesh } from "../../component";
+import { Mesh } from "../../../instance/component";
 
 export class MeshGenerator{
   private base = opUnion; // draw order: nearest

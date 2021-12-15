@@ -1,4 +1,6 @@
-import { World } from "./World";
+import { Key, ReactNode, Ref } from "react";
+import { Store } from "./page/renderer/store";
+import { World } from "./page/World";
 
 class Vector3 {
   public x = 0;
@@ -9,12 +11,26 @@ class Vector3 {
 type Material = {
   color: Vector3,
   emissive: Vector3,
+  roughness: number,
+  specular: number,
+}
+
+type MyEvent = {
+  x: number,
+  y: number,
+}
+
+type Basic = {
+  position: Vector3,
+  onMouseDown?: (e: React.MouseEvent<HTMLCanvasElement>) => void,
+  onMouseMove?: (e: React.MouseEvent<HTMLCanvasElement>) => void,
+  onMouseUp?: (e: React.MouseEvent<HTMLCanvasElement>) => void,
 }
 
 type Props = {
-  key: number,
-  position: Vector3,
-} & Material
+  key: Key,
+  ref: Ref<ReactNode>
+} & Basic & Material
 
 type SphereProp = {
   radius: number
@@ -24,7 +40,7 @@ type CameraProp = {
   lookat: Vector3,
   rotation: number,
   fov: number,
-} & Props
+} & Basic
 
 class Size {
   public width = 1;
@@ -47,8 +63,8 @@ type BoxInstance = {
 }
 
 type BasicInstance = {
-  id: number,
-  world?: World,
+  // id: number,
+  store?: Store,
 }
 
 type LightProp = {
@@ -66,7 +82,7 @@ type CameraInstance = {
   props: CameraProp
 }
 
-type Instance = BasicInstance & (MeshInstance | CameraInstance | LightInstance);
+type InstanceType = BasicInstance & (MeshInstance | CameraInstance | LightInstance);
 
 declare global {
   namespace JSX {
@@ -78,9 +94,7 @@ declare global {
   }
 }
 
-type InstanceProps = { [prop: string]: any };
-
 type UniformData = number[] | number | { [prop: string]: number } | WebGLTexture;
 
 export { Vector3, Size };
-export type { Instance, SphereProp, BoxProp, SphereInstance, InstanceProps, UniformData };
+export type { InstanceType, SphereProp, BoxProp, SphereInstance, UniformData, CameraProp, MyEvent };

@@ -1,7 +1,7 @@
-import { Generator } from "../generator";
-import { Object3D } from "../object3D";
+import { Instance } from "../";
+import { Generator } from "./generator";
 
-export abstract class Mesh extends Object3D{
+export abstract class Mesh extends Instance{
   protected generator: Generator;
   public get geometry(){
     return this.generator.geometry;

@@ -1,10 +1,10 @@
-import { Object3D } from "../../component";
+import { Instance } from "../../../instance";
 
 export class UniformGenerator  {
-  public generate = (data: Set<Object3D>) => {
+  public generate = (data: Set<Instance>) => {
     return [
-      `uniform Sphere spheres[${data.size + 1 + 1}];`,
-      `uniform Box boxes[${data.size + 1 + 1}];`,
+      `uniform Sphere spheres[${data.size}];`,
+      `uniform Box boxes[${data.size}];`,
     ];
     //todo set corrent size
     // const result = new Set<string>();

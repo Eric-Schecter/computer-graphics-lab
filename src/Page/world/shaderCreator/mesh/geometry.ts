@@ -1,4 +1,4 @@
-import { Mesh } from "../../component";
+import { Mesh } from "../../../instance/component";
 
 export class GeometryGenerator  {
   private start = [

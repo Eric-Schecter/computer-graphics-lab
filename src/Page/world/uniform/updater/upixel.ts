@@ -2,14 +2,14 @@ import { USingleData } from "./usingledata";
 import { ComputeProgram } from "../../program";
 
 export class UPixelCurrent extends USingleData<ComputeProgram> {
-  public get = () => {
-    this.data.update();
-    return this.data.current;
+  public update = () => {
+    this._data.update();
+    return this._data.current;
   }
 }
 
 export class UPixelPre extends USingleData<ComputeProgram> {
-  public get = () => {
-    return this.data.pre;
+  public update = () => {
+    return this._data.pre;
   }
 }

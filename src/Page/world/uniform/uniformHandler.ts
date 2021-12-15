@@ -1,6 +1,6 @@
 //learn from threejs WebGLUniforms.js
 
-import { UniformData } from "../../types";
+import { UniformData } from "../../../types";
 
 type Setter = (data: UniformData) => void;
 
@@ -12,7 +12,6 @@ export class UniformHandler {
       const info = gl.getActiveUniform(program, i);
       if (!info) { continue; }
       const { name, type } = info;
-      console.log(info)
       const addr = gl.getUniformLocation(program, name);
       const setter = this.getPureArraySetter(gl, type, addr);
       if (setter) {
@@ -31,7 +30,6 @@ export class UniformHandler {
   }
   public update = (name: string, data: UniformData) => {
     const setter = this.table.get(name);
-    if(name.includes('uCamera'))
     if (setter) {
       setter(this.handleData(data));
     }

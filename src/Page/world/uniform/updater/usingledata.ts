@@ -1,14 +1,11 @@
-import { UniformData } from "../../../types";
-import { UData } from "./udata";
+import { UniformData } from "../../../../types";
 
-export class USingleData<T extends UniformData> extends UData {
-  constructor(protected data: T, needUpdate = true) {
-    super(needUpdate);
+export class USingleData<T extends UniformData> {
+  constructor(protected _data: T) { }
+  public update = (): UniformData => {
+    return this._data;
   }
-  public get = (): UniformData => {
-    return this.data;
-  }
-  public set set(data: T) {
-    this.data = data;
+  public set data(data: T) {
+    this._data = data;
   }
 }
