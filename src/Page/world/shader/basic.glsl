@@ -1,4 +1,5 @@
 vec3 render(Ray ray,uint rngState){
+
   vec3 col=vec3(0.);
   vec3 mask=vec3(1.);
   const int iteration=5;
