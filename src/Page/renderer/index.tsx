@@ -1,71 +1,10 @@
 import React, { ReactNode } from 'react';
 import Reconciler, { Fiber } from 'react-reconciler';
 import { World } from '../world';
-// import { Instance } from '../../types';
-// import { DataTransfer } from './dataTransfer';
 import { Store } from './store';
 import { Instance, Factory } from '../instance';
 import { context } from '../../context';
 import { TaskHandler } from '../world/taskHandler';
-
-
-// add task to children and execute by children, pull task
-// response chain mode
-// class MyFiber {
-//   private children = new Set<MyFiber>();
-
-//   constructor(private instance: Instance, private store: Store) { }
-//   public add = (child: MyFiber) => {
-//     this.children.add(child);
-//   }
-//   public remove = (child: MyFiber) => {
-//     this.children.delete(child);
-//   }
-//   public updateMatrix = () => {
-
-//   }
-//   public update = (propsToUpdate: object) => {
-//     this.data.update(propsToUpdate); // update params
-//     this.children.forEach(child => child.updateMatrix());    //update matrix
-//     // this.store.dataHandler.updateParams(propsToUpdate, instance) //update renderer uniform
-//   }
-// }
-
-
-// class Scene1 {
-//   private children = new Set<Instance>();
-//   private _scene: Scene;
-//   constructor(world: World) {
-//     this._scene = new Scene(world);
-//   }
-//   public add = (node: Instance) => {
-//     this.children.add(node);
-//   }
-//   public remove = (node: Instance) => {
-//     this.children.delete(node);
-//   }
-//   public create = () => {
-
-//   }
-// }
-
-
-class DataHandler {
-  private datatable = new Map<Instance, Instance>();
-  public remove = (instance: Instance) => {
-    this.datatable.delete(instance);
-  }
-  public add = (instance: Instance, node: Instance) => {
-    this.datatable.set(instance, node);
-  }
-  /**generate uniform update queue*/
-  public update = () => {
-
-  }
-  public create = () => {
-
-  }
-}
 
 const appendChild = (parent: Store, child: Instance) => {
   parent.add(child);

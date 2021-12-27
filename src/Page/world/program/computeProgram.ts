@@ -1,54 +1,13 @@
 import { Program } from "./program";
 import { UniformData } from "../../../types";
 import { ShaderCreator } from "../shaderCreator";
-import { SingleObserver, UTime, UPixelPre, UFrame, USingleData, UStructData, StructureObserver } from "../uniform";
 import { Store } from "../../renderer/store";
-
-class FrameBufferHandler {
-  private index = 0;
-  private renderTargets: WebGLTexture[];
-  private fb: WebGLFramebuffer;
-  constructor(private gl: WebGL2RenderingContext, width: number, height: number) {
-    this.fb = gl.createFramebuffer() as WebGLFramebuffer; // todo need delete or not
-    this.renderTargets = new Array(2).fill(0).map(() => gl.createTexture()).flatMap(texture => texture ? [texture] : []);
-    this.renderTargets.forEach(renderTarget => {
-      gl.bindTexture(gl.TEXTURE_2D, renderTarget);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    })
-  }
-  public update = (draw: () => void) => {
-    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, this.fb);
-    this.index = (this.index + 1) % 2;
-    const renderTarget = this.renderTargets[this.index];
-    this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, renderTarget, 0);
-    const status = this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER);
-    if (status !== this.gl.FRAMEBUFFER_COMPLETE) {
-      throw new Error(`framebuffer is incomplete: ${status.toString()}`);
-    }
-    draw();
-    this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
-  }
-  public get current() {
-    return this.renderTargets[this.index];
-  }
-  public get pre() {
-    return this.renderTargets[(this.index + 1) % 2];
-  }
-}
+import { FrameBufferHandler } from "./framebufferHandler";
 
 export class ComputeProgram extends Program {
   private shaderCreator = new ShaderCreator();
-  private frameBufferHandler: FrameBufferHandler;
-  constructor(gl: WebGL2RenderingContext, width: number, height: number, vertex: string, fragment: string) {
+  constructor(gl: WebGL2RenderingContext, private frameBufferHandler: FrameBufferHandler, vertex: string, fragment: string) {
     super(gl, vertex, fragment);
-    this.frameBufferHandler = new FrameBufferHandler(gl, width, height);
-    this.addParameter(new SingleObserver('uTime', 'float', new USingleData(0)));
-    this.addParameter(new SingleObserver('uFrame', 'int', new UFrame(0)));
-    this.addParameter(new SingleObserver('uPixel', 'sampler2D', new UPixelPre(this)));
-    this.addParameter(new SingleObserver('uResolution', 'vec2', new USingleData([width, height])));
   }
   public draw = () => {
     this.gl.useProgram(this.program);
@@ -67,7 +26,7 @@ export class ComputeProgram extends Program {
   }
   public updateShader = (store: Store) => {
     const settings = {}; // todo get settings from data
-    
+
     for (const instance of store.dataset.values()) {
       this.uniformObserverable.add(instance.parameters);
     }
@@ -80,9 +39,6 @@ export class ComputeProgram extends Program {
     this.gl.linkProgram(this.program);
     this.gl.useProgram(this.program);
     this.uniformHandler.init(this.gl, this.program);
-  }
-  public reset = () => {
-    this.uniformObserverable.setData(0, 'uFrame'); //todo: update value in class
   }
   public get current() {
     return this.frameBufferHandler.current;
