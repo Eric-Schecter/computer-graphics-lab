@@ -1,6 +1,5 @@
 import { Key, ReactNode, Ref } from "react";
-import { Store } from "./page/renderer/store";
-import { World } from "./page/World";
+import { Store } from "./page/reactrenderer/store";
 
 class Vector3 {
   public x = 0;
@@ -73,16 +72,16 @@ type LightProp = {
 
 type MeshInstance = SphereInstance | BoxInstance;
 
-type LightInstance = {
-  type: 'light',
-  props: LightProp
-};
+// type LightInstance = {
+//   type: 'light',
+//   props: LightProp
+// };
 type CameraInstance = {
   type: 'camera',
   props: CameraProp
 }
 
-type InstanceType = BasicInstance & (MeshInstance | CameraInstance | LightInstance);
+type InstanceType = BasicInstance & (MeshInstance | CameraInstance );
 
 declare global {
   namespace JSX {
@@ -97,4 +96,4 @@ declare global {
 type UniformData = number[] | number | { [prop: string]: number } | WebGLTexture;
 
 export { Vector3, Size };
-export type { InstanceType, SphereProp, BoxProp, SphereInstance, UniformData, CameraProp, MyEvent };
+export type { InstanceType, SphereProp, BoxProp, Props, SphereInstance, UniformData, CameraProp, MyEvent };

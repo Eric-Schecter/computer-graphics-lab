@@ -1,16 +1,18 @@
-import { SingleObserver, StructureObserver, USingleData, UStructData } from "../../world/uniform";
-import { World } from "../../world";
+import { SingleObserver, StructureObserver, USingleData, UStructData } from "../../webglrenderer/uniform";
+import { World } from "../../webglrenderer";
 import { Instance } from "..";
+import { CameraProp } from "../../..";
 
 export class Camera extends Instance {
   protected _parameters: StructureObserver;
-  constructor(props: object, canvas: HTMLCanvasElement, world: World) {
+  constructor(props: CameraProp, canvas: HTMLCanvasElement, world: World) {
     super(props, canvas, world);
+    const { position, lookat, rotation, fov, } = props;
     this._parameters = new StructureObserver('uCamera', 'Camera', new UStructData(
-      new SingleObserver('position', 'vec3', new USingleData([0, 50, 250])),
-      new SingleObserver('lookat', 'vec3', new USingleData([0, 50, 0])),
-      new SingleObserver('rotation', 'float', new USingleData(0)),
-      new SingleObserver('fov', 'float', new USingleData(50 / 180 * Math.PI)),
+      new SingleObserver('position', 'vec3', new USingleData(position)),
+      new SingleObserver('lookat', 'vec3', new USingleData(lookat)),
+      new SingleObserver('rotation', 'float', new USingleData(rotation)),
+      new SingleObserver('fov', 'float', new USingleData(fov)),
     ));
   }
 }

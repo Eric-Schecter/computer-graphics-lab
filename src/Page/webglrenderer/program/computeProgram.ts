@@ -1,7 +1,7 @@
 import { Program } from "./program";
 import { UniformData } from "../../../types";
 import { ShaderCreator } from "../shaderCreator";
-import { Store } from "../../renderer/store";
+import { Store } from "../../reactrenderer/store";
 import { FrameBufferHandler } from "./framebufferHandler";
 
 export class ComputeProgram extends Program {

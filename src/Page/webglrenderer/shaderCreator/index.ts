@@ -13,7 +13,7 @@ import * as translate from '../shader/math/translate.glsl';
 import * as randomVector from '../shader/randomVector.glsl';
 
 import { structs } from '../shader/struct';
-import { Store } from '../../renderer/store';
+import { Store } from '../../reactrenderer/store';
 
 const prefix = [
   '#version 300 es',
@@ -33,14 +33,6 @@ const defines = [
 const maths = [
   translate
 ]
-
-// const lights = [
-//   spotlight
-// ]
-
-// const effects = [
-//   schlick
-// ]
 
 const postprocess: string[] = [
   gamacorrect,
@@ -62,8 +54,6 @@ export class ShaderCreator {
       ...uniforms,
       ...maths,
       randomVector,
-      // ...lights,
-      // ...effects,
       ...postprocess,
       ...meshes,
       main

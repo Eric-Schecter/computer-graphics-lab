@@ -3,10 +3,10 @@ import * as fragmentShader from './shader/template/default.frag';
 import * as renderFragmentShader from './shader/template/render.frag';
 import { UniformData } from '../../types';
 import { ComputeProgram, RenderProgram, FrameBufferHandler } from './program';
-import { Store } from '../renderer/store';
-import { Clock } from './clock';
+import { Store } from '../reactrenderer/store';
 import { TaskHandler } from './taskHandler';
-import { SingleObserver, UFrame, UPixelCurrent, UPixelPre, USingleData } from './uniform';
+import { SingleObserver, UFrame, UPixelCurrent, UPixelPre, USingleData, UClock } from './uniform';
+import { Clock } from './clock';
 
 export class World {
   private timer = 0;
@@ -22,22 +22,21 @@ export class World {
     }
     const { width, height } = canvas;
     const resolution = new SingleObserver('uResolution', 'vec2', new USingleData([width, height]));
-    const frame = new SingleObserver('uFrame', 'int', this.frame);
     const framebufferHandler = new FrameBufferHandler(this.gl, width, height);
-    this.createComputeProgram(this.gl, framebufferHandler, resolution, frame);
+    this.createComputeProgram(this.gl, framebufferHandler, resolution);
     this.createRenderProgram(this.gl, resolution);
     this.draw();
   }
-  private createComputeProgram = (gl: WebGL2RenderingContext, framebufferHandler: FrameBufferHandler, resolution: SingleObserver, frame: SingleObserver) => {
+  private createComputeProgram = (gl: WebGL2RenderingContext, framebufferHandler: FrameBufferHandler, resolution: SingleObserver) => {
     this.computeProgram = new ComputeProgram(gl, framebufferHandler, vertexShader, fragmentShader);
-    this.computeProgram.addParameter(new SingleObserver('uTime', 'float', new USingleData(0)));
-    this.computeProgram.addParameter(frame);
+    this.computeProgram.addParameter(new SingleObserver('uTime', 'float', new UClock(this.clock)));
+    this.computeProgram.addParameter(new SingleObserver('uFrame', 'int', this.frame));
     this.computeProgram.addParameter(new SingleObserver('uPixel', 'sampler2D', new UPixelPre(this.computeProgram)));
     this.computeProgram.addParameter(resolution);
   }
   private createRenderProgram = (gl: WebGL2RenderingContext, resolution: SingleObserver) => {
     this.renderProgram = new RenderProgram(gl, vertexShader, renderFragmentShader);
-    this.renderProgram.addParameter(new SingleObserver('uPixel', 'vec2', new UPixelCurrent(this.computeProgram)));
+    this.renderProgram.addParameter(new SingleObserver('uPixel', 'sampler2D', new UPixelCurrent(this.computeProgram)));
     this.renderProgram.addParameter(resolution);
   }
   public destory = () => {
@@ -48,7 +47,6 @@ export class World {
   private draw = () => {
     this.clock.update();
     this.taskHandler.update(this.clock.delta, this.clock.now);
-    // this.reset();
     this.renderProgram.update();
 
     this.timer = requestAnimationFrame(this.draw);
@@ -56,7 +54,6 @@ export class World {
   public reset = () => {
     this.frame.data = 0;
   }
-
   public updateShader = (store: Store) => {
     this.computeProgram.updateShader(store);
   }

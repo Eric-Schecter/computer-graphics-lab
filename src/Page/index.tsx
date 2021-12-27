@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, HTMLAttributes } from 'react';
 // import mergeRefs from 'react-merge-refs';
-import Renderer from './renderer';
+import Renderer from './reactrenderer';
 
 interface Props extends HTMLAttributes<HTMLCanvasElement> { }
 

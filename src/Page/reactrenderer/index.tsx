@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 import Reconciler, { Fiber } from 'react-reconciler';
-import { World } from '../world';
+import { World } from '../webglrenderer';
 import { Store } from './store';
 import { Instance, Factory } from '../instance';
 import { context } from '../../context';
-import { TaskHandler } from '../world/taskHandler';
+import { TaskHandler } from '../webglrenderer/taskHandler';
 
 const appendChild = (parent: Store, child: Instance) => {
   parent.add(child);

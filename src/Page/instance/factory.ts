@@ -1,14 +1,13 @@
 import { Box, Camera, Sphere } from "./component";
-import { World } from "../world";
+import { World } from "../webglrenderer";
+import { BoxProp, CameraProp, SphereProp } from "../..";
 
 export class Factory {
-  private static id = -1; // todo: remove id 
-  public static build = (type: string, props: object, canvas: HTMLCanvasElement,world:World) => {
-    const id = Factory.id++;
+  public static build = (type: string, props: object, canvas: HTMLCanvasElement, world: World) => {
     switch (type) {
-      case 'box': return new Box(props,canvas,id,world);
-      case 'sphere': return new Sphere(props,canvas,id,world);
-      case 'camera': return new Camera(props,canvas, world);
+      case 'box': return new Box(props as BoxProp, canvas, world);
+      case 'sphere': return new Sphere(props as SphereProp, canvas, world);
+      case 'camera': return new Camera(props as CameraProp, canvas, world);
     }
   }
 }

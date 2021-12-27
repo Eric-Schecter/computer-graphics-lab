@@ -1,9 +1,8 @@
-import { World } from "../world";
+import { World } from "../webglrenderer";
 import { Instance } from "../instance";
-import { MeshGenerator } from "../world/shaderCreator/mesh";
-import { Camera, Mesh, Sphere } from "../instance/component";
-import { UniformObserverable } from "../world/uniform";
-import { TaskHandler } from "../world/taskHandler";
+import { MeshGenerator } from "../webglrenderer/shaderCreator/mesh";
+import { Mesh } from "../instance/component";
+import { TaskHandler } from "../webglrenderer/taskHandler";
 
 export class Store {
   private _dataset = new Set<Instance>();
@@ -15,9 +14,6 @@ export class Store {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       this.world.updateShader(this);
-      for (const member of this._dataset.values()) {
-        member.init();
-      }
     }, 0)
   }
   public generate = () => {
@@ -29,11 +25,6 @@ export class Store {
     }
     return this.meshgenerator.generate(meshes);
   }
-  // public register = (uniformObserverable: UniformObserverable) => {
-  //   for (const instance of this._dataset.values()) {
-  //     uniformObserverable.add(instance.parameters);
-  //   }
-  // }
   public get dataset(){
     return this._dataset;
   }
