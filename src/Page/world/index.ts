@@ -2,12 +2,11 @@ import * as vertexShader from './shader/template/default.vert';
 import * as fragmentShader from './shader/template/default.frag';
 import * as renderFragmentShader from './shader/template/render.frag';
 import { UniformData } from '../../types';
-import { ComputeProgram, RenderProgram } from './program';
+import { ComputeProgram, RenderProgram, FrameBufferHandler } from './program';
 import { Store } from '../renderer/store';
 import { Clock } from './clock';
 import { TaskHandler } from './taskHandler';
 import { SingleObserver, UFrame, UPixelCurrent, UPixelPre, USingleData } from './uniform';
-import { FrameBufferHandler } from './program/framebufferHandler';
 
 export class World {
   private timer = 0;
