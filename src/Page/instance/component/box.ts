@@ -1,5 +1,4 @@
 import { Mesh } from "./mesh";
-import { BoxGenerator } from "./generator";
 import { SingleObserver, StructureObserver, USingleData, UStructData } from "../../webglrenderer/uniform";
 import { World } from "../../webglrenderer";
 import { BoxProp } from "../../..";
@@ -22,7 +21,12 @@ export class Box extends Mesh {
         new SingleObserver('specular', 'float', new USingleData(specular)),
       )),
     ))
-    this.generator = new BoxGenerator(Box.id);
+    this._geometry = this.generateGeometryShader(Box.id, 'geometry');
+    this._material = this.generateMaterialShader(Box.id, 'material', 'boxes');
     Box.id++;
+  }
+  protected generateGeometryShader = (id: number, type: string) => {
+    const name = `boxes[${id}].${type}.`;
+    return `boxIntersection(ray,${name}position,${name}size)`;
   }
 }

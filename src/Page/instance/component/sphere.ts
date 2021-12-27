@@ -1,5 +1,4 @@
 import { Mesh } from "./mesh";
-import { SphereGenerator } from "./generator/sphere";
 import { SingleObserver, StructureObserver, USingleData, UStructData } from "../../webglrenderer/uniform";
 import { World } from "../../webglrenderer";
 import { SphereProp } from "../../..";
@@ -22,10 +21,15 @@ export class Sphere extends Mesh {
         new SingleObserver('specular', 'float', new USingleData(specular)),
       )),
     ));
-    this.generator = new SphereGenerator(Sphere.id);
+    this._geometry = this.generateGeometryShader(Sphere.id, 'geometry');
+    this._material = this.generateMaterialShader(Sphere.id, 'material','spheres');
     Sphere.id++;
   }
-  public get position(){
+  private generateGeometryShader = (id: number, type: string) => {
+    const name = `spheres[${id}].${type}.`;
+    return `sphIntersection(ray,${name}position,${name}radius)`;
+  }
+  public get position() {
     return this._parameters;
   }
 }
