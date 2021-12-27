@@ -2,9 +2,10 @@ import { Mesh } from "./mesh";
 import { SingleObserver, StructureObserver, USingleData, UStructData } from "../../webglrenderer/uniform";
 import { World } from "../../webglrenderer";
 import { SphereProp } from "../../..";
+import intersection from '../../webglrenderer/shader/intersection/sphere.glsl';
 
 export class Sphere extends Mesh {
-  private static id = 0;
+  public static id = 0;
   protected _parameters: StructureObserver;
   constructor(props: SphereProp, canvas: HTMLCanvasElement, world: World) {
     super(props, canvas, world);
@@ -22,14 +23,20 @@ export class Sphere extends Mesh {
       )),
     ));
     this._geometry = this.generateGeometryShader(Sphere.id, 'geometry');
-    this._material = this.generateMaterialShader(Sphere.id, 'material','spheres');
+    this._material = this.generateMaterialShader(Sphere.id, 'material', 'spheres');
     Sphere.id++;
   }
   private generateGeometryShader = (id: number, type: string) => {
     const name = `spheres[${id}].${type}.`;
     return `sphIntersection(ray,${name}position,${name}radius)`;
   }
-  public get position() {
-    return this._parameters;
+  // public get position() {
+  //   return this._parameters;
+  // }
+  public get uniform() {
+    return `uniform Sphere spheres[${Sphere.id}];`;
+  }
+  public get intersection() {
+    return intersection;
   }
 }

@@ -2,9 +2,10 @@ import { Mesh } from "./mesh";
 import { SingleObserver, StructureObserver, USingleData, UStructData } from "../../webglrenderer/uniform";
 import { World } from "../../webglrenderer";
 import { BoxProp } from "../../..";
+import intersection from '../../webglrenderer/shader/intersection/box.glsl';
 
 export class Box extends Mesh {
-  private static id = 0;
+  public static id = 0;
   protected _parameters: StructureObserver;
   constructor(props: BoxProp, canvas: HTMLCanvasElement, world: World) {
     super(props, canvas, world);
@@ -28,5 +29,11 @@ export class Box extends Mesh {
   protected generateGeometryShader = (id: number, type: string) => {
     const name = `boxes[${id}].${type}.`;
     return `boxIntersection(ray,${name}position,${name}size)`;
+  }
+  public get uniform(){
+    return `uniform Box boxes[${Box.id}];`;
+  }
+  public get intersection() {
+    return intersection;
   }
 }

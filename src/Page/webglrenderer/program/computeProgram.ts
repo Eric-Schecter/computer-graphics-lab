@@ -1,6 +1,6 @@
 import { Program } from "./program";
 import { UniformData } from "../../../types";
-import { ShaderCreator } from "../shaderCreator";
+import { ShaderCreator } from "../shadercreator";
 import { Store } from "../../reactrenderer/store";
 import { FrameBufferHandler } from "./framebufferHandler";
 

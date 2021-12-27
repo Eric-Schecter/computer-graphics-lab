@@ -1,6 +1,6 @@
 import { World } from "../webglrenderer";
 import { Instance } from "../instance";
-import { MeshGenerator } from "../webglrenderer/shaderCreator/mesh";
+import { MeshGenerator } from "../webglrenderer/shadercreator/meshgenerator";
 import { Mesh } from "../instance/component";
 import { TaskHandler } from "../webglrenderer/taskHandler";
 

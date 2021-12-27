@@ -7,10 +7,9 @@ export abstract class Mesh extends Instance {
     const name = `${meshType}[${id}].${type}.`;
     return `Material(${name}color,${name}emissive,${name}roughness,${name}specular)`;
   }
-  public get geometry() {
-    return this._geometry;
+  public get hitInfo(){
+    return `res=opUnion(res,HitInfo(${this._geometry},${this._material}));`
   }
-  public get material() {
-    return this._material;
-  }
+  public abstract get uniform():string;
+  public abstract get intersection():string;
 }
