@@ -12,7 +12,12 @@ module.exports = {
       },
       {
         test: /\.(frag|vert|fragment|vertex|shader|glsl)$/,
-        use: '@youyouzone/shader-loader',
+         use:[{
+          loader: '@youyouzone/shader-loader',
+          options:{
+            publicPath:'./src/page/world/shader',
+          }
+        }]
       }
     ],
   },

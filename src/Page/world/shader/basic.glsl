@@ -16,12 +16,13 @@ vec3 render(Ray ray,uint rngState){
       vec3 reflection=(RandomFloat01(rngState)<res.material.specular)?specularReflection:diffuseReflection;
       ray=Ray(position+epsilon*res.geometry.normal,reflection);
       
-      //Russian Roulette
+      // russian roulette
       float p=max(mask.r,max(mask.g,mask.b));
       if(RandomFloat01(rngState)>p){
         break;
       }
       mask*=1./p;
+
     }else{
       col+=vec3(0.);
       break;
