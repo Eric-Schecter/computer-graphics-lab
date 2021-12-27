@@ -2,11 +2,7 @@ import * as opUnion from '../shader/opUnion.glsl';
 import { Mesh } from "../../instance/component";
 
 export class MeshGenerator {
-  private base = opUnion;
   public generate = (meshes: Mesh[]) => {
-    const members = new Set<Mesh>();
-    meshes.forEach(mesh => members.add(mesh));
-
     const intersections = new Set<string>();
     const uniforms = new Set<string>();
     for (const d of meshes) {
@@ -23,7 +19,7 @@ export class MeshGenerator {
     ]
 
     return [
-      this.base,
+      opUnion,
       ...uniforms,
       ...intersections,
       ...geometries,
