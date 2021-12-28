@@ -44,7 +44,7 @@ void main()
   vec3 col;
   int sampleCount=2;
   for(int i=0;i<sampleCount;i++){
-    uint rngState=uint(uint(gl_FragCoord.x)*uint(1973)+uint(gl_FragCoord.y)*uint(9277)+uint(int(uTime) + i * 1000)*uint(26699))|uint(1);
+    uint rngState=uint(uint(gl_FragCoord.x)*uint(1973)+uint(gl_FragCoord.y)*uint(9277)+uint(uFrame + i * 1000)*uint(26699))|uint(1);
     
     // AA
     vec2 jitter=vec2(RandomFloat01(rngState),RandomFloat01(rngState))-.5f;

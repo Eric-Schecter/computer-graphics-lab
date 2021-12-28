@@ -6,7 +6,6 @@ import intersection from '../../webglrenderer/shader/intersection/sphere.glsl';
 
 export class Sphere extends Mesh {
   public static id = 0;
-  protected _parameters: StructureObserver;
   constructor(props: SphereProp, canvas: HTMLCanvasElement, world: World) {
     super(props, canvas, world);
     const { position, radius, color, emissive, roughness, specular } = props;

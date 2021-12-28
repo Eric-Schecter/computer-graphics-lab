@@ -6,7 +6,6 @@ import intersection from '../../webglrenderer/shader/intersection/box.glsl';
 
 export class Box extends Mesh {
   public static id = 0;
-  protected _parameters: StructureObserver;
   constructor(props: BoxProp, canvas: HTMLCanvasElement, world: World) {
     super(props, canvas, world);
     const { position, size, color, emissive, roughness, specular } = props;

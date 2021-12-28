@@ -1,20 +1,29 @@
 export class EventsHandler {
   private events = new Map();
   constructor(props: object, private canvas: HTMLCanvasElement) {
-    const eventKeywords = /^on(Mouse)/;
     Object.entries(props)
-      .filter(([key]) => eventKeywords.test(key))
+      .filter(([key]) => this.isEvent(key))
       .forEach(([key, value]) => this.events.set(key.slice(2).toLowerCase(), value))
     this.addEvents();
   }
+  private isEvent = (key: string) => /^on(Mouse|Pointer|Click|DoubleClick|ContextMenu|Wheel|Key)/.test(key);
+  private isKeyEvent = (key: string) => /^key/.test(key);
   private addEvents = () => {
     for (const [key, value] of this.events.entries()) {
-      this.canvas.addEventListener(key, value);
+      if (this.isKeyEvent(key)) {
+        window.addEventListener(key, value);
+      } else {
+        this.canvas.addEventListener(key, value);
+      }
     }
   }
   public removeEvents = () => {
     for (const [key, value] of this.events.entries()) {
-      this.canvas.removeEventListener(key, value);
+      if (this.isKeyEvent(key)) {
+        window.removeEventListener(key, value);
+      } else {
+        this.canvas.removeEventListener(key, value);
+      }
     }
   }
 }
