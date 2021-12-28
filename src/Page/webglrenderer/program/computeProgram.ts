@@ -3,11 +3,12 @@ import { UniformData } from "../../../types";
 import { ShaderCreator } from "../shadercreator";
 import { Store } from "../../reactrenderer/store";
 import { FrameBufferHandler } from "./framebufferHandler";
+import { USingleData } from "../uniform";
 
 export class ComputeProgram extends Program {
   private shaderCreator = new ShaderCreator();
-  constructor(gl: WebGL2RenderingContext, private frameBufferHandler: FrameBufferHandler, vertex: string, fragment: string) {
-    super(gl, vertex, fragment);
+  constructor(gl: WebGL2RenderingContext, private frameBufferHandler: FrameBufferHandler, vertex: string, fragment: string, size: USingleData<number[]>) {
+    super(gl, vertex, fragment,size);
   }
   public draw = () => {
     this.gl.useProgram(this.program);
@@ -24,9 +25,13 @@ export class ComputeProgram extends Program {
   public updateParameter = (name: string, data: UniformData) => {
     this.uniformHandler.update(name, data);
   }
+  public reset = () => {
+    this.uniformObserverable.reset();
+  }
   public updateShader = (store: Store) => {
     const settings = {}; // todo get settings from data
 
+    // this.reset();
     for (const instance of store.dataset.values()) {
       this.uniformObserverable.add(instance.parameters);
     }

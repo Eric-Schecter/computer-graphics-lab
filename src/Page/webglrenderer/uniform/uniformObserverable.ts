@@ -5,9 +5,6 @@ import { UniformData } from "../../../types";
 
 export class UniformObserverable {
   private observers = new Map<string, Observer>();
-
-  private updaters = new Map<string, USingleData<UniformData> | UStructData>();
-
   constructor(private uniformHandler: UniformHandler) { }
   public update = () => {
     for (const observer of this.observers.values()) {
@@ -19,6 +16,9 @@ export class UniformObserverable {
   }
   public remove = (name: string) => {
     this.observers.delete(name);
+  }
+  public reset = () =>{
+    this.observers.clear();
   }
   public setData = (data: UniformData, name: string) => {
     for (const observer of this.observers.values()) {

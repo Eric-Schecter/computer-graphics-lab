@@ -15,29 +15,40 @@ export class World {
   private computeProgram: ComputeProgram;
   private clock = new Clock();
   private frame = new UFrame(0);
+  private size: USingleData<number[]>;
   constructor(canvas: HTMLCanvasElement, private taskHandler: TaskHandler) {
     this.gl = canvas.getContext('webgl2');
     if (!this.gl) {
       throw new Error('create webgl failed');
     }
     const { width, height } = canvas;
-    const resolution = new SingleObserver('uResolution', 'vec2', new USingleData([width, height]));
-    const framebufferHandler = new FrameBufferHandler(this.gl, width, height);
-    this.createComputeProgram(this.gl, framebufferHandler, resolution);
-    this.createRenderProgram(this.gl, resolution);
+    this.addResizeEvent(canvas);
+    this.size = new USingleData([width, height]);
+    const framebufferHandler = new FrameBufferHandler(this.gl, this.size);
+    this.createComputeProgram(this.gl, framebufferHandler);
+    this.createRenderProgram(this.gl);
     this.draw();
   }
-  private createComputeProgram = (gl: WebGL2RenderingContext, framebufferHandler: FrameBufferHandler, resolution: SingleObserver) => {
-    this.computeProgram = new ComputeProgram(gl, framebufferHandler, vertexShader, fragmentShader);
+  private addResizeEvent = (canvas: HTMLCanvasElement) => {
+    window.addEventListener('resize', () => {
+      const { offsetWidth, offsetHeight } = canvas;
+      canvas.width = offsetWidth;
+      canvas.height = offsetHeight;
+      this.size.data = [offsetWidth, offsetHeight];
+      this.reset();
+    })
+  }
+  private createComputeProgram = (gl: WebGL2RenderingContext, framebufferHandler: FrameBufferHandler) => {
+    this.computeProgram = new ComputeProgram(gl, framebufferHandler, vertexShader, fragmentShader, this.size);
     this.computeProgram.addParameter(new SingleObserver('uTime', 'float', new UClock(this.clock)));
     this.computeProgram.addParameter(new SingleObserver('uFrame', 'int', this.frame));
     this.computeProgram.addParameter(new SingleObserver('uPixel', 'sampler2D', new UPixelPre(this.computeProgram)));
-    this.computeProgram.addParameter(resolution);
+    this.computeProgram.addParameter(new SingleObserver('uResolution', 'vec2', this.size));
   }
-  private createRenderProgram = (gl: WebGL2RenderingContext, resolution: SingleObserver) => {
-    this.renderProgram = new RenderProgram(gl, vertexShader, renderFragmentShader);
+  private createRenderProgram = (gl: WebGL2RenderingContext) => {
+    this.renderProgram = new RenderProgram(gl, vertexShader, renderFragmentShader, this.size);
     this.renderProgram.addParameter(new SingleObserver('uPixel', 'sampler2D', new UPixelCurrent(this.computeProgram)));
-    this.renderProgram.addParameter(resolution);
+    this.renderProgram.addParameter(new SingleObserver('uResolution', 'vec2', this.size));
   }
   public destory = () => {
     cancelAnimationFrame(this.timer);

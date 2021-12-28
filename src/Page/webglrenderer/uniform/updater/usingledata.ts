@@ -5,6 +5,9 @@ export class USingleData<T extends UniformData> {
   public update = (): UniformData => {
     return this._data;
   }
+  public get data(){
+    return this._data;
+  }
   public set data(data: T) {
     this._data = data;
   }

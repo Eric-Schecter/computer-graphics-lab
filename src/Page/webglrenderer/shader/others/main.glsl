@@ -42,7 +42,7 @@ mat3 setupCamera(Camera camera){
 void main()
 {
   vec3 col;
-  int sampleCount=5;
+  int sampleCount=2;
   for(int i=0;i<sampleCount;i++){
     uint rngState=uint(uint(gl_FragCoord.x)*uint(1973)+uint(gl_FragCoord.y)*uint(9277)+uint(int(uTime) + i * 1000)*uint(26699))|uint(1);
     
