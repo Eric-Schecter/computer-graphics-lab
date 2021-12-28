@@ -16,27 +16,17 @@ export class World {
   private clock = new Clock();
   private frame = new UFrame(0);
   private size: USingleData<number[]>;
-  constructor(canvas: HTMLCanvasElement, private taskHandler: TaskHandler) {
+  constructor(private canvas: HTMLCanvasElement, private taskHandler: TaskHandler) {
     this.gl = canvas.getContext('webgl2');
     if (!this.gl) {
       throw new Error('create webgl failed');
     }
     const { width, height } = canvas;
-    this.addResizeEvent(canvas);
     this.size = new USingleData([width, height]);
     const framebufferHandler = new FrameBufferHandler(this.gl, this.size);
     this.createComputeProgram(this.gl, framebufferHandler);
     this.createRenderProgram(this.gl);
     this.draw();
-  }
-  private addResizeEvent = (canvas: HTMLCanvasElement) => {
-    window.addEventListener('resize', () => {
-      const { offsetWidth, offsetHeight } = canvas;
-      canvas.width = offsetWidth;
-      canvas.height = offsetHeight;
-      this.size.data = [offsetWidth, offsetHeight];
-      this.reset();
-    })
   }
   private createComputeProgram = (gl: WebGL2RenderingContext, framebufferHandler: FrameBufferHandler) => {
     this.computeProgram = new ComputeProgram(gl, framebufferHandler, vertexShader, fragmentShader, this.size);
@@ -55,11 +45,21 @@ export class World {
     this.computeProgram.destory();
     this.renderProgram.destory();
   }
+  private resize = () => {
+    const { clientWidth, clientHeight,width,height } = this.canvas;
+    if (clientWidth === width && clientHeight === height) {
+      return;
+    }
+    this.canvas.width = clientWidth;
+    this.canvas.height = clientHeight;
+    this.size.data = [clientWidth, clientHeight];
+    this.reset();
+  }
   private draw = () => {
     this.clock.update();
     this.taskHandler.update(this.clock.delta, this.clock.now);
+    this.resize();
     this.renderProgram.update();
-
     this.timer = requestAnimationFrame(this.draw);
   }
   public reset = () => {
