@@ -8,7 +8,7 @@ export class Box extends Mesh {
   public static id = 0;
   constructor(props: BoxProp, canvas: HTMLCanvasElement, world: World) {
     super(props, canvas, world);
-    const { position, size, color, emissive, roughness, specular } = props;
+    const { position, size, color, emissive, roughness, specular, metallic } = props;
     this._parameters = new StructureObserver(`boxes[${Box.id}]`, 'Box', new UStructData(
       new StructureObserver('geometry', 'BoxGeometry', new UStructData(
         new SingleObserver('position', 'vec3', new USingleData(position)),
@@ -19,6 +19,7 @@ export class Box extends Mesh {
         new SingleObserver('emissive', 'vec3', new USingleData(emissive)),
         new SingleObserver('roughness', 'float', new USingleData(roughness)),
         new SingleObserver('specular', 'float', new USingleData(specular)),
+        new SingleObserver('metallic', 'float', new USingleData(metallic)),
       )),
     ))
     this._geometry = this.generateGeometryShader(Box.id, 'geometry');
@@ -29,7 +30,7 @@ export class Box extends Mesh {
     const name = `boxes[${id}].${type}.`;
     return `boxIntersection(ray,${name}position,${name}size)`;
   }
-  public get uniform(){
+  public get uniform() {
     return `uniform Box boxes[${Box.id}];`;
   }
   public get intersection() {

@@ -9,7 +9,7 @@ export class Sphere extends Mesh {
   private _position: USingleData<Vec3>;
   constructor(props: SphereProp, canvas: HTMLCanvasElement, world: World) {
     super(props, canvas, world);
-    const { position, radius, color, emissive, roughness, specular } = props;
+    const { position, radius, color, emissive, roughness, specular, metallic } = props;
     this._position = new USingleData(position);
     this._parameters = new StructureObserver(`spheres[${Sphere.id}]`, 'Sphere', new UStructData(
       new StructureObserver('geometry', 'SphereGeometry', new UStructData(
@@ -21,6 +21,7 @@ export class Sphere extends Mesh {
         new SingleObserver('emissive', 'vec3', new USingleData(emissive)),
         new SingleObserver('roughness', 'float', new USingleData(roughness)),
         new SingleObserver('specular', 'float', new USingleData(specular)),
+        new SingleObserver('metallic', 'float', new USingleData(metallic)),
       )),
     ));
     this._geometry = this.generateGeometryShader(Sphere.id, 'geometry');

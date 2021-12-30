@@ -31,14 +31,6 @@ vec3 render(Ray ray,uint rngState){
   return col;
 }
 
-// mat3 setupCamera(Camera camera){
-//   vec3 forward=normalize(camera.lookat-camera.position);
-//   vec3 orientation=vec3(sin(camera.rotation),cos(camera.rotation),0.);
-//   vec3 left=normalize(cross(forward,orientation));
-//   vec3 up=normalize(cross(left,forward));
-//   return mat3(left,up,forward);
-// }
-
 void main()
 {
   vec3 col;

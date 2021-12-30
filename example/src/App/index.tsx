@@ -16,6 +16,7 @@ const Sphere = () => {
     emissive={[0, 0, 0]}
     roughness={0}
     specular={1}
+    metallic={0}
   />
 }
 
@@ -48,6 +49,7 @@ export const App = () => {
         emissive={emissive}
         roughness={roughness}
         specular={specular}
+        metallic={0}
       />
     )}
     <Sphere />

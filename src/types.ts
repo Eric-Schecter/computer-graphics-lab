@@ -9,6 +9,7 @@ type Material = {
   emissive: Vec3,
   roughness: number,
   specular: number,
+  metallic: number,
 }
 
 export type MyEvent = {
