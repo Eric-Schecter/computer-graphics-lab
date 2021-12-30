@@ -1,17 +1,19 @@
 import { Mesh } from "./mesh";
 import { SingleObserver, StructureObserver, USingleData, UStructData } from "../../webglrenderer/uniform";
 import { World } from "../../webglrenderer";
-import { SphereProp } from "../../..";
+import { SphereProp, Vec3 } from "../../..";
 import intersection from '../../webglrenderer/shader/intersection/sphere.glsl';
 
 export class Sphere extends Mesh {
   public static id = 0;
+  private _position: USingleData<Vec3>;
   constructor(props: SphereProp, canvas: HTMLCanvasElement, world: World) {
     super(props, canvas, world);
     const { position, radius, color, emissive, roughness, specular } = props;
+    this._position = new USingleData(position);
     this._parameters = new StructureObserver(`spheres[${Sphere.id}]`, 'Sphere', new UStructData(
       new StructureObserver('geometry', 'SphereGeometry', new UStructData(
-        new SingleObserver('position', 'vec3', new USingleData(position)),
+        new SingleObserver('position', 'vec3', this._position),
         new SingleObserver('radius', 'float', new USingleData(radius)),
       )),
       new StructureObserver('material', 'Material', new UStructData(
@@ -29,9 +31,9 @@ export class Sphere extends Mesh {
     const name = `spheres[${id}].${type}.`;
     return `sphIntersection(ray,${name}position,${name}radius)`;
   }
-  // public get position() {
-  //   return this._parameters;
-  // }
+  public get position() {
+    return this._position.data;
+  }
   public get uniform() {
     return `uniform Sphere spheres[${Sphere.id}];`;
   }

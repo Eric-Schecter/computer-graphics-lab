@@ -43,9 +43,9 @@ export class UniformHandler {
       case gl.FLOAT_VEC3: return (data: number[]) => gl.uniform3fv(addr, data);
       case gl.FLOAT_VEC4: return (data: number[]) => gl.uniform4fv(addr, data);
 
-      // case gl.FLOAT_MAT2: return gl.uniformMatrix2fv;
-      // case gl.FLOAT_MAT3: return gl.uniformMatrix3fv;
-      // case gl.FLOAT_MAT4: return gl.uniformMatrix4fv;
+      case gl.FLOAT_MAT2: return (data: number[]) => gl.uniformMatrix2fv(addr, false, data);
+      case gl.FLOAT_MAT3: return (data: number[]) => gl.uniformMatrix3fv(addr, false, data);
+      case gl.FLOAT_MAT4: return (data: number[]) => gl.uniformMatrix4fv(addr, false, data);
 
       case gl.INT: case gl.BOOL: return (data: number[]) => gl.uniform1iv(addr, data);
       case gl.INT_VEC2: case gl.BOOL_VEC2: return (data: number[]) => gl.uniform2iv(addr, data);

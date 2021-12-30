@@ -1,26 +1,23 @@
 import React, { Key, ReactNode, Ref } from "react";
 import { Store } from "./page/reactrenderer/store";
 
-class Vector3 {
-  public x = 0;
-  public y = 0;
-  public z = 0;
-}
+export type Vec3 = number[];
+type Size = Vec3;
 
 type Material = {
-  color: Vector3,
-  emissive: Vector3,
+  color: Vec3,
+  emissive: Vec3,
   roughness: number,
   specular: number,
 }
 
-type MyEvent = {
+export type MyEvent = {
   x: number,
   y: number,
 }
 
 type Basic = {
-  position: Vector3,
+  position: Vec3,
   onMouseDown?: (e: React.MouseEvent<HTMLCanvasElement>) => void,
   onMouseMove?: (e: React.MouseEvent<HTMLCanvasElement>) => void,
   onMouseUp?: (e: React.MouseEvent<HTMLCanvasElement>) => void,
@@ -31,23 +28,17 @@ type Props = {
   ref: Ref<ReactNode>
 } & Basic & Material
 
-type SphereProp = {
+export type SphereProp = {
   radius: number
 } & Props
 
-type CameraProp = {
-  lookat: Vector3,
+export type CameraProp = {
+  lookat: Vec3,
   rotation: number,
   fov: number,
 } & Basic
 
-class Size {
-  public width = 1;
-  public height = 1;
-  public depth = 1;
-}
-
-type BoxProp = {
+export type BoxProp = {
   size: Size
 } & Props
 
@@ -66,7 +57,7 @@ type BasicInstance = {
   store?: Store,
 }
 
-type LightProp = {
+export type LightProp = {
 
 }
 
@@ -81,7 +72,8 @@ type CameraInstance = {
   props: CameraProp
 }
 
-type InstanceType = BasicInstance & (MeshInstance | CameraInstance );
+export type InstanceType = BasicInstance & (MeshInstance | CameraInstance);
+export type UniformData = number[] | number | { [prop: string]: number } | WebGLTexture;
 
 type EventHandlers = {
   onClick?: (event: React.MouseEvent) => void
@@ -118,8 +110,3 @@ declare global {
     }
   }
 }
-
-type UniformData = number[] | number | { [prop: string]: number } | WebGLTexture;
-
-export { Vector3, Size };
-export type { InstanceType, SphereProp, BoxProp, Props, SphereInstance, UniformData, CameraProp, MyEvent };

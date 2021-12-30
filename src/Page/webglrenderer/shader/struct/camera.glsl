@@ -3,5 +3,5 @@ struct Camera{
   vec3 lookat;
   float rotation;
   float fov;
-  mat4 viewMatrix;
+  mat3 viewMatrix;
 };
