@@ -37,6 +37,7 @@ export type CameraProp = {
   lookat: Vec3,
   rotation: number,
   fov: number,
+  ref: Ref<ReactNode>
 } & Basic
 
 export type BoxProp = {
@@ -76,7 +77,7 @@ type CameraInstance = {
 export type InstanceType = BasicInstance & (MeshInstance | CameraInstance);
 export type UniformData = number[] | number | { [prop: string]: number } | WebGLTexture;
 
-type EventHandlers = {
+export type EventHandlers = {
   onClick?: (event: React.MouseEvent) => void
   onContextMenu?: (event: React.MouseEvent) => void
   onDoubleClick?: (event: React.MouseEvent) => void

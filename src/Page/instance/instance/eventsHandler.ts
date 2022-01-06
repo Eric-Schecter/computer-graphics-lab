@@ -1,5 +1,9 @@
+import { InputSystem } from "../../inputSystem";
+import { World } from "../../webglrenderer";
+
 export class EventsHandler {
   private events = new Map();
+  private inputSystem = InputSystem.getInstance();
   constructor(props: object, private canvas: HTMLCanvasElement) {
     Object.entries(props)
       .filter(([key]) => this.isEvent(key))

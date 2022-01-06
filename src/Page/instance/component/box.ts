@@ -9,6 +9,7 @@ export class Box extends Mesh {
   constructor(props: BoxProp, canvas: HTMLCanvasElement, world: World) {
     super(props, canvas, world);
     const { position, size, color, emissive, roughness, specular, metallic } = props;
+    this._intersection = intersection;
     this._parameters = new StructureObserver(`boxes[${Box.id}]`, 'Box', new UStructData(
       new StructureObserver('geometry', 'BoxGeometry', new UStructData(
         new SingleObserver('position', 'vec3', new USingleData(position)),
@@ -32,8 +33,5 @@ export class Box extends Mesh {
   }
   public get uniform() {
     return `uniform Box boxes[${Box.id}];`;
-  }
-  public get intersection() {
-    return intersection;
   }
 }

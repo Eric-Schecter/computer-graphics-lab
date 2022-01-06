@@ -10,8 +10,8 @@ export abstract class Instance {
   private static comparator = new Comparator();
   private eventHandler: EventsHandler;
   protected _parameters: Observer;
-  constructor(props: object, canvas: HTMLCanvasElement, protected _world: World) {
-    this.eventHandler = new EventsHandler(props, canvas);
+  constructor(protected _props: object, canvas: HTMLCanvasElement, protected _world: World) {
+    this.eventHandler = new EventsHandler(_props, canvas);
   }
   public compare = (oldProps: object, newProps: object, result: object) => {
     return Instance.comparator.judgeChangedProps(oldProps, newProps, result);
@@ -27,5 +27,8 @@ export abstract class Instance {
   }
   public get parameters() {
     return this._parameters;
+  }
+  public get props() {
+    return this._props;
   }
 }

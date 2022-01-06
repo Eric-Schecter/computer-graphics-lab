@@ -5,9 +5,9 @@ const Sphere = () => {
   const ref = useRef<any>();
   useFrame((delta: number, time: number) => {
     if (ref.current) {
-      ref.current.position.y = Math.sin(time / 300) * 20;
+      ref.current.position[1] = Math.sin(time / 300) * 20;
     }
-  })
+  }) 
   return <sphere
     ref={ref}
     position={[50, -50, 0]}
@@ -28,7 +28,7 @@ export const App = () => {
     { position: [200, 0, 0], size: [1, 200, 100], color: [0, 1, 0], emissive: [0, 0, 0], roughness: 0.1, specular: 1 },
     { position: [0, 0, -100], size: [200, 200, 1], color: [0.7, 0.7, 0.7], emissive: [0, 0, 0], roughness: 0, specular: 1 },
     { position: [0, -100, 0], size: [200, 1, 100], color: [0.7, 0.7, 0.7], emissive: [0, 0, 0], roughness: 0, specular: 0 },
-    { position: [-50, -20, 50], size: [30, 60, 30], color: [0.5, 0.3, 0.6], emissive: [0, 0, 0], roughness: 0, specular: 0 },
+    { position: [-50, -35, 50], size: [30, 60, 30], color: [0.5, 0.3, 0.6], emissive: [0, 0, 0], roughness: 0, specular: 0 },
   ]
 
   return <Page

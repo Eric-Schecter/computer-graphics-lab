@@ -5,6 +5,7 @@ import { Store } from './store';
 import { Instance, Factory } from '../instance';
 import { context } from '../../context';
 import { TaskHandler } from '../webglrenderer/taskHandler';
+import { InputSystem } from '../inputSystem';
 
 const appendChild = (parent: Store, child: Instance) => {
   parent.add(child);
@@ -13,7 +14,7 @@ const appendChild = (parent: Store, child: Instance) => {
 const HostConfig: any = {
   getPublicInstance(instance: Instance) {
     // console.log("getPublicInstance", instance);
-    return instance;
+    return instance.props;
   },
   getRootHostContext(store: Store) {
     // console.log("getRootHostContext", args);
@@ -186,7 +187,8 @@ const reconciler = Reconciler(HostConfig);
 const Renderer = {
   render: (component: ReactNode, container: HTMLCanvasElement) => {
     const taskHandler = new TaskHandler();
-    const world = new World(container, taskHandler);
+    const inputSystem = InputSystem.getInstance();
+    const world = new World(container, taskHandler,inputSystem);
     const store = new Store(container, world, taskHandler);
     const fiber = reconciler.createContainer(store, 0, false, null);
     const root = <context.Provider value={store}>{component}</context.Provider>;

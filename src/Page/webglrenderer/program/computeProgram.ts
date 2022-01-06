@@ -22,9 +22,9 @@ export class ComputeProgram extends Program {
     this.frameBufferHandler.update(this.draw);
     this.gl.useProgram(program);
   }
-  public updateParameter = (name: string, data: UniformData) => {
-    this.uniformHandler.update(name, data);
-  }
+  // public updateParameter = (name: string, data: UniformData) => {
+  //   this.uniformHandler.update(name, data);
+  // }
   public reset = () => {
     this.uniformObserverable.reset();
   }

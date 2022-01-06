@@ -1,12 +1,12 @@
 import * as vertexShader from './shader/template/default.vert';
 import * as fragmentShader from './shader/template/default.frag';
 import * as renderFragmentShader from './shader/template/render.frag';
-import { UniformData } from '../../types';
 import { ComputeProgram, RenderProgram, FrameBufferHandler } from './program';
 import { Store } from '../reactrenderer/store';
 import { TaskHandler } from './taskHandler';
 import { SingleObserver, UFrame, UPixelCurrent, UPixelPre, USingleData, UClock } from './uniform';
 import { Clock } from './clock';
+import { InputSystem } from '../inputSystem';
 
 export class World {
   private timer = 0;
@@ -16,7 +16,7 @@ export class World {
   private clock = new Clock();
   private frame = new UFrame(0);
   private size: USingleData<number[]>;
-  constructor(private canvas: HTMLCanvasElement, private taskHandler: TaskHandler) {
+  constructor(private canvas: HTMLCanvasElement, private taskHandler: TaskHandler,private inputStstem:InputSystem) {
     this.gl = canvas.getContext('webgl2');
     if (!this.gl) {
       throw new Error('create webgl failed');
@@ -57,6 +57,7 @@ export class World {
   }
   private draw = () => {
     this.clock.update();
+    this.inputStstem.update();
     this.taskHandler.update(this.clock.delta, this.clock.now);
     this.resize();
     this.renderProgram.update();
@@ -68,7 +69,7 @@ export class World {
   public updateShader = (store: Store) => {
     this.computeProgram.updateShader(store);
   }
-  public updateParameter = (name: string, data: UniformData) => {
-    this.computeProgram.updateParameter(name, data);
-  }
+  // public updateParameter = (name: string, data: UniformData) => {
+  //   this.computeProgram.updateParameter(name, data);
+  // }
 }

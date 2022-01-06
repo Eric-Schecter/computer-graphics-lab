@@ -6,9 +6,9 @@ import { InputSystem } from "../inputSystem";
 export class Store {
   private _dataset = new Set<Instance>();
   private timer = 0;
-  public inputSystem: InputSystem;
+  // public inputSystem: InputSystem;
   constructor(public canvas: HTMLCanvasElement, public world: World, public taskHandler: TaskHandler) {
-    this.inputSystem = new InputSystem(world);
+    // this.inputSystem = InputSystem.getInstance(world);
   }
   public add = (instance: Instance) => {
     this._dataset.add(instance);

@@ -34,7 +34,7 @@ vec3 render(Ray ray,uint rngState){
 void main()
 {
   vec3 col;
-  int sampleCount=2;
+  int sampleCount=1;
   for(int i=0;i<sampleCount;i++){
     uint rngState=uint(uint(gl_FragCoord.x)*uint(1973)+uint(gl_FragCoord.y)*uint(9277)+uint(uFrame + i * 1000)*uint(26699))|uint(1);
     
@@ -44,14 +44,15 @@ void main()
     vec2 uv=((gl_FragCoord.xy+jitter)*2.-uResolution.xy)/uResolution.y;
     
     vec3 direction=uCamera.viewMatrix* normalize(vec3(uv*uCamera.fov,1.));
-    
+    // vec3 direction=(uCamera.viewMatrix* normalize(vec4(uv*uCamera.fov,1.,1.))).xyz;
+
     Ray ray=Ray(uCamera.position,direction);
     col+=render(ray,rngState);
   }
   col/=float(sampleCount);
 
   vec3 lastFrameColor=texture(uPixel,gl_FragCoord.xy/uResolution.xy).rgb;
-  // col=mix(lastFrameColor,col,1./float(uFrame+1));
+  // col=mix(lastFrameColor,col, 1./float(uFrame+1));
   // col=mix(lastFrameColor,col,0.5);
   
   gl_FragColor=vec4(col,1.);
