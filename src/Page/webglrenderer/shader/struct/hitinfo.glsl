@@ -15,5 +15,3 @@ struct HitInfo{
   Geometry geometry;
   Material material;
 };
-
-Material defaultMaterial = Material(vec3(0.),vec3(0.),0.,0.,0.);

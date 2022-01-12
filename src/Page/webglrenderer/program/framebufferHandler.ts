@@ -29,9 +29,10 @@ export class FrameBufferHandler {
     this.gl.framebufferTexture2D(this.gl.FRAMEBUFFER, this.gl.COLOR_ATTACHMENT0, this.gl.TEXTURE_2D, this.renderTargets[this.index], 0);
     const status = this.gl.checkFramebufferStatus(this.gl.FRAMEBUFFER);
     if (status !== this.gl.FRAMEBUFFER_COMPLETE) {
-      throw new Error(`framebuffer is incomplete: ${status.toString()}`);
+      console.log(`framebuffer is incomplete: ${status.toString()}`);
+    } else {
+      draw();
     }
-    draw();
     this.gl.bindFramebuffer(this.gl.FRAMEBUFFER, null);
   }
   public get current() {

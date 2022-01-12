@@ -12,6 +12,9 @@ import * as gamacorrect from './shader/postprocess/gamacorrect.glsl';
 import * as vignette from './shader/postprocess/vignette.glsl';
 import * as translate from './shader/math/translate.glsl';
 import * as defines from './shader/others/define.glsl';
+import * as distribution from './shader/brdf/distribution.glsl';
+import * as fresnel from './shader/brdf/fresnel.glsl';
+import * as geometry from './shader/brdf/geometry.glsl';
 import { Store } from '../reactrenderer/store';
 import { Mesh } from '../instance/component';
 import { Instance } from '../instance';
@@ -32,10 +35,11 @@ export class ShaderCreator {
     }
 
     const geometries = [
-      'HitInfo scene(Ray ray){',
-      'HitInfo res = HitInfo(Geometry(1e10,vec3(0.)),defaultMaterial);',
+      'bool scene(Ray ray,out HitInfo res){',
+      'const float limit = 1e10;',
+      'res = HitInfo(Geometry(limit,vec3(0.)),Material(vec3(0.),vec3(0.),0.,0.,0.));',
       ...meshes.map(mesh => mesh.hitInfo),
-      'return res;',
+      'return res.geometry.dist!=limit;',
       '}'
     ]
 
@@ -54,6 +58,7 @@ export class ShaderCreator {
     const structs = [ray, camera, hitinfo, sphere, box];
     const maths = [translate];
     const postprocess = [gamacorrect, acesfilm, vignette];
+    const bsdf = [distribution, fresnel, geometry];
 
     const shaderArr = [
       prefix,
@@ -61,6 +66,7 @@ export class ShaderCreator {
       ...structs,
       ...uniforms,
       ...maths,
+      ...bsdf,
       randomVector,
       ...postprocess,
       ...this.generate(store.dataset),
