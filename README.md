@@ -2,9 +2,8 @@
   <img src="./screenshot/profile.jpg" alt=''>
 </p>
 
-# React-SDF
+# Computer-Graphics-Lab
 A React renderer for pathtracing.  
-I am weak at naming things, so the project name means nothing.  
 
 ## Usage
 
