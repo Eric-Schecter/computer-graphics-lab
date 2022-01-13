@@ -22,11 +22,11 @@ const Sphere = () => {
 
 export const App = () => {
   const rawData = [
-    { position: [0, 200, 0], size: [100, 1, 50], color: [0.7, 0.7, 0.7], emissive: [1,1,1], roughness: 0.5, specular: 0, metallic: 0 },
+    { position: [0, 180, 0], size: [50, 1, 25], color: [0.7, 0.7, 0.7], emissive: [2,2,2], roughness: 0.5, specular: 0, metallic: 0 },
     { position: [0, 201, 0], size: [200, 1, 100], color: [0.7, 0.7, 0.7], emissive: [0, 0, 0], roughness: 0.5, specular: 0, metallic: 0 },
-    { position: [-200, 50, 0], size: [1, 150, 100], color: [1, 0, 0], emissive: [0, 0, 0], roughness: 1, specular: 1, metallic: 0 },
-    { position: [200, 50, 0], size: [1, 150, 100], color: [0, 1, 0], emissive: [0, 0, 0], roughness: 0.3, specular: 0.5, metallic: 0 },
-    { position: [0, 0, -100], size: [200, 200, 1], color: [0.7, 0.7, 0.7], emissive: [0, 0, 0], roughness: 0.5, specular: 1, metallic: 0 },
+    { position: [-200, 50, 0], size: [1, 150, 100], color: [1, 0, 0], emissive: [0, 0, 0], roughness: 1, specular: 0, metallic: 0 },
+    { position: [200, 50, 0], size: [1, 150, 100], color: [0, 1, 0], emissive: [0, 0, 0], roughness: 0.3, specular: 0.7, metallic: 0 },
+    { position: [0, 0, -100], size: [200, 200, 1], color: [0.7, 0.7, 0.7], emissive: [0, 0, 0], roughness: 0.0, specular: 1, metallic: 0 },
     { position: [0, -100, 0], size: [200, 1, 100], color: [0.7, 0.7, 0.7], emissive: [0, 0, 0], roughness: 0.5, specular: 0, metallic: 0 },
     { position: [-50, -35, 50], size: [30, 60, 30], color: [0.5, 0.3, 0.6], emissive: [0, 0, 0], roughness: 0.5, specular: 0, metallic: 0 },
   ]

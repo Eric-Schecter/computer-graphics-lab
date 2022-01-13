@@ -1,6 +1,6 @@
 import * as main from './shader/others/main.glsl';
 import * as opUnion from './shader/others/opUnion.glsl';
-import * as randomVector from './shader/others/randomVector.glsl';
+import * as random from './shader/others/random.glsl';
 import * as prefix from './shader/others/prefix.glsl';
 import * as ray from './shader/struct/ray.glsl';
 import * as camera from './shader/struct/camera.glsl';
@@ -15,6 +15,7 @@ import * as defines from './shader/others/define.glsl';
 import * as distribution from './shader/brdf/distribution.glsl';
 import * as fresnel from './shader/brdf/fresnel.glsl';
 import * as geometry from './shader/brdf/geometry.glsl';
+import * as russianRoulette from './shader/algrithem/russianRoulette.glsl';
 import { Store } from '../reactrenderer/store';
 import { Mesh } from '../instance/component';
 import { Instance } from '../instance';
@@ -59,6 +60,7 @@ export class ShaderCreator {
     const maths = [translate];
     const postprocess = [gamacorrect, acesfilm, vignette];
     const bsdf = [distribution, fresnel, geometry];
+    const algrithem = [russianRoulette];
 
     const shaderArr = [
       prefix,
@@ -67,7 +69,8 @@ export class ShaderCreator {
       ...uniforms,
       ...maths,
       ...bsdf,
-      randomVector,
+      random,
+      ...algrithem,
       ...postprocess,
       ...this.generate(store.dataset),
       main

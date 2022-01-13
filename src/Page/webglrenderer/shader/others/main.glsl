@@ -1,3 +1,5 @@
+uint rngState;
+
 float radicalInverse(int base,int i)
 {
   float inverse=0.;
@@ -19,27 +21,28 @@ float radicalInverse(int base,int i)
 // }
 
 // vec3 getLight(int count){
-//   vec3 p=vec3(0.,200.,0.);
-//   vec3 size=vec3(100.,1.,50.);
-//   int base=2;
-//   float ri=radicalInverse(base,count);
-//   return vec3(
-//     p.x+ri*size.x,
-//     p.y+ri*size.y,
-//     p.z+ri*size.z
-//   )-size/2.;
+  //   vec3 p=vec3(0.,200.,0.);
+  //   vec3 size=vec3(100.,1.,50.);
+  //   int base=2;
+  //   float ri=radicalInverse(base,count);
+  //   return vec3(
+    //     p.x+ri*size.x,
+    //     p.y+ri*size.y,
+    //     p.z+ri*size.z
+  //   )-size/2.;
 // }
 
 vec3 getLight(vec3 rnd){
   vec3 p=vec3(0.,200.,0.);
-  vec3 size=(rnd*2.-1.) * vec3(100.,1.,50.);
+  vec3 size=vec3(100.,1.,50.);
+  vec3 range=(rnd*2.-1.)*size;
   int base=2;
-  return p+size;
+  return p+range;
 }
 
-Ray generateRay(uint rngState,Ray ray,vec3 position,vec3 normal,float roughness,float specular){
+Ray generateRay(vec3 direction,vec3 position,vec3 normal,float roughness,float specular){
   vec3 diffuseReflection=normalize(normal+RandomUnitVector(rngState));
-  vec3 specularReflection=reflect(ray.direction,normal);
+  vec3 specularReflection=reflect(direction,normal);
   specularReflection=normalize(mix(specularReflection,diffuseReflection,roughness));
   vec3 reflection=RandomFloat01(rngState)<specular?specularReflection:diffuseReflection;
   return Ray(position+epsilon*normal,reflection);
@@ -70,27 +73,52 @@ vec3 brdf(vec3 direction,float roughness,vec3 color,float metallic,vec3 normal,v
   return(kd*color/PI+fr)*lightColor*NoL;
 }
 
-vec3 render(Ray ray,uint rngState){
+vec3 misWeight(vec3 a,vec3 b){
+  vec3 a2=a*a;
+  vec3 b2=b*b;
+  vec3 a2b2=a2+b2;
+  return a2/a2b2;
+}
+
+vec3 getDirectLight(vec3 direction,vec3 position,float roughness,vec3 color,float metallic,vec3 normal){
+  vec3 direct=vec3(0.);
+  const int lightCount=1;
+  for(int j=0;j<lightCount;j++){
+    vec3 light=normalize(getLight(RandomUnitVector(rngState))-position);
+    HitInfo res;
+    if(scene(Ray(position,light),res)){
+      vec3 lightColor=res.material.emissive;
+      float dist=res.geometry.dist;
+      if(lightColor!=vec3(0.)&&dist>epsilon){
+        vec3 a=brdf(direction,roughness,color,metallic,normal,light,lightColor);
+        float cosTheta=saturate(dot(-light,res.geometry.normal));
+        float area=100.*50.;
+        float G=cosTheta*area/(dist*dist);
+        direct+=lightColor*G;
+        // direct+=misWeight(lightColor*G,a);
+      }
+    }
+  }
+  direct/=float(lightCount);
+  return direct;
+}
+
+vec3 render(Ray ray){
   vec3 col=vec3(0.);
-  vec3 ratio=vec3(1.);
+  vec3 mask=vec3(1.);
   const int iteration=10;
-  const int weight=5;
   HitInfo res;
   for(int i=0;i<iteration;i++){
-    
-    if(i>weight){
-      float p=max(ratio.r,max(ratio.g,ratio.b));
-      if(RandomFloat01(rngState)>p){
-        break;
-      }
-      ratio*=1./p;
-    }
+    // if(russianRoulette(i,mask,RandomFloat01(rngState))){
+      //     break;
+    // }
     
     if(!scene(ray,res)){
       break;
     }
     
-    vec3 position=ray.origin+ray.direction*res.geometry.dist;
+    vec3 direction=ray.direction;
+    vec3 position=ray.origin+direction*res.geometry.dist;
     vec3 normal=res.geometry.normal;
     vec3 color=res.material.color;
     vec3 emissive=res.material.emissive;
@@ -99,35 +127,18 @@ vec3 render(Ray ray,uint rngState){
     float metallic=res.material.metallic;
     
     if(emissive!=vec3(0.)){
-      col+=ratio*emissive;
+      col+=mask*color*emissive;
       break;
     }
     
-    const int lightCount=1;
-    vec3 direct=vec3(0.);
-    for(int j=0;j<lightCount;j++){
-      // vec3 light=normalize(getLight(j)-position);
-      vec3 light=normalize(getLight(RandomUnitVector(rngState))-position);
-      HitInfo shadowRay;
-      if(scene(Ray(position,light),shadowRay)){
-        vec3 lightColor=shadowRay.material.emissive;
-        if(lightColor!=vec3(0.)){
-          direct+=brdf(ray.direction,roughness,color,metallic,normal,light,lightColor);
-        }
-      }
-    }
-    direct/=float(lightCount);
+    vec3 direct=getDirectLight(direction,position,roughness,color,metallic,normal);
     
-    col+=ratio*(emissive+direct);
-    ratio*=direct;
+    col+=color*direct;
+    mask*=color*direct;
     
-    ray=generateRay(rngState,ray,position,normal,roughness,specular);
+    ray=generateRay(direction,position,normal,roughness,specular);
   }
   return col;
-}
-
-uint random(vec2 uv,int seed){
-  return uint(uint(uv.x)*uint(1973)+uint(uv.y)*uint(9277)+uint(seed)*uint(26699))|uint(1);
 }
 
 void main()
@@ -135,7 +146,7 @@ void main()
   vec3 col;
   int sampleCount=1;
   for(int i=0;i<sampleCount;i++){
-    uint rngState=random(gl_FragCoord.xy,uFrame+i*1000);
+    rngState=random(gl_FragCoord.xy,uFrame+i*1000);
     
     vec2 jitter=vec2(RandomFloat01(rngState),RandomFloat01(rngState))-.5f;
     
@@ -144,7 +155,7 @@ void main()
     vec3 direction=uCamera.viewMatrix*normalize(vec3(uv*uCamera.fov,1.));
     
     Ray ray=Ray(uCamera.position,direction);
-    col+=render(ray,rngState);
+    col+=render(ray);
   }
   col/=float(sampleCount);
   
