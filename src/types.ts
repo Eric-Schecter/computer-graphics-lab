@@ -19,9 +19,6 @@ export type MyEvent = {
 
 type Basic = {
   position: Vec3,
-  onMouseDown?: (e: React.MouseEvent<HTMLCanvasElement>) => void,
-  onMouseMove?: (e: React.MouseEvent<HTMLCanvasElement>) => void,
-  onMouseUp?: (e: React.MouseEvent<HTMLCanvasElement>) => void,
 }
 
 type Props = {
@@ -41,7 +38,8 @@ export type CameraProp = {
 } & Basic
 
 export type BoxProp = {
-  size: Size
+  size: Size,
+  rotation: Vec3,
 } & Props
 
 type SphereInstance = {

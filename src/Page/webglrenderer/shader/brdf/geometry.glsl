@@ -1,17 +1,13 @@
-float GeometrySchlickGGX(float NdotV, float k)
+float GeometrySchlickGGX(float NdotV,float k)
 {
-    float nom   = NdotV;
-    float denom = NdotV * (1.0 - k) + k;
-	
-    return nom / denom;
+    float denom=NdotV*(1.-k)+k;
+    return NdotV/denom;
 }
-  
-float GeometrySmith(vec3 N, vec3 V, vec3 L, float k)
+
+float GeometrySmith(float NoV,float NoL,float roughness)
 {
-    float NdotV = max(dot(N, V), 0.0);
-    float NdotL = max(dot(N, L), 0.0);
-    float ggx1 = GeometrySchlickGGX(NdotV, k);
-    float ggx2 = GeometrySchlickGGX(NdotL, k);
-	
-    return ggx1 * ggx2;
+    float k=pow(roughness+1.,2.)/8.;
+    float ggx1=GeometrySchlickGGX(NoV,k);
+    float ggx2=GeometrySchlickGGX(NoL,k);
+    return ggx1*ggx2;
 }

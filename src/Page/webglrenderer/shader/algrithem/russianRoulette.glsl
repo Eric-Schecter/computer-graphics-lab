@@ -1,10 +1,10 @@
-bool russianRoulette(int i,out vec3 ratio,float rng){
-  int result=0;
-  float p=max(ratio.r,max(ratio.g,ratio.b));
+bool russianRoulette(inout vec3 mask,float rng){
+  bool result=false;
+  float p=max(mask.r,max(mask.g,mask.b));
   if(rng>p){
-    result=1;
+    result=true;
   }else{
-    ratio*=1./p;
+    mask*=1./p;
   }
-  return result==1;
+  return result;
 }

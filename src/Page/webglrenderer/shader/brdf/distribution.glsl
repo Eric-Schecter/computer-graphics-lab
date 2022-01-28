@@ -1,12 +1,8 @@
-float DistributionGGX(vec3 N, vec3 H, float a)
+float DistributionGGX(float NoH, float a)
 {
-    float a2     = a*a;
-    float NdotH  = max(dot(N, H), 0.0);
-    float NdotH2 = NdotH*NdotH;
-	
-    float nom    = a2;
-    float denom  = (NdotH2 * (a2 - 1.0) + 1.0);
+    float a2 = a*a;
+    float NoH2 = NoH*NoH;
+    float denom  = NoH2 * (a2 - 1.0) + 1.0;
     denom        = PI * denom * denom;
-	
-    return nom / denom;
+    return max(a2 / denom,0.); // bug when roughness set to 0 for speclar case, set limit bigger than 0 solve the problem, still don't know the reason
 }

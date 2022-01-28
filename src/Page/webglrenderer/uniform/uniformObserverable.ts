@@ -1,4 +1,3 @@
-import { USingleData, UStructData } from "./updater";
 import { Observer } from "./observer";
 import { UniformHandler } from "./uniformHandler";
 import { UniformData } from "../../../types";

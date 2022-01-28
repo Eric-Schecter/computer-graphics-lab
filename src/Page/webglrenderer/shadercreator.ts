@@ -15,7 +15,14 @@ import * as defines from './shader/others/define.glsl';
 import * as distribution from './shader/brdf/distribution.glsl';
 import * as fresnel from './shader/brdf/fresnel.glsl';
 import * as geometry from './shader/brdf/geometry.glsl';
+import * as brdf from './shader/brdf/brdf.glsl';
+import * as sampleLight from './shader/sampling/light.glsl';
+import * as sampleBrdf from './shader/sampling/brdf.glsl';
+import * as misWeight from './shader/others/misweight.glsl';
+import * as generateRay from './shader/others/ray.glsl';
+import * as getLight from './shader/others/getlight.glsl';
 import * as russianRoulette from './shader/algrithem/russianRoulette.glsl';
+import * as computePdf from './shader/others/pdf.glsl';
 import { Store } from '../reactrenderer/store';
 import { Mesh } from '../instance/component';
 import { Instance } from '../instance';
@@ -36,11 +43,11 @@ export class ShaderCreator {
     }
 
     const geometries = [
-      'bool scene(Ray ray,out HitInfo res){',
+      'bool scene(Ray ray,inout HitInfo res){',
       'const float limit = 1e10;',
       'res = HitInfo(Geometry(limit,vec3(0.)),Material(vec3(0.),vec3(0.),0.,0.,0.));',
       ...meshes.map(mesh => mesh.hitInfo),
-      'return res.geometry.dist!=limit;',
+      'return res.geometry.dist<limit;',
       '}'
     ]
 
@@ -59,8 +66,9 @@ export class ShaderCreator {
     const structs = [ray, camera, hitinfo, sphere, box];
     const maths = [translate];
     const postprocess = [gamacorrect, acesfilm, vignette];
-    const bsdf = [distribution, fresnel, geometry];
+    const bsdf = [distribution, fresnel, geometry, brdf];
     const algrithem = [russianRoulette];
+    const sampling = [misWeight, sampleBrdf, sampleLight];
 
     const shaderArr = [
       prefix,
@@ -73,6 +81,10 @@ export class ShaderCreator {
       ...algrithem,
       ...postprocess,
       ...this.generate(store.dataset),
+      generateRay,
+      getLight,
+      computePdf,
+      ...sampling,
       main
     ];
     const shader = shaderArr.join('\n');

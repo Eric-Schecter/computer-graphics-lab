@@ -1,3 +1,5 @@
+uint rngState;
+
 uint wang_hash(inout uint seed)
 {
     seed=uint(seed^uint(61))^uint(seed>>uint(16));
@@ -16,12 +18,13 @@ float RandomFloat01(inout uint state)
 
 vec3 RandomUnitVector(inout uint state)
 {
+    state++;
     float z=RandomFloat01(state)*2.f-1.f;
+    state++;
     float a=RandomFloat01(state)*2.*PI;
     float r=sqrt(1.f-z*z);
     float x=r*cos(a);
     float y=r*sin(a);
-    state++;
     return vec3(x,y,z);
 }
 

@@ -35,9 +35,7 @@ export class UniformHandler {
     }
   }
   public getPureArraySetter(gl: WebGL2RenderingContext, type: number, addr: WebGLUniformLocation | null) {
-
     switch (type) {
-
       case gl.FLOAT: return (data: number[]) => gl.uniform1fv(addr, data);
       case gl.FLOAT_VEC2: return (data: number[]) => gl.uniform2fv(addr, data);
       case gl.FLOAT_VEC3: return (data: number[]) => gl.uniform3fv(addr, data);

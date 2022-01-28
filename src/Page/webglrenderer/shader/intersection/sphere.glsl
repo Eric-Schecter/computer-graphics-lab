@@ -10,6 +10,6 @@ Geometry sphIntersection(Ray ray,in vec3 ce,float ra)
   h=sqrt(h);
   float dist=-b-h;
   vec3 hitpoint=ray.origin+dist*ray.direction;
-  vec3 normal=hitpoint-ce;
+  vec3 normal=normalize(hitpoint-ce);
   return Geometry(dist,normal);
 }

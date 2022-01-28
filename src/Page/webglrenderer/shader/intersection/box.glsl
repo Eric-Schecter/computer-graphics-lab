@@ -15,6 +15,6 @@ Geometry boxIntersection(Ray ray,vec3 p,vec3 size)
     return Geometry(-1.,vec3(0.));
   }
   vec3 normal=-sign(ray.direction)*step(t1.yzx,t1.xyz)*step(t1.zxy,t1.xyz);
-  normal=(txi*vec4(normal,0.)).xyz;
+  normal=normalize((txi*vec4(normal,0.)).xyz);
   return Geometry(tN,normal);
 }
