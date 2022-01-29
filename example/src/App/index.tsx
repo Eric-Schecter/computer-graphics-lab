@@ -14,7 +14,7 @@ const Sphere = () => {
     radius={50}
     color={[0.5, 0.3, 0.6]}
     emissive={[0, 0, 0]}
-    roughness={0.5}
+    roughness={0}
     specular={1}
     metallic={0}
   />

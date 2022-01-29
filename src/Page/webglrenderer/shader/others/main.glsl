@@ -43,7 +43,7 @@ vec3 render(Ray ray){
     return col;
   }
   // if(res.material.emissive!=vec3(0.)){
-    //   return res.material.emissive;
+  //     return res.material.emissive;
   // }
   for(int i=0;i<iteration;i++){
     if(russianRoulette(mask,RandomFloat01(rngState))){
@@ -64,8 +64,8 @@ vec3 render(Ray ray){
     }
     float isSpecular=(RandomFloat01(rngState)<specular)?1.:0.;
     
-    // vec3 directLight=sampleLight(direction,position,roughness,color,metallic,normal,specular,isSpecular);
-    // col+=mask*directLight;
+    vec3 directLight=sampleLight(direction,position,roughness,color,metallic,normal,specular,isSpecular);
+    col+=mask*directLight;
     
     ray=generateRay(direction,position,normal,roughness,specular,isSpecular);
     
@@ -73,7 +73,7 @@ vec3 render(Ray ray){
       break;
     }
     
-    vec3 indirectLight=sampleBrdf(ray,direction,position,roughness,color,metallic,normal,specular,res,isSpecular);
+    vec3 indirectLight=sampleBrdf(ray,res,direction,position,roughness,color,metallic,normal,specular,isSpecular);
     mask*=indirectLight;
   }
   return col;

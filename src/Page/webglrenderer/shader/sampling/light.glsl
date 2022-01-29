@@ -9,21 +9,21 @@ vec3 sampleLight(vec3 direction,vec3 position,float roughness,vec3 color,float m
     if(scene(shadowRay,res)){
       vec3 emissive=res.material.emissive;
       if(emissive!=vec3(0.)){
-        float dist=res.geometry.dist;
-        vec3 eval=brdf(-direction,normal,lightDirection,roughness,color,metallic,isSpecular);
+        float dist=res.geometry.dist/ratio;
+        vec3 eval=brdf(-direction,normal,lightDirection,roughness,color,metallic);
         
-        vec3 H=normalize(-direction+lightDirection);
-        float NoH=saturate(dot(normal,H));
-        float brdfPdf=mix(dot(lightDirection,normal)/PI,pow(NoH,roughness),specular);
+        float brdfPdf=computePdf(direction,shadowRay.direction,normal,isSpecular,roughness);
         
-        float cos1=saturate(dot(-lightDirection,res.geometry.normal));
+        // float cos1=saturate(dot(-lightDirection,res.geometry.normal));
+        float cos1=saturate(dot(-lightDirection,vec3(0.,-1.,0.)));
         float cos2=saturate(dot(lightDirection,normal));
         float area=25.*100.;
+        
         float G=cos1*cos2/(dist*dist);
         if(G!=0.){
           float lightPdf=1./(area*G);
           float mis=misWeight(lightPdf,brdfPdf);
-          direct+=eval*lightColor/lightPdf;
+          direct+=eval*lightColor*mis;
         }
       }
     }
