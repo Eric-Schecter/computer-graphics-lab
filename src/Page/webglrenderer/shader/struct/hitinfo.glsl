@@ -2,8 +2,11 @@ struct Material{
   vec3 color;
   vec3 emissive;
   float roughness;
-  float specular;
   float metallic;
+  float specTrans;
+  float IoR;
+  vec3 specColor;
+  float clearCoat;
 };
 
 struct Geometry{
@@ -14,4 +17,5 @@ struct Geometry{
 struct HitInfo{
   Geometry geometry;
   Material material;
+  int id;
 };

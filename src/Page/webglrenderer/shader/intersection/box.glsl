@@ -11,8 +11,8 @@ Geometry boxIntersection(Ray ray,vec3 p,vec3 size)
   vec3 t2=-n+k;
   float tN=max(max(t1.x,t1.y),t1.z);
   float tF=min(min(t2.x,t2.y),t2.z);
-  if(tN>tF||tF<0.){
-    return Geometry(-1.,vec3(0.));
+  if(tN>tF||tF<=0.||tN<=0.){
+    return DefaultGeometry;
   }
   vec3 normal=-sign(ray.direction)*step(t1.yzx,t1.xyz)*step(t1.zxy,t1.xyz);
   normal=normalize((txi*vec4(normal,0.)).xyz);

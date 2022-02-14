@@ -10,18 +10,16 @@ uint wang_hash(inout uint seed)
     return seed;
 }
 
-float RandomFloat01(inout uint state)
+float RandomFloat01()
 {
-    state++;
-    return float(wang_hash(state))/4294967296.;
+    uint seed = rngState++;
+    return float(wang_hash(seed))/4294967296.;
 }
 
-vec3 RandomUnitVector(inout uint state)
+vec3 RandomUnitVector()
 {
-    state++;
-    float z=RandomFloat01(state)*2.f-1.f;
-    state++;
-    float a=RandomFloat01(state)*2.*PI;
+    float z=RandomFloat01()*2.f-1.f;
+    float a=RandomFloat01()*2.*PI;
     float r=sqrt(1.f-z*z);
     float x=r*cos(a);
     float y=r*sin(a);

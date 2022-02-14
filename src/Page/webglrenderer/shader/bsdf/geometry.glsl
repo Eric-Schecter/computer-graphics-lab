@@ -1,7 +1,7 @@
-float GeometrySchlickGGX(float NdotV,float k)
+float GeometrySchlickGGX(float NoV,float k)
 {
-    float denom=NdotV*(1.-k)+k;
-    return NdotV/denom;
+    float denom=NoV*(1.-k)+k;
+    return NoV/denom;
 }
 
 float GeometrySmith(float NoV,float NoL,float roughness)

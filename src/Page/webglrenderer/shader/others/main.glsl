@@ -1,5 +1,3 @@
-
-
 // float radicalInverse(int base,int i)
 // {
   //   float inverse=0.;
@@ -32,49 +30,75 @@
   //   )-size/2.;
 // }
 
-
-
 vec3 render(Ray ray){
   vec3 col=vec3(0.);
   vec3 mask=vec3(1.);
   const int iteration=10;
   HitInfo res;
-  if(!scene(ray,res)){
+  HitInfo preRes;
+  if(!scene(ray,false,res,-1)){
     return col;
   }
-  // if(res.material.emissive!=vec3(0.)){
-  //     return res.material.emissive;
-  // }
+  if(res.material.emissive!=vec3(0.)){
+    return res.material.color;
+  }
   for(int i=0;i<iteration;i++){
-    if(russianRoulette(mask,RandomFloat01(rngState))){
+    if(russianRoulette(mask,RandomFloat01())){
       break;
     }
+    
+    preRes=res;
     vec3 direction=ray.direction;
-    vec3 position=ray.origin+direction*res.geometry.dist;
-    vec3 normal=res.geometry.normal;
-    vec3 color=res.material.color;
-    vec3 emissive=res.material.emissive;
-    float roughness=res.material.roughness;
-    float specular=res.material.specular;
-    float metallic=res.material.metallic;
+    vec3 position=ray.origin+direction*preRes.geometry.dist;
     
-    if(emissive!=vec3(0.)){
-      col+=mask*emissive*color;
+    bool entering=dot(preRes.geometry.normal,direction)<0.;
+    vec3 normal1=preRes.geometry.normal*(entering?1.:-1.);
+    float ratioIoR=entering?(AirIoR/preRes.material.IoR):(preRes.material.IoR/AirIoR);
+    
+    //lobe->direction-> 1.bsdf 2.pdf
+    //refer to https://graphics.pixar.com/library/PxrMaterialsCourse2017/paper.pdf
+    
+    float approxFresnel=mixedApproxFresnel(direction,preRes,ratioIoR,normal1);
+    
+    Weight weight=getWeight(preRes,approxFresnel);
+    int lobe=getLobe(weight);
+    ray=generateRay(direction,position,normal1,lobe,preRes.material.IoR);
+    
+    // if(lobe!=TRANSMISSION){
+      vec3 directLight=sampleLight(direction,position,preRes,normal1,ratioIoR,weight);
+      col+=mask*directLight;
+    // }
+    
+    if(!scene(ray,false,res,preRes.id)){
       break;
     }
-    float isSpecular=(RandomFloat01(rngState)<specular)?1.:0.;
     
-    vec3 directLight=sampleLight(direction,position,roughness,color,metallic,normal,specular,isSpecular);
-    col+=mask*directLight;
+    float pdf=computePdf(direction,ray.direction,preRes,lobe,weight);
+    vec3 eval=BSDF(direction,ray.direction,preRes,lobe,normal1,ratioIoR);
+    if(pdf==0.){
+      break;
+    }
+    vec3 indirectLight=eval/pdf;
+    // vec3 indirectLight=sampleBSDF(direction,ray.direction,res,preRes,position,lobe,normal1,ratioIoR,weight,pdf);
     
-    ray=generateRay(direction,position,normal,roughness,specular,isSpecular);
-    
-    if(!scene(ray,res)){
+    // mis refer to https://www.shadertoy.com/view/4lfcDr
+    if(res.material.emissive!=vec3(0.)){
+      float cos1=saturate(dot(ray.direction,preRes.geometry.normal));
+      float cos2=saturate(dot(-ray.direction,vec3(0.,-1.,0.)));
+      float dist=res.geometry.dist;
+      float G=cos1*cos2/(dist*dist);
+      if(G<=0.){
+        break;
+      }
+      float lightArea=25.*100.;
+      float lightPDF=1./(lightArea*G);
+      float mis=misWeight(pdf,lightPDF);
+      col+=mask*indirectLight*res.material.emissive*res.material.color*mis;
       break;
     }
     
-    vec3 indirectLight=sampleBrdf(ray,res,direction,position,roughness,color,metallic,normal,specular,isSpecular);
     mask*=indirectLight;
+    
   }
   return col;
 }
@@ -86,7 +110,7 @@ void main()
   for(int i=0;i<sampleCount;i++){
     rngState=random(gl_FragCoord.xy,uFrame+i*1000);
     
-    vec2 jitter=vec2(RandomFloat01(rngState),RandomFloat01(rngState))-.5f;
+    vec2 jitter=vec2(RandomFloat01(),RandomFloat01())-.5f;
     
     vec2 uv=((gl_FragCoord.xy+jitter)*2.-uResolution.xy)/uResolution.y;
     

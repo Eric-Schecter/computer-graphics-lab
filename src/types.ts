@@ -8,8 +8,11 @@ type Material = {
   color: Vec3,
   emissive: Vec3,
   roughness: number,
-  specular: number,
   metallic: number,
+  specTrans: number,
+  specColor: Vec3,
+  clearCoat: number,
+  IoR: number,
 }
 
 export type MyEvent = {
