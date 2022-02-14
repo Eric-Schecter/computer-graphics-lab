@@ -19,24 +19,26 @@ use as a React component
 import Page from '@youyouzone/react-sdf';
 
 export const App = () => {
-  const rawData = [
-    { position: { x: 0, y: 200, z: 0 }, size: { width: 100, height: 1, depth: 50 }, color: { x: 0.7, y: 0.7, z: 0.7 }, emissive: { x: 1, y: 1, z: 1 }, roughness: 0, specular: 0 },
-    { position: { x: 0, y: 201, z: 0 }, size: { width: 200, height: 1, depth: 100 }, color: { x: 0.7, y: 0.7, z: 0.7 }, emissive: { x: 0, y: 0, z: 0 }, roughness: 0, specular: 0 },
-    { position: { x: -200, y: 0, z: 0 }, size: { width: 1, height: 200, depth: 100 }, color: { x: 1, y: 0., z: 0. }, emissive: { x: 0, y: 0, z: 0 }, roughness: 1, specular: 1 },
-    { position: { x: 200, y: 0, z: 0 }, size: { width: 1, height: 200, depth: 100 }, color: { x: 0., y: 1, z: 0. }, emissive: { x: 0, y: 0, z: 0 }, roughness: 0.1, specular: 1 },
-    { position: { x: 0, y: 0, z: -100 }, size: { width: 200, height: 200, depth: 1 }, color: { x: 0.7, y: 0.7, z: 0.7 }, emissive: { x: 0, y: 0, z: 0 }, roughness: 0, specular: 1 },
-    { position: { x: 0, y: -100, z: 0 }, size: { width: 200, height: 1, depth: 100 }, color: { x: 0.7, y: 0.7, z: 0.7 }, emissive: { x: 0, y: 0, z: 0 }, roughness: 0, specular: 0 },
-    { position: { x: -50, y: -20, z: 50 }, size: { width: 30, height: 60, depth: 30 }, color: { x: 0.5, y: 0.3, z: 0.6 }, emissive: { x: 0, y: 0, z: 0 }, roughness: 0, specular: 0 },
+   const rawData = [
+    { position: [0, 180, 0], size: [100, 0.01, 25], color: [1.0, 0.7, 0.38], emissive: [10, 10, 10], roughness: 1, metallic: 0, specTrans: 0, IoR: 1.5, specColor: [1, 1, 1], clearCoat: 0 },
+    { position: [0, 201, 0], size: [200, 1, 100], color: [0.7, 0.7, 0.7], emissive: [0, 0, 0], roughness: 1, metallic: 0, specTrans: 0, IoR: 1.5, specColor: [1, 1, 1], clearCoat: 0 },
+    { position: [-200, 50, 0], size: [1, 150, 100], color: [1, 0, 0], emissive: [0, 0, 0], roughness: 1, metallic: 0, specTrans: 0, IoR: 1.5, specColor: [1, 1, 1], clearCoat: 0 },
+    { position: [200, 50, 0], size: [1, 150, 100], color: [0, 1, 0], emissive: [0, 0, 0], roughness: 0.1, metallic: 1, specTrans: 0, IoR: 1.5, specColor: [1, 1, 1], clearCoat: 0 },
+    { position: [0, 0, -100], size: [200, 200, 1], color: [0, 1, 1], emissive: [0, 0, 0], roughness: 1, metallic: 0, specTrans: 0, IoR: 1.5, specColor: [1, 1, 1], clearCoat: 0 },
+    { position: [0, -100, 0], size: [200, 1, 100], color: [0.7, 0.7, 0.7], emissive: [0, 0, 0], roughness: 1, metallic: 0, specTrans: 0, IoR: 1.5, specColor: [1, 1, 1], clearCoat: 0 },
+    { position: [-50, -40, 0], size: [30, 60, 30], color: [0.5, 0.3, 0.6], emissive: [0, 0, 0], roughness: 1, metallic: 0, specTrans: 0, IoR: 1.5, specColor: [1, 1, 1], clearCoat: 0 },
   ]
 
-  return <Page style={{ width: '100%', height: '100vh' }}>
+  return <Page
+    style={{ width: '100%', height: '100vh' }}
+  >
     <Camera
-      position={{ x: 0, y: 50, z: 250 }}
-      lookat={{ x: 0, y: 50, z: 0 }}
+      position={[0, 50, 250]}
+      lookat={[0, 50, 0]}
       rotation={0}
       fov={50 / 180 * Math.PI}
     />
-    {rawData.map(({ position, size, color, emissive, roughness, specular }, i) =>
+    {rawData.map(({ position, size, color, emissive, roughness, metallic, specTrans, IoR, specColor, clearCoat }, i) =>
       <box
         key={i}
         position={position}
@@ -44,17 +46,24 @@ export const App = () => {
         color={color}
         emissive={emissive}
         roughness={roughness}
-        specular={specular}
+        metallic={metallic}
+        specTrans={specTrans}
+        specColor={specColor}
+        clearCoat={clearCoat}
+        IoR={IoR}
       />
     )}
     <sphere
-      ref={ref}
-      position={{ x: 50, y: -50, z: 0 }}
+      position={[50, -45, 0]}
       radius={50}
-      color={{ x: 0.5, y: 0.3, z: 0.6 }}
-      emissive={{ x: 0., y: 0., z: 0. }}
+      color={[1, 1, 1]}
+      emissive={[0, 0, 0]}
       roughness={0}
-      specular={1}
+      metallic={1}
+      specTrans={0}
+      specColor={[1, 1, 1]}
+      clearCoat={0}
+      IoR={1.2}
     />
   </Page>
 }
