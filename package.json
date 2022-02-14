@@ -1,7 +1,7 @@
 {
   "name": "@youyouzone/react-sdf",
-  "version": "0.0.28",
-  "description": "A React renderer to help create SDF",
+  "version": "0.0.29",
+  "description": "A React renderer for path tracing",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {

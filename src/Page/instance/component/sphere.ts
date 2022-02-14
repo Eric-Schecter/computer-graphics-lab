@@ -1,27 +1,40 @@
 import { Mesh } from "./mesh";
-import { SphereGenerator } from "./generator/sphere";
-import { SingleObserver, StructureObserver, USingleData, UStructData } from "../../world/uniform";
-import { World } from "../../world";
+import { SingleObserver, StructureObserver, USingleData, UStructData } from "../../webglrenderer/uniform";
+import { World } from "../../webglrenderer";
+import { SphereProp } from "../../..";
+import intersection from '../../webglrenderer/shader/intersection/sphere.glsl';
 
 export class Sphere extends Mesh {
-  protected _parameters: StructureObserver;
-  constructor(props: object, canvas: HTMLCanvasElement, id: number, world: World) {
+  public static id = 0;
+  constructor(props: SphereProp, canvas: HTMLCanvasElement, world: World) {
     super(props, canvas, world);
-    this._parameters = new StructureObserver(`spheres[${id}]`, 'Sphere', new UStructData(
+    const { position, radius, color, emissive, roughness, metallic,specTrans, IoR, specColor, clearCoat } = props;
+    this._intersection = intersection;
+    this._parameters = new StructureObserver(`spheres[${Sphere.id}]`, 'Sphere', new UStructData(
       new StructureObserver('geometry', 'SphereGeometry', new UStructData(
-        new SingleObserver('position', 'vec3', new USingleData([0, 0, 0])),
-        new SingleObserver('radius', 'float', new USingleData(0)),
+        new SingleObserver('position', 'vec3', new USingleData(position)),
+        new SingleObserver('radius', 'float', new USingleData(radius)),
       )),
       new StructureObserver('material', 'Material', new UStructData(
-        new SingleObserver('color', 'vec3', new USingleData([0, 0, 0])),
-        new SingleObserver('emissive', 'vec3', new USingleData([0, 0, 0])),
-        new SingleObserver('roughness', 'float', new USingleData(0)),
-        new SingleObserver('specular', 'float', new USingleData(0)),
+        new SingleObserver('color', 'vec3', new USingleData(color)),
+        new SingleObserver('emissive', 'vec3', new USingleData(emissive)),
+        new SingleObserver('roughness', 'float', new USingleData(roughness)),
+        new SingleObserver('metallic', 'float', new USingleData(metallic)),
+        new SingleObserver('specTrans', 'float', new USingleData(specTrans)),
+        new SingleObserver('specColor', 'vec3', new USingleData(specColor)),
+        new SingleObserver('clearCoat', 'float', new USingleData(clearCoat)),
+        new SingleObserver('IoR', 'float', new USingleData(IoR)),
       )),
     ));
-    this.generator = new SphereGenerator(id);
+    this._geometry = this.generateGeometryShader(Sphere.id, 'geometry');
+    this._material = this.generateMaterialShader(Sphere.id, 'material', 'spheres');
+    Sphere.id++;
   }
-  public get position(){
-    return this._parameters;
+  private generateGeometryShader = (id: number, type: string) => {
+    const name = `spheres[${id}].${type}.`;
+    return `sphIntersection(ray,${name}position,${name}radius)`;
+  }
+  public get uniform() {
+    return `uniform Sphere spheres[${Sphere.id}];`;
   }
 }

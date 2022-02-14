@@ -15,7 +15,7 @@ module.exports = {
          use:[{
           loader: '@youyouzone/shader-loader',
           options:{
-            publicPath:'./src/page/world/shader',
+            publicPath:'./src/page/webglrenderer/shader',
           }
         }]
       }
