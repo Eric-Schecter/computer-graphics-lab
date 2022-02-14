@@ -6,6 +6,7 @@ vec3 BSDF(vec3 v,vec3 l,HitInfo res,int lobe,vec3 n1,float ratioIoR){
   
   vec3 n=res.geometry.normal;
   vec3 color=res.material.color;
+  float NoL = saturate(dot(n,l));
   
   vec3 fr=metallicBRDF(res,n,v,l,h)*color;
   vec3 fd=diffuseBRDF(color);
@@ -19,16 +20,16 @@ vec3 BSDF(vec3 v,vec3 l,HitInfo res,int lobe,vec3 n1,float ratioIoR){
     // include two parts, reflect and refract, depends on fresnel
     // bsdf=BTDF(res,ratioIoR,l,h,v,n,n1);
   }else{
-    bsdf=color;
+    // bsdf=color;
   }
-  return bsdf*dot(n,l);
+  return bsdf;
 }
 
 vec3 directLightBSDF(vec3 v,vec3 l,HitInfo res,vec3 n1,float ratioIoR,out float pdf,Weight weight){
   vec3 h=normalize(-v+l);
   
   vec3 n=res.geometry.normal;
-  float NoL=dot(n,l);
+  float NoL = saturate(dot(n,l));
   vec3 color=res.material.color;
   
   vec3 fr=metallicBRDF(res,n,v,l,h)*color;
@@ -36,7 +37,6 @@ vec3 directLightBSDF(vec3 v,vec3 l,HitInfo res,vec3 n1,float ratioIoR,out float 
   
   vec3 bsdf;
   float bsdfPDF=0.;
-  pdf=0.;
   float diffusePDF=(1.-res.material.metallic)*(1.-res.material.specTrans);
   float specularPDF=res.material.metallic;
   bool isDiffuse=diffusePDF>0.&&NoL>0.;
@@ -57,5 +57,5 @@ vec3 directLightBSDF(vec3 v,vec3 l,HitInfo res,vec3 n1,float ratioIoR,out float 
     bsdf+=1.;//BTDF(res,ratioIoR,l,h,v,n,n1);
   }
   pdf=bsdfPDF;
-  return bsdf*NoL;
+  return bsdf;
 }

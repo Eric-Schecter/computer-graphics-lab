@@ -61,13 +61,14 @@ vec3 render(Ray ray){
     float approxFresnel=mixedApproxFresnel(direction,preRes,ratioIoR,normal1);
     
     Weight weight=getWeight(preRes,approxFresnel);
-    int lobe=getLobe(weight);
-    ray=generateRay(direction,position,normal1,lobe,preRes.material.IoR);
     
     // if(lobe!=TRANSMISSION){
       vec3 directLight=sampleLight(direction,position,preRes,normal1,ratioIoR,weight);
       col+=mask*directLight;
     // }
+    
+    int lobe=getLobe(weight);
+    ray=generateRay(direction,position,normal1,lobe,preRes.material.IoR);
     
     if(!scene(ray,false,res,preRes.id)){
       break;
@@ -78,8 +79,9 @@ vec3 render(Ray ray){
     if(pdf==0.){
       break;
     }
-    vec3 indirectLight=eval/pdf;
+    // vec3 indirectLight=eval/pdf;
     // vec3 indirectLight=sampleBSDF(direction,ray.direction,res,preRes,position,lobe,normal1,ratioIoR,weight,pdf);
+    mask*=eval/pdf;
     
     // mis refer to https://www.shadertoy.com/view/4lfcDr
     if(res.material.emissive!=vec3(0.)){
@@ -87,17 +89,15 @@ vec3 render(Ray ray){
       float cos2=saturate(dot(-ray.direction,vec3(0.,-1.,0.)));
       float dist=res.geometry.dist;
       float G=cos1*cos2/(dist*dist);
-      if(G<=0.){
+      if(G==0.){
         break;
       }
-      float lightArea=25.*100.;
+      float lightArea=50.*200.;
       float lightPDF=1./(lightArea*G);
       float mis=misWeight(pdf,lightPDF);
-      col+=mask*indirectLight*res.material.emissive*res.material.color*mis;
+      col+=mask*res.material.emissive*res.material.color*mis;
       break;
     }
-    
-    mask*=indirectLight;
     
   }
   return col;

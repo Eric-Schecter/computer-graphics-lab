@@ -12,7 +12,7 @@ uint wang_hash(inout uint seed)
 
 float RandomFloat01()
 {
-    uint seed = rngState++;
+    uint seed = rngState+=uint(1000);
     return float(wang_hash(seed))/4294967296.;
 }
 

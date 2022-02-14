@@ -25,7 +25,7 @@ const Sphere = () => {
 
 export const App = () => {
   const rawData = [
-    { position: [0, 180, 0], size: [100, 0.01, 25], color: [1.0, 0.7, 0.38], emissive: [20,20,20], roughness: 1, metallic: 0, specTrans: 0, IoR: 1.5, specColor: [1, 1, 1], clearCoat: 0 },
+    { position: [0, 180, 0], size: [100, 0.01, 25], color: [1.0, 0.7, 0.38], emissive: [10,10,10], roughness: 1, metallic: 0, specTrans: 0, IoR: 1.5, specColor: [1, 1, 1], clearCoat: 0 },
     { position: [0, 201, 0], size: [200, 1, 100], color: [0.7, 0.7, 0.7], emissive: [0, 0, 0], roughness: 1, metallic: 0, specTrans: 0, IoR: 1.5, specColor: [1, 1, 1], clearCoat: 0 },
     { position: [-200, 50, 0], size: [1, 150, 100], color: [1, 0, 0], emissive: [0, 0, 0], roughness: 1, metallic: 0, specTrans: 0, IoR: 1.5, specColor: [1, 1, 1], clearCoat: 0 },
     { position: [200, 50, 0], size: [1, 150, 100], color: [0, 1, 0], emissive: [0, 0, 0], roughness: 0.1, metallic: 1, specTrans: 0, IoR: 1.5, specColor: [1, 1, 1], clearCoat: 0 },
