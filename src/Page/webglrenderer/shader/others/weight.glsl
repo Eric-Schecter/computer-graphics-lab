@@ -1,7 +1,7 @@
 Weight getWeight(HitInfo res,float approxFresnel){
   float diffuseWt=(1.-res.material.metallic)*(1.-res.material.specTrans);
-  float specReflectWt=res.material.metallic;
-  float specRefractWt=(1.-res.material.metallic)*res.material.specTrans;
+  float specReflectWt=approxFresnel;
+  float specRefractWt=(1.-approxFresnel)*(1.-res.material.metallic)*res.material.specTrans;
   float clearcoatWt=res.material.clearcoat*(1.-res.material.metallic);
   float totalWt=diffuseWt+specReflectWt+specRefractWt+clearcoatWt;
   
