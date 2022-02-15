@@ -4,31 +4,38 @@ float diffusePDF(vec3 n,vec3 l){
   return saturate(dot(n,l))/PI;
 }
 
-float specularPDF(vec3 v,vec3 n,vec3 l,vec3 h,float roughness){
-  float D=DistributionGGX(dot(n,h),roughness);
+float reflectPDF(vec3 v,vec3 n,vec3 l,vec3 h,float roughness){
+  float D=DistributionGGX(dot(n,h),roughness);//todo: change to GTR2
   float G1=GeometrySchlickGGX(dot(n,-v),roughness);
   return G1*D*dot(-v,h)/(4.*dot(-v,h)*dot(n,-v));
 }
 
 float refractPDF(vec3 v,vec3 n,vec3 l,vec3 h,float roughness,float ratioIoR){
-  float D=DistributionGGX(abs(dot(n,h)),roughness);
+  float D=DistributionGGX(abs(dot(n,h)),roughness);//todo: change to GTR2
   float G1=GeometrySchlickGGX(abs(dot(n,-v)),roughness);
   float denom=dot(l,h)+dot(-v,h)*ratioIoR;
   return G1*D*saturate(dot(-v,h))*abs(dot(l,h))/(abs((dot(n,-v))*denom*denom));
 }
 
-float computePdf(vec3 v,vec3 l,HitInfo res,int lobe,Weight weight,float ratioIoR,vec3 n1){
-  vec3 n=res.geometry.normal;
+float clearcoatPDF(vec3 v,vec3 n,vec3 h,vec3 l,float roughness){
+  if(dot(n,l)<=0.){
+    return 0.;
+  }
+  float D=DistributionGGX(abs(dot(n,h)),roughness);//todo: change to GTR1
+  return D*dot(n,h)/(4.*dot(v,h));
+}
+
+float computePdf(vec3 v,vec3 l,float roughness,int lobe,Weight weight,float ratioIoR,vec3 n){
   float pdf=0.;
-  vec3 h=dot(n1,v)<0.?normalize(-v+l):-normalize(-v+l*ratioIoR);
+  vec3 h=dot(n,v)<0.?normalize(-v+l):-normalize(-v+l*ratioIoR);
   if(lobe==DIFFUSE){
-    pdf=diffusePDF(n1,l)*weight.diffuse;
+    pdf=diffusePDF(n,l)*weight.diffuse;
   }else if(lobe==SPECULAR){
-    pdf=specularPDF(v,n1,l,h,res.material.roughness)*weight.reflection;
+    pdf=reflectPDF(v,n,l,h,roughness)*weight.reflection;
   }else if(lobe==TRANSMISSION){
-    pdf=refractPDF(v,n1,l,h,res.material.roughness,ratioIoR)*weight.refraction;
+    pdf=refractPDF(v,n,l,h,roughness,ratioIoR)*weight.refraction;
   }else{
-    pdf=1.;
+    pdf=clearcoatPDF(v,n,h,l,roughness)*weight.clearcoat;
   }
   return pdf;
 }

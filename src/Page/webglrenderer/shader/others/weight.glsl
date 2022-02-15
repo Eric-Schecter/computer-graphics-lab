@@ -2,12 +2,14 @@ Weight getWeight(HitInfo res,float approxFresnel){
   float diffuseWt=(1.-res.material.metallic)*(1.-res.material.specTrans);
   float specReflectWt=res.material.metallic;
   float specRefractWt=(1.-res.material.metallic)*res.material.specTrans;
-  float totalWt=diffuseWt+specReflectWt+specRefractWt;
+  float clearcoatWt=res.material.clearcoat*(1.-res.material.metallic);
+  float totalWt=diffuseWt+specReflectWt+specRefractWt+clearcoatWt;
   
   diffuseWt/=totalWt;
   specReflectWt/=totalWt;
   specRefractWt/=totalWt;
-  return Weight(diffuseWt,specReflectWt,specRefractWt,0.);
+  clearcoatWt/=totalWt;
+  return Weight(diffuseWt,specReflectWt,specRefractWt,clearcoatWt);
 }
 
 // int getLobe(HitInfo res,float approxFresnel){

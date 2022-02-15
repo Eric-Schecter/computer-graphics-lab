@@ -11,7 +11,8 @@ type Material = {
   metallic: number,
   specTrans: number,
   specColor: Vec3,
-  clearCoat: number,
+  clearcoat: number,
+  clearcoatGloss: number,
   IoR: number,
 }
 

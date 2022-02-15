@@ -31,6 +31,7 @@ import * as metallicBRDF from './shader/bsdf/metallicBRDF.glsl';
 import * as distribution from './shader/bsdf/distribution.glsl';
 import * as schlickFresnel from './shader/bsdf/schlickFresnel.glsl';
 import * as geometry from './shader/bsdf/geometry.glsl';
+import * as clearcoat from './shader/bsdf/clearcoat.glsl';
 import * as BSDF from './shader/bsdf/bsdf.glsl';
 import * as BTDF from './shader/bsdf/btdf.glsl';
 import * as dielectricFresnel from './shader/bsdf/dielectricFresnel.glsl';
@@ -57,9 +58,10 @@ export class ShaderCreator {
     const geometries = [
       'bool scene(Ray ray,bool isShadowRay,inout HitInfo res,int preID){',
       'int id = 0;',
-      'res = HitInfo(DefaultGeometry,Material(vec3(0.),vec3(0.),0.,0.,0.,1.,vec3(1.),0.),id);',
+      'res = HitInfo(DefaultGeometry,Material(vec3(0.),vec3(0.),0.,0.,0.,1.,vec3(1.),0.,0.),id);',
       ...meshes.map(mesh => mesh.hitInfo),
       'res.material.roughness = max(res.material.roughness,ROUGHNESS);', // limit roughness not to be 0
+      'res.material.clearcoatGloss = max(res.material.clearcoatGloss,ROUGHNESS);', // limit clearcoatGloss not to be 0
       'return res.geometry.dist<LIMIT;',
       '}'
     ]
@@ -79,7 +81,7 @@ export class ShaderCreator {
     const structs = [ray, camera, hitinfo, sphere, box, weight];
     const maths = [translate];
     const postprocess = [gamacorrect, acesfilm, vignette];
-    const bsdf = [dielectricFresnel, distribution, schlickFresnel, geometry, diffuseBRDF, metallicBRDF, computePdf, BTDF, BSDF];
+    const bsdf = [dielectricFresnel, distribution, schlickFresnel, geometry, diffuseBRDF, metallicBRDF, computePdf, clearcoat, BTDF, BSDF];
     const algrithem = [russianRoulette];
     const sampling = [misWeight, sampleLight];
 

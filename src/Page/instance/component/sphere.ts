@@ -8,7 +8,7 @@ export class Sphere extends Mesh {
   public static id = 0;
   constructor(props: SphereProp, canvas: HTMLCanvasElement, world: World) {
     super(props, canvas, world);
-    const { position, radius, color, emissive, roughness, metallic,specTrans, IoR, specColor, clearCoat } = props;
+    const { position, radius, color, emissive, roughness, metallic, specTrans, IoR, specColor, clearcoat, clearcoatGloss } = props;
     this._intersection = intersection;
     this._parameters = new StructureObserver(`spheres[${Sphere.id}]`, 'Sphere', new UStructData(
       new StructureObserver('geometry', 'SphereGeometry', new UStructData(
@@ -22,7 +22,8 @@ export class Sphere extends Mesh {
         new SingleObserver('metallic', 'float', new USingleData(metallic)),
         new SingleObserver('specTrans', 'float', new USingleData(specTrans)),
         new SingleObserver('specColor', 'vec3', new USingleData(specColor)),
-        new SingleObserver('clearCoat', 'float', new USingleData(clearCoat)),
+        new SingleObserver('clearcoat', 'float', new USingleData(clearcoat)),
+        new SingleObserver('clearcoatGloss', 'float', new USingleData(clearcoatGloss)),
         new SingleObserver('IoR', 'float', new USingleData(IoR)),
       )),
     ));

@@ -75,7 +75,7 @@ vec3 render(Ray ray){
       break;
     }
     
-    float pdf=computePdf(direction,ray.direction,preRes,lobe,weight,ratioIoR,normal);
+    float pdf=computePdf(direction,ray.direction,preRes.material.roughness,lobe,weight,ratioIoR,normal);
     vec3 eval=BSDF(direction,ray.direction,preRes,lobe,normal,ratioIoR);
     if(pdf==0.){
       break;

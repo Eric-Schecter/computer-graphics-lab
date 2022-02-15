@@ -6,7 +6,8 @@ struct Material{
   float specTrans;
   float IoR;
   vec3 specColor;
-  float clearCoat;
+  float clearcoat;
+  float clearcoatGloss;
 };
 
 struct Geometry{

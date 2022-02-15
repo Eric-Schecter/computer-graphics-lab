@@ -8,7 +8,7 @@ export class Box extends Mesh {
   public static id = 0;
   constructor(props: BoxProp, canvas: HTMLCanvasElement, world: World) {
     super(props, canvas, world);
-    const { position, size, color, emissive, roughness, metallic, specTrans, IoR, specColor, clearCoat } = props;
+    const { position, size, color, emissive, roughness, metallic, specTrans, IoR, specColor, clearcoat,clearcoatGloss } = props;
     this._intersection = intersection;
     this._parameters = new StructureObserver(`boxes[${Box.id}]`, 'Box', new UStructData(
       new StructureObserver('geometry', 'BoxGeometry', new UStructData(
@@ -22,7 +22,8 @@ export class Box extends Mesh {
         new SingleObserver('metallic', 'float', new USingleData(metallic)),
         new SingleObserver('specTrans', 'float', new USingleData(specTrans)),
         new SingleObserver('specColor', 'vec3', new USingleData(specColor)),
-        new SingleObserver('clearCoat', 'float', new USingleData(clearCoat)),
+        new SingleObserver('clearcoat', 'float', new USingleData(clearcoat)),
+        new SingleObserver('clearcoatGloss', 'float', new USingleData(clearcoatGloss)),
         new SingleObserver('IoR', 'float', new USingleData(IoR)),
       )),
     ))

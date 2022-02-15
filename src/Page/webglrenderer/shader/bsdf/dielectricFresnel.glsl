@@ -32,7 +32,7 @@
   //   return saturate((Rparl*Rparl+Rperp*Rperp)/2.);
 // }
 
-float dielectricFresnel(float cosThetaI,float eta){
+float DielectricFresnel(float cosThetaI,float eta){
   float sinThetaTSq=eta*eta*(1.-cosThetaI*cosThetaI);
   
   // Total internal reflection
