@@ -41,11 +41,11 @@ export const App = () => {
       color={[1, 1, 1]}
       emissive={[0, 0, 0]}
       roughness={0}
-      metallic={1}
-      specTrans={0}
+      metallic={0}
+      specTrans={1}
       specColor={[1, 1, 1]}
       clearCoat={0}
-      IoR={1.2}
+      IoR={1.1}
     />
   </Page>
 }

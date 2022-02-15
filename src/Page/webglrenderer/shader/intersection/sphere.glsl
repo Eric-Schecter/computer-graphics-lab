@@ -4,15 +4,14 @@ Geometry sphIntersection(Ray ray,in vec3 ce,float ra)
   float b=dot(oc,ray.direction);
   float c=dot(oc,oc)-ra*ra;
   float h=b*b-c;
-  if(h<0.){
-    return DefaultGeometry;
+  if(h<0.){ // no intersection
+    return DefaultGeometry; 
   }
   h=sqrt(h);
   float t1=-b-h;
   float t2=-b+h;
   float dist=t1>0.?t1:t2;
-  // dist= t2; // temp
-  if(dist<=0.){
+  if(dist<=0.){ // intersections are behind the ray 
     return DefaultGeometry;
   }
   vec3 hitpoint=ray.origin+dist*ray.direction;
@@ -43,7 +42,7 @@ Geometry sphIntersection(Ray ray,in vec3 ce,float ra)
   // 	solveQuadratic(a, b, c, t0, t1);
   //   	float dist = t0 > 0.0 ? t0 : t1 > 0.0 ? t1 : 0.;
   //     if(dist==0.){
-    //       return Geometry(-1.,vec3(0.));
+    //       return DefaultGeometry;
   //     }
   //   vec3 hitpoint=ray.origin+dist*ray.direction;
   //   vec3 normal=normalize(hitpoint-pos);

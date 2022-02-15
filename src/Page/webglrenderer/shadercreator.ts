@@ -15,12 +15,12 @@ import * as vignette from './shader/postprocess/vignette.glsl';
 import * as translate from './shader/math/translate.glsl';
 import * as defines from './shader/others/define.glsl';
 import * as sampleLight from './shader/sampling/light.glsl';
-import * as sampleBsdf from './shader/sampling/bsdf.glsl';
+// import * as sampleBsdf from './shader/sampling/bsdf.glsl';
 import * as misWeight from './shader/others/misweight.glsl';
 import * as generateRay from './shader/others/ray.glsl';
 import * as getLight from './shader/others/getlight.glsl';
 import * as russianRoulette from './shader/algrithem/russianRoulette.glsl';
-import * as computePdf from './shader/others/pdf.glsl';
+import * as computePdf from './shader/pdf/pdf.glsl';
 import * as luminance from './shader/others/luminance.glsl';
 import * as getLobe from './shader/others/lobe.glsl';
 import * as getWeight from './shader/others/weight.glsl';
@@ -76,12 +76,12 @@ export class ShaderCreator {
       .filter(({ name }) => !name.includes('['))
       .map(({ name, type }) => `uniform ${type} ${name};`);
 
-    const structs = [ray, camera, hitinfo, sphere, box,weight];
+    const structs = [ray, camera, hitinfo, sphere, box, weight];
     const maths = [translate];
     const postprocess = [gamacorrect, acesfilm, vignette];
     const bsdf = [dielectricFresnel, distribution, schlickFresnel, geometry, diffuseBRDF, metallicBRDF, computePdf, BTDF, BSDF];
     const algrithem = [russianRoulette];
-    const sampling = [misWeight, sampleBsdf, sampleLight];
+    const sampling = [misWeight, sampleLight];
 
     const shaderArr = [
       prefix,

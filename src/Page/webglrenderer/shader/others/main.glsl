@@ -52,30 +52,31 @@ vec3 render(Ray ray){
     vec3 position=ray.origin+direction*preRes.geometry.dist;
     
     bool entering=dot(preRes.geometry.normal,direction)<0.;
-    vec3 normal1=preRes.geometry.normal*(entering?1.:-1.);
+    vec3 normal=preRes.geometry.normal*(entering?1.:-1.);
     float ratioIoR=entering?(AirIoR/preRes.material.IoR):(preRes.material.IoR/AirIoR);
     
     //lobe->direction-> 1.bsdf 2.pdf
     //refer to https://graphics.pixar.com/library/PxrMaterialsCourse2017/paper.pdf
     
-    float approxFresnel=mixedApproxFresnel(direction,preRes,ratioIoR,normal1);
+    float approxFresnel=mixedApproxFresnel(direction,preRes,ratioIoR,normal);
     
     Weight weight=getWeight(preRes,approxFresnel);
     
-    // if(lobe!=TRANSMISSION){
-      vec3 directLight=sampleLight(direction,position,preRes,normal1,ratioIoR,weight);
-      col+=mask*directLight;
-    // }
-    
     int lobe=getLobe(weight);
-    ray=generateRay(direction,position,normal1,lobe,preRes.material.IoR);
+    
+    if(lobe!=TRANSMISSION){
+      vec3 directLight=sampleLight(direction,position,preRes,normal,ratioIoR,weight);
+      col+=mask*directLight;
+    }
+    
+    ray=generateRay(direction,position,normal,lobe,ratioIoR);
     
     if(!scene(ray,false,res,preRes.id)){
       break;
     }
     
-    float pdf=computePdf(direction,ray.direction,preRes,lobe,weight);
-    vec3 eval=BSDF(direction,ray.direction,preRes,lobe,normal1,ratioIoR);
+    float pdf=computePdf(direction,ray.direction,preRes,lobe,weight,ratioIoR,normal);
+    vec3 eval=BSDF(direction,ray.direction,preRes,lobe,normal,ratioIoR);
     if(pdf==0.){
       break;
     }

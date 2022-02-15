@@ -5,8 +5,10 @@ int getLobe(Weight weight){
     lobe=DIFFUSE;
   }else if(r<(weight.diffuse+weight.reflection)){
     lobe=SPECULAR;
-  }else{
+  }else if(r<(weight.diffuse+weight.reflection+weight.refraction)){
     lobe=TRANSMISSION;
+  }else{
+    lobe=CLEARCOAT;
   }
   return lobe;
 }
