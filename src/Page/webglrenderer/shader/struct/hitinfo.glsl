@@ -4,7 +4,7 @@ struct Material{
   float roughness;
   float metallic;
   float specTrans;
-  float IoR;
+  float specular;
   vec3 specColor;
   float clearcoat;
   float clearcoatGloss;

@@ -30,7 +30,7 @@ export class UniformHandler {
   }
   public update = (name: string, data: UniformData) => {
     const setter = this.table.get(name);
-    if (setter) {
+    if (setter && data!==undefined) {
       setter(this.handleData(data));
     }
   }

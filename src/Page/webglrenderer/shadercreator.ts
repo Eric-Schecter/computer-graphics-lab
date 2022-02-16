@@ -62,6 +62,7 @@ export class ShaderCreator {
       ...meshes.map(mesh => mesh.hitInfo),
       'res.material.roughness = max(res.material.roughness,ROUGHNESS);', // limit roughness not to be 0
       'res.material.clearcoatGloss = max(res.material.clearcoatGloss,ROUGHNESS);', // limit clearcoatGloss not to be 0
+      'res.material.specular = max(res.material.specular,0.001);', // limit specular not to be 0 to avoid bug
       'return res.geometry.dist<LIMIT;',
       '}'
     ]
@@ -106,7 +107,7 @@ export class ShaderCreator {
       main
     ];
     const shader = shaderArr.join('\n');
-    console.log(shader);
+    // console.log(shader);
     return shader;
   }
 }

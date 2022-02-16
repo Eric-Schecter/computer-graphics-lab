@@ -53,7 +53,8 @@ vec3 render(Ray ray){
     
     bool entering=dot(preRes.geometry.normal,direction)<0.;
     vec3 normal=preRes.geometry.normal*(entering?1.:-1.);
-    float ratioIoR=entering?(AirIoR/preRes.material.IoR):(preRes.material.IoR/AirIoR);
+    float ior = 2. / (1. - sqrt(0.08 * preRes.material.specular)) - 1.;
+    float ratioIoR=entering?(AirIoR/ior):(ior/AirIoR);
     
     //lobe->direction-> 1.bsdf 2.pdf
     //refer to https://graphics.pixar.com/library/PxrMaterialsCourse2017/paper.pdf

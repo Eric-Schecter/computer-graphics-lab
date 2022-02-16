@@ -1,5 +1,5 @@
 import { World } from "../webglrenderer";
-import { Instance } from "../instance";
+import { Factory, Instance } from "../instance";
 import { TaskHandler } from "../webglrenderer/taskHandler";
 import { InputSystem } from "../inputSystem";
 
@@ -7,7 +7,7 @@ export class Store {
   private _dataset = new Set<Instance>();
   private timer = 0;
   // public inputSystem: InputSystem;
-  constructor(public canvas: HTMLCanvasElement, public world: World, public taskHandler: TaskHandler) {
+  constructor(public canvas: HTMLCanvasElement, public world: World, public taskHandler: TaskHandler,public facotry:Factory) {
     // this.inputSystem = InputSystem.getInstance(world);
   }
   public add = (instance: Instance) => {

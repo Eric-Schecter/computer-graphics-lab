@@ -2,7 +2,7 @@
   <img src="./screenshot/profile.jpg" alt=''>
 </p>
 
-##Example of Cornell Box.  
+##Example of Disney Principled.  
 
 run locally
 

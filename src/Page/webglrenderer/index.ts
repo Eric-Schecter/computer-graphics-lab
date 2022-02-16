@@ -16,7 +16,14 @@ export class World {
   private clock = new Clock();
   private frame = new UFrame(0);
   private size: USingleData<number[]>;
-  constructor(private canvas: HTMLCanvasElement, private taskHandler: TaskHandler,private inputStstem:InputSystem) {
+  private static instance: World;
+  public static getInstance = (canvas: HTMLCanvasElement, taskHandler: TaskHandler, inputStstem: InputSystem) => {
+    if (!World.instance) {
+      World.instance = new World(canvas, taskHandler, inputStstem);
+    }
+    return World.instance;
+  }
+  constructor(private canvas: HTMLCanvasElement, private taskHandler: TaskHandler, private inputStstem: InputSystem) {
     this.gl = canvas.getContext('webgl2');
     if (!this.gl) {
       throw new Error('create webgl failed');
@@ -46,7 +53,7 @@ export class World {
     this.renderProgram.destory();
   }
   private resize = () => {
-    const { clientWidth, clientHeight,width,height } = this.canvas;
+    const { clientWidth, clientHeight, width, height } = this.canvas;
     if (clientWidth === width && clientHeight === height) {
       return;
     }

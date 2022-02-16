@@ -33,7 +33,8 @@ const HostConfig: any = {
   },
   createInstance(type: string, props: { [prop: string]: any }, store: Store, hostContext: Store, internalInstanceHandle: Fiber) {
     // console.log('createInstance')
-    return Factory.build(type, props, store.canvas, store.world);
+    const { facotry, canvas, world } = store;
+    return facotry.build(type, props, canvas, world);
   },
   appendInitialChild(parent: Store, child: Instance) {
     // console.log('appendInitialChild', child);
@@ -147,6 +148,7 @@ const HostConfig: any = {
   },
   clearContainer(...args: any[]) {
     // console.log("clearContainer", args);
+    console.log(1)
     return false;
   },
 
@@ -183,13 +185,13 @@ const HostConfig: any = {
 };
 
 const reconciler = Reconciler(HostConfig);
-
 const Renderer = {
   render: (component: ReactNode, container: HTMLCanvasElement) => {
     const taskHandler = new TaskHandler();
     const inputSystem = InputSystem.getInstance();
-    const world = new World(container, taskHandler,inputSystem);
-    const store = new Store(container, world, taskHandler);
+    const world = World.getInstance(container, taskHandler, inputSystem);
+    const facotry = new Factory();
+    const store = new Store(container, world, taskHandler, facotry);
     const fiber = reconciler.createContainer(store, 0, false, null);
     const root = <context.Provider value={store}>{component}</context.Provider>;
     reconciler.updateContainer(root, fiber, null);

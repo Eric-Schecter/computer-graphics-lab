@@ -13,7 +13,7 @@ type Material = {
   specColor: Vec3,
   clearcoat: number,
   clearcoatGloss: number,
-  IoR: number,
+  specular: number,
 }
 
 export type MyEvent = {
@@ -25,10 +25,12 @@ type Basic = {
   position: Vec3,
 }
 
+export type MeshProps = Basic & Material;
+
 type Props = {
   key: Key,
   ref: Ref<ReactNode>
-} & Basic & Material
+} & MeshProps
 
 export type SphereProp = {
   radius: number

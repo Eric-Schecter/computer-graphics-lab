@@ -1,9 +1,10 @@
 {
-  "name": "cornell-box",
+  "name": "disney-principled",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
     "@youyouzone/react-sdf": "^0.0.29",
+    "dat.gui": "^0.7.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "^4.0.3",
