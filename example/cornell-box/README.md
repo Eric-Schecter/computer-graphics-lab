@@ -10,4 +10,4 @@ run locally
 npm run restart
 ```
 
-run online [https://react-sdf.netlify.app](https://react-sdf.netlify.app) 
+run online [https://cornell-box.netlify.app](https://cornell-box.netlify.app) 
