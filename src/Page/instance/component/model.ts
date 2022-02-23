@@ -34,23 +34,23 @@ export class Model extends Mesh {
         src,
         gltf => {
           // console.log((gltf.scene.children[0].children[0] as ThreeMesh));
-          const position1 = (gltf.scene.children[0].children[0] as ThreeMesh).geometry.attributes.position;// todo
-          const normal = (gltf.scene.children[0].children[0] as ThreeMesh).geometry.attributes.normal;// todo
-          // const position = (gltf.scene.children[0] as ThreeMesh).geometry.attributes.position;// todo
-          const capacity = size * size * 4;
-          const p = new Float32Array(position1.array);
-          const n = new Float32Array(normal.array);
-          this.bvh = new BVH(capacity);
-          const traingleCount = position1.array.length / 9;
-          const scale = 10;
-          const { triangles, aabb } = this.bvh.build(traingleCount, p, n,scale,position);
-          const triangleTexture = DataTexture.generate(gl, triangles, size);
-          const aabbTexture = DataTexture.generate(gl, aabb, size);
-          if (!triangleTexture || !aabbTexture) {
-            throw Error('generate texture failed');
-          }
-          triangleUpdater.data = triangleTexture;
-          aabbUpdater.data = aabbTexture;
+          // const position1 = (gltf.scene.children[0].children[0] as ThreeMesh).geometry.attributes.position;// todo
+          // const normal = (gltf.scene.children[0].children[0] as ThreeMesh).geometry.attributes.normal;// todo
+          // // const position = (gltf.scene.children[0] as ThreeMesh).geometry.attributes.position;// todo
+          // const capacity = size * size * 4;
+          // const p = new Float32Array(position1.array);
+          // const n = new Float32Array(normal.array);
+          // this.bvh = new BVH(capacity);
+          // const traingleCount = position1.array.length / 9;
+          // const scale = 10;
+          // const { triangles, aabb } = this.bvh.build(traingleCount, p, n,scale,position);
+          // const triangleTexture = DataTexture.generate(gl, triangles, size);
+          // const aabbTexture = DataTexture.generate(gl, aabb, size);
+          // if (!triangleTexture || !aabbTexture) {
+          //   throw Error('generate texture failed');
+          // }
+          // triangleUpdater.data = triangleTexture;
+          // aabbUpdater.data = aabbTexture;
         })
     } catch (error) {
       console.log('load model failed, please check src attribute');
