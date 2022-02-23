@@ -49,8 +49,8 @@ export class Model extends Mesh {
           if (!triangleTexture || !aabbTexture) {
             throw Error('generate texture failed');
           }
-          // triangleUpdater.data = triangleTexture;
-          // aabbUpdater.data = aabbTexture;
+          triangleUpdater.data = triangleTexture;
+          aabbUpdater.data = aabbTexture;
         })
     } catch (error) {
       console.log('load model failed, please check src attribute');

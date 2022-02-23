@@ -1,6 +1,6 @@
 {
   "name": "@youyouzone/react-sdf",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "A React renderer for path tracing",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
