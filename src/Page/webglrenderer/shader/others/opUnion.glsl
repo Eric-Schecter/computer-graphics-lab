@@ -4,7 +4,7 @@ HitInfo opUnion(HitInfo s1,HitInfo s2,bool isShadowRay,int preID){
   bool isSelfIntersection=s1.geometry.dist<=s2.geometry.dist+epsilon && s1.geometry.dist>=s2.geometry.dist-epsilon;
   bool isMoreFar=s1.geometry.dist<s2.geometry.dist;
   bool isSameObject=preID==s2.id&&isShadowRay;
-  if(isTooNear||isSelfIntersection||isMoreFar||isSameObject){
+  if(isTooNear||isMoreFar||isSameObject){
     return s1;
   }
   return s2;

@@ -32,11 +32,6 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,int objID)
   stackData[0]=currentStackData;
   bool isIntersectInner=false;
   
-  StackData smallerStack;
-  StackData biggerStack;
-  BoxNode smallerNode;
-  BoxNode biggerNode;
-  
   float u,v,id;
   float t=res.geometry.dist;
   while(true){
@@ -49,6 +44,10 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,int objID)
         StackData stackdataLeft=StackData(currentNode.data0.x,distLeftchild);
         StackData stackdataRight=StackData(currentNode.data1.x,distRightchild);
         
+        StackData smallerStack;
+        StackData biggerStack;
+        BoxNode smallerNode;
+        BoxNode biggerNode;
         if(stackdataLeft.dist<stackdataRight.dist){
           smallerStack=stackdataLeft;
           biggerStack=stackdataRight;
@@ -61,8 +60,8 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,int objID)
           biggerNode=leftchild;
         }
         
-        bool isIntersectedBigger=biggerStack.dist<res.geometry.dist;
-        bool isIntersectedSmaller=smallerStack.dist<res.geometry.dist;
+        bool isIntersectedBigger=biggerStack.dist<t;
+        bool isIntersectedSmaller=smallerStack.dist<t;
         if(isIntersectedBigger&&isIntersectedSmaller){
           stackData[int(stackID)]=biggerStack;// store bigger to stack and wait for process
           stackID++;//push
@@ -126,8 +125,8 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,int objID)
     vec3 n3=vec3(v3.w,v4.xy);
     float w=1.-u-v;
     vec3 n=normalize(w*n1+u*n2+v*n3);
-    res =HitInfo(Geometry(t,n),DefaultMaterial,objID);
-    // res=opUnion(res,HitInfo(Geometry(t,n),DefaultMaterial,objID),isShadowRay,preID);
+    // res =HitInfo(Geometry(t,n),DefaultMaterial,objID);
+    res=opUnion(res,HitInfo(Geometry(t,n),DefaultMaterial,objID),isShadowRay,preID);
   }
   return res;
 }
