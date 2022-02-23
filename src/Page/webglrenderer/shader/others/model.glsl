@@ -37,8 +37,10 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,inout int 
   BoxNode smallerNode;
   BoxNode biggerNode;
   
+  float u,v,id;
+  float t=res.geometry.dist;
   while(true){
-    if(currentStackData.dist<res.geometry.dist){// when intersected
+    if(currentStackData.dist<t){// when intersected
       if(currentNode.data0.x>=0.){// inner node
         BoxNode leftchild=getBoxNode(currentNode.data0.x);
         BoxNode rightchild=getBoxNode(currentNode.data1.x);
@@ -76,36 +78,28 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,inout int 
         }
       }else{// leaf node
         float slotgap=5.;
-        float id=(-currentNode.data0.x-1.)*slotgap;
+        float idTemp=(-currentNode.data0.x-1.)*slotgap;
         
-        ivec2 uv0=ivec2(mod(id,size),floor(id/size));
-        ivec2 uv1=ivec2(mod(id+1.,size),floor((id+1.)/size));
-        ivec2 uv2=ivec2(mod(id+2.,size),floor((id+2.)/size));
-        ivec2 uv3=ivec2(mod(id+3.,size),floor((id+3.)/size));
-        ivec2 uv4=ivec2(mod(id+4.,size),floor((id+4.)/size));
+        ivec2 uv0=ivec2(mod(idTemp,size),floor(idTemp/size));
+        ivec2 uv1=ivec2(mod(idTemp+1.,size),floor((idTemp+1.)/size));
+        ivec2 uv2=ivec2(mod(idTemp+2.,size),floor((idTemp+2.)/size));
         
         vec4 v0=texelFetch(model.triangleTexture,uv0,0);
         vec4 v1=texelFetch(model.triangleTexture,uv1,0);
         vec4 v2=texelFetch(model.triangleTexture,uv2,0);
-        vec4 v3=texelFetch(model.triangleTexture,uv3,0);
-        vec4 v4=texelFetch(model.triangleTexture,uv4,0);
         
         vec3 p1=vec3(v0.xyz);
         vec3 p2=vec3(v0.w,v1.xy);
         vec3 p3=vec3(v1.zw,v2.x);
-        vec3 n1=vec3(v2.yzw);
-        vec3 n2=vec3(v3.xyz);
-        vec3 n3=vec3(v3.w,v4.xy);
-
-        float u,v;
-        float t = triIntersect(ray,p1,p2,p3,u,v);
-
-        float w=1.-u-v;
-        vec3 n = normalize(w * n1 + u * n2 + v * n3);
         
-        objID++;
-        Geometry geometry=Geometry(t,n);
-        res=opUnion(res,HitInfo(geometry,DefaultMaterial,objID),isShadowRay,preID);
+        float uTemp,vTemp;
+        float d=triIntersect(ray,p1,p2,p3,uTemp,vTemp);
+        if(d<t){
+          id=idTemp;
+          t=d;
+          u=uTemp;
+          v=vTemp;
+        }
       }
     }
     
@@ -119,6 +113,23 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,inout int 
       currentNode=getBoxNode(currentStackData.id);
     }
     isIntersectInner=false;
+  }
+  if(t<res.geometry.dist){
+    objID++;
+    
+    ivec2 uv2=ivec2(mod(id+2.,size),floor((id+2.)/size));
+    ivec2 uv3=ivec2(mod(id+3.,size),floor((id+3.)/size));
+    ivec2 uv4=ivec2(mod(id+4.,size),floor((id+4.)/size));
+    vec4 v2=texelFetch(model.triangleTexture,uv2,0);
+    vec4 v3=texelFetch(model.triangleTexture,uv3,0);
+    vec4 v4=texelFetch(model.triangleTexture,uv4,0);
+    vec3 n1=vec3(v2.yzw);
+    vec3 n2=vec3(v3.xyz);
+    vec3 n3=vec3(v3.w,v4.xy);
+    float w=1.-u-v;
+    vec3 n=normalize(w*n1+u*n2+v*n3);
+    res =HitInfo(Geometry(t,n),DefaultMaterial,objID);
+    // res=opUnion(res,HitInfo(Geometry(t,n),DefaultMaterial,objID),isShadowRay,preID);
   }
   return res;
 }

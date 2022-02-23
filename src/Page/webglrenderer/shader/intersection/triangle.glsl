@@ -25,5 +25,8 @@ float triIntersect(Ray r,vec3 v0,vec3 v1,vec3 v2,out float u,out float v)
   // if(u<0.||v<0.||(u+v)>1.){
   //   return LIMIT;
   // }
+  if(t<=0.){
+    return LIMIT;
+  }
   return t;
 }
