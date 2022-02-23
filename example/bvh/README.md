@@ -1,6 +1,6 @@
-<!-- <p align="center">
+<p align="center">
   <img src="./screenshot/profile.jpg" alt=''>
-</p> -->
+</p>
 
 ##Example of BVH.  
 
@@ -10,4 +10,4 @@ run locally
 npm run restart
 ```
 
-<!-- run online [https://cornell-box.netlify.app](https://cornell-box.netlify.app)  -->
+run online [https://bvh-example.netlify.app](https://bvh-example.netlify.app) 
