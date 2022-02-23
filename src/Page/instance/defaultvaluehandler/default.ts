@@ -15,7 +15,7 @@ export class DefaultValueHandler {
     ['clearcoatGloss', CLEARCOATGLOSS],
   ])
   public process = (props: { [key: string]: any }) => {
-    const handledProps: { [key: string]: any } = {};
+    const handledProps = {...props};
     for (const key of this.defaultValue.keys()) {
       const value = this.defaultValue.get(key);
       const isUndefined = props[key] === undefined && value !== undefined;

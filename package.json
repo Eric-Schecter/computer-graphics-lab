@@ -6,6 +6,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "prebuild": "rm -rf lib",
+    "dev": "webpack --mode development",
     "build": "webpack",
     "precommit": "npm version patch --no-git-tag-version",
     "commit": "git add . && git commit -m $1",
@@ -38,6 +39,7 @@
   "devDependencies": {
     "@types/react": "^17.0.34",
     "@types/react-reconciler": "^0.26.4",
+    "@types/three": "^0.137.0",
     "@youyouzone/shader-loader": "^0.0.8",
     "react-reconciler": "^0.25.1",
     "ts-loader": "^8.0.7",
@@ -53,6 +55,7 @@
   ],
   "homepage": "https://github.com/Eric-Schecter/react-sdf",
   "dependencies": {
-    "react-merge-refs": "^1.1.0"
+    "react-merge-refs": "^1.1.0",
+    "three": "^0.137.5"
   }
 }

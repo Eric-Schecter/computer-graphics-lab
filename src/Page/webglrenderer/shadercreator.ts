@@ -1,40 +1,41 @@
-import * as main from './shader/others/main.glsl';
-import * as opUnion from './shader/others/opUnion.glsl';
-import * as random from './shader/others/random.glsl';
-import * as prefix from './shader/others/prefix.glsl';
-import * as ray from './shader/struct/ray.glsl';
-import * as camera from './shader/struct/camera.glsl';
-import * as sphere from './shader/struct/sphere.glsl';
-import * as box from './shader/struct/box.glsl';
-import * as hitinfo from './shader/struct/hitinfo.glsl';
-import * as weight from './shader/struct/weight.glsl';
+import main from './shader/others/main.glsl';
+import opUnion from './shader/others/opUnion.glsl';
+import random from './shader/others/random.glsl';
+import prefix from './shader/others/prefix.glsl';
+import ray from './shader/struct/ray.glsl';
+import camera from './shader/struct/camera.glsl';
+import sphere from './shader/struct/sphere.glsl';
+import box from './shader/struct/box.glsl';
+import hitinfo from './shader/struct/hitinfo.glsl';
+import weight from './shader/struct/weight.glsl';
+import model from './shader/struct/model.glsl';
 
-import * as acesfilm from './shader/postprocess/acesfilm.glsl';
-import * as gamacorrect from './shader/postprocess/gamacorrect.glsl';
-import * as vignette from './shader/postprocess/vignette.glsl';
-import * as translate from './shader/math/translate.glsl';
-import * as defines from './shader/others/define.glsl';
-import * as sampleLight from './shader/sampling/light.glsl';
-// import * as sampleBsdf from './shader/sampling/bsdf.glsl';
-import * as misWeight from './shader/others/misweight.glsl';
-import * as generateRay from './shader/others/ray.glsl';
-import * as getLight from './shader/others/getlight.glsl';
-import * as russianRoulette from './shader/algrithem/russianRoulette.glsl';
-import * as computePdf from './shader/pdf/pdf.glsl';
-import * as luminance from './shader/others/luminance.glsl';
-import * as getLobe from './shader/others/lobe.glsl';
-import * as getWeight from './shader/others/weight.glsl';
-import * as mixedApproxFresnel from './shader/others/mixedApproxFresnel.glsl';
+import acesfilm from './shader/postprocess/acesfilm.glsl';
+import gamacorrect from './shader/postprocess/gamacorrect.glsl';
+import vignette from './shader/postprocess/vignette.glsl';
+import translate from './shader/math/translate.glsl';
+import defines from './shader/others/define.glsl';
+import sampleLight from './shader/sampling/light.glsl';
+// import sampleBsdf from './shader/sampling/bsdf.glsl';
+import misWeight from './shader/others/misweight.glsl';
+import generateRay from './shader/others/ray.glsl';
+import getLight from './shader/others/getlight.glsl';
+import russianRoulette from './shader/algrithem/russianRoulette.glsl';
+import computePdf from './shader/pdf/pdf.glsl';
+import luminance from './shader/others/luminance.glsl';
+import getLobe from './shader/others/lobe.glsl';
+import getWeight from './shader/others/weight.glsl';
+import mixedApproxFresnel from './shader/others/mixedApproxFresnel.glsl';
 
-import * as diffuseBRDF from './shader/bsdf/diffuseBRDF.glsl';
-import * as metallicBRDF from './shader/bsdf/metallicBRDF.glsl';
-import * as distribution from './shader/bsdf/distribution.glsl';
-import * as schlickFresnel from './shader/bsdf/schlickFresnel.glsl';
-import * as geometry from './shader/bsdf/geometry.glsl';
-import * as clearcoat from './shader/bsdf/clearcoat.glsl';
-import * as BSDF from './shader/bsdf/bsdf.glsl';
-import * as BTDF from './shader/bsdf/btdf.glsl';
-import * as dielectricFresnel from './shader/bsdf/dielectricFresnel.glsl';
+import diffuseBRDF from './shader/bsdf/diffuseBRDF.glsl';
+import metallicBRDF from './shader/bsdf/metallicBRDF.glsl';
+import distribution from './shader/bsdf/distribution.glsl';
+import schlickFresnel from './shader/bsdf/schlickFresnel.glsl';
+import geometry from './shader/bsdf/geometry.glsl';
+import clearcoat from './shader/bsdf/clearcoat.glsl';
+import BSDF from './shader/bsdf/bsdf.glsl';
+import BTDF from './shader/bsdf/btdf.glsl';
+import dielectricFresnel from './shader/bsdf/dielectricFresnel.glsl';
 
 import { Store } from '../reactrenderer/store';
 import { Mesh } from '../instance/component';
@@ -49,16 +50,14 @@ export class ShaderCreator {
       }
     }
     const intersections = new Set<string>();
-    const uniforms = new Set<string>();
     for (const d of meshes) {
       intersections.add(d.intersection);
-      uniforms.add(d.uniform);
     }
 
     const geometries = [
       'bool scene(Ray ray,bool isShadowRay,inout HitInfo res,int preID){',
       'int id = 0;',
-      'res = HitInfo(DefaultGeometry,Material(vec3(0.),vec3(0.),0.,0.,0.,1.,vec3(1.),0.,0.),id);',
+      'res = HitInfo(DefaultGeometry,DefaultMaterial,id);',
       ...meshes.map(mesh => mesh.hitInfo),
       'res.material.roughness = max(res.material.roughness,ROUGHNESS);', // limit roughness not to be 0
       'res.material.clearcoatGloss = max(res.material.clearcoatGloss,ROUGHNESS);', // limit clearcoatGloss not to be 0
@@ -69,17 +68,16 @@ export class ShaderCreator {
 
     return [
       opUnion,
-      ...uniforms,
       ...intersections,
       ...geometries,
     ]
   }
   public create = (store: Store, settings = {}, infos: Array<{ name: string, type: string }>) => {
-    const uniforms = infos
+    const uniforms1 = infos
       .filter(({ name }) => !name.includes('['))
       .map(({ name, type }) => `uniform ${type} ${name};`);
-
-    const structs = [ray, camera, hitinfo, sphere, box, weight];
+    const uniforms2 = store.facotry.getUniforms;
+    const structs = [ray, camera, hitinfo, sphere, box, weight,model];
     const maths = [translate];
     const postprocess = [gamacorrect, acesfilm, vignette];
     const bsdf = [dielectricFresnel, distribution, schlickFresnel, geometry, diffuseBRDF, metallicBRDF, computePdf, clearcoat, BTDF, BSDF];
@@ -90,7 +88,8 @@ export class ShaderCreator {
       prefix,
       defines,
       ...structs,
-      ...uniforms,
+      ...uniforms1,
+      ...uniforms2,
       ...maths,
       random,
       luminance,
@@ -107,7 +106,7 @@ export class ShaderCreator {
       main
     ];
     const shader = shaderArr.join('\n');
-    // console.log(shader);
+    console.log(shader);
     return shader;
   }
 }

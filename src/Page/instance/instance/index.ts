@@ -11,6 +11,7 @@ export abstract class Instance {
   private static comparator = new Comparator();
   private eventHandler: EventsHandler;
   protected _parameters: Observer;
+  protected _intersection: string;
   protected defaultValueHandler:DefaultValueHandler;
   constructor(protected _props: object, canvas: HTMLCanvasElement, protected _world: World) {
     this.eventHandler = new EventsHandler(_props, canvas);
@@ -27,6 +28,9 @@ export abstract class Instance {
   public dispose = () => {
     this.eventHandler.removeEvents();
   }
+  public get intersection() {
+    return this._intersection;
+  };
   public get parameters() {
     return this._parameters;
   }

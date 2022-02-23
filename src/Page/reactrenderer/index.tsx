@@ -148,7 +148,6 @@ const HostConfig: any = {
   },
   clearContainer(...args: any[]) {
     // console.log("clearContainer", args);
-    console.log(1)
     return false;
   },
 

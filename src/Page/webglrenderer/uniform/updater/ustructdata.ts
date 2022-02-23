@@ -1,5 +1,5 @@
 import { UniformHandler } from "../uniformHandler";
-import { Observer,SingleObserver } from "../observer";
+import { Observer, SingleObserver } from "../observer";
 import { UniformData } from "../../../../types";
 
 export class UStructData {
@@ -14,14 +14,14 @@ export class UStructData {
     this.observers.forEach(observer => observer.set(observers, parent));
   }
   public setData = (data: UniformData, name: string) => {
-    this.observers.forEach(observer=>{
-      if(observer instanceof SingleObserver){
-        if(observer.name===name){
+    this.observers.forEach(observer => {
+      if (observer instanceof SingleObserver) {
+        if (observer.name === name) {
           observer.setData(data)
         }
       }
-      else{
-        observer.setData(data,name);
+      else {
+        observer.setData(data, name);
       }
     })
   }

@@ -11,7 +11,7 @@ export class SingleObserver extends Observer {
     const name = parent ? `${parent}.${this._name}` : this._name;
     uniformHandler.update(name, this._updater.update());
   }
-  public setData = (data:UniformData)=>{
+  public setData = (data: UniformData) => {
     this._updater.data = data;
   }
 }

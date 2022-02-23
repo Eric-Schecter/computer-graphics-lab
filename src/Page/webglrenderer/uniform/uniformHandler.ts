@@ -6,6 +6,14 @@ type Setter = (data: UniformData) => void;
 
 export class UniformHandler {
   private table = new Map<string, Setter>();
+  private textureID = -1;
+  private isTexture = (gl: WebGL2RenderingContext, type: number) => {
+    return type === gl.SAMPLER_2D
+      || type === 0x8d66
+      || type === gl.INT_SAMPLER_2D
+      || type === gl.UNSIGNED_INT_SAMPLER_2D
+      || type === gl.SAMPLER_2D_SHADOW
+  }
   public init = (gl: WebGL2RenderingContext, program: WebGLProgram) => {
     const count = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
     for (let i = 0; i < count; i++) {
@@ -13,9 +21,12 @@ export class UniformHandler {
       if (!info) { continue; }
       const { name, type } = info;
       const addr = gl.getUniformLocation(program, name);
-      const setter = this.getPureArraySetter(gl, type, addr);
+      if (this.isTexture(gl, type)) {
+        this.textureID++;
+      }
+      const setter = this.getPureArraySetter(gl, type, addr, this.textureID);
       if (setter) {
-        this.table.set(name, setter);
+        this.table.set(name, setter)
       }
     }
   }
@@ -30,11 +41,11 @@ export class UniformHandler {
   }
   public update = (name: string, data: UniformData) => {
     const setter = this.table.get(name);
-    if (setter && data!==undefined) {
+    if (setter && data !== undefined) {
       setter(this.handleData(data));
     }
   }
-  public getPureArraySetter(gl: WebGL2RenderingContext, type: number, addr: WebGLUniformLocation | null) {
+  public getPureArraySetter(gl: WebGL2RenderingContext, type: number, addr: WebGLUniformLocation | null, textureID: number) {
     switch (type) {
       case gl.FLOAT: return (data: number[]) => gl.uniform1fv(addr, data);
       case gl.FLOAT_VEC2: return (data: number[]) => gl.uniform2fv(addr, data);
@@ -60,9 +71,10 @@ export class UniformHandler {
       case gl.INT_SAMPLER_2D:
       case gl.UNSIGNED_INT_SAMPLER_2D:
       case gl.SAMPLER_2D_SHADOW:
-        return (data: WebGLTexture) => {
-          gl.bindTexture(gl.TEXTURE_2D, data);
-          gl.uniform1i(addr, 0); // todo dynamic location index and just set once 
+        return (texture: WebGLTexture) => {
+          gl.activeTexture(gl.TEXTURE0 + textureID);
+          gl.uniform1i(addr, textureID);
+          gl.bindTexture(gl.TEXTURE_2D, texture);
         }
 
       // case gl.SAMPLER_CUBE:

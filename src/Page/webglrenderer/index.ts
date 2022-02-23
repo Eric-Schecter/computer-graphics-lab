@@ -79,4 +79,7 @@ export class World {
   // public updateParameter = (name: string, data: UniformData) => {
   //   this.computeProgram.updateParameter(name, data);
   // }
+  public get context(){
+    return this.gl;
+  }
 }

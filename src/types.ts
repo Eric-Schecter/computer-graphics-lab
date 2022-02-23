@@ -25,6 +25,10 @@ type Basic = {
   position: Vec3,
 }
 
+export type ModelProp = {
+  src: string,
+} & Basic
+
 export type MeshProps = Basic & Material;
 
 type Props = {
@@ -113,6 +117,7 @@ declare global {
       sphere: Partial<SphereProp & EventHandlers>,
       box: Partial<BoxProp & EventHandlers>,
       camera: Partial<CameraProp & EventHandlers>,
+      model: Partial<ModelProp & EventHandlers>,
     }
   }
 }

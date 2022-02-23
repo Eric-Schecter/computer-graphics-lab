@@ -14,6 +14,7 @@ class ViewMatrix extends Matrix3 {
     const orientation = new Vector3(Math.sin(rotation), Math.cos(rotation), 0);
     const left = new Vector3().crossVectors(forward, orientation).normalize();
     const up = new Vector3().crossVectors(left, forward).normalize();
+
     this._data = [
       left.x, left.y, left.z,
       up.x, up.y, up.z,

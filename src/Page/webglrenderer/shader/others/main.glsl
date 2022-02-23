@@ -1,35 +1,3 @@
-// float radicalInverse(int base,int i)
-// {
-  //   float inverse=0.;
-  //   float digit=1./float(base);
-  //   float radical=digit;
-  //   while(i>0)
-  //   {
-    //     inverse+=digit*mod(float(i),float(base));
-    //     digit*=radical;
-    
-    //     i/=base;
-  //   }
-  //   return inverse;
-// }
-
-// const int primeNumbers[3]=int[3](2,3,5);
-// int NthPrimeNumber(int dimension){
-  //   return primeNumbers[dimension];
-// }
-
-// vec3 getLight(int count){
-  //   vec3 p=vec3(0.,200.,0.);
-  //   vec3 size=vec3(100.,1.,50.);
-  //   int base=2;
-  //   float ri=radicalInverse(base,count);
-  //   return vec3(
-    //     p.x+ri*size.x,
-    //     p.y+ri*size.y,
-    //     p.z+ri*size.z
-  //   )-size/2.;
-// }
-
 vec3 render(Ray ray){
   vec3 col=vec3(0.);
   vec3 mask=vec3(1.);

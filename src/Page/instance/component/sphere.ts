@@ -6,13 +6,13 @@ import intersection from '../../webglrenderer/shader/intersection/sphere.glsl';
 import { SphereDefaultValueHandler } from "../defaultvaluehandler";
 
 export class Sphere extends Mesh {
-  constructor(props: SphereProp, canvas: HTMLCanvasElement, world: World, private table: { [prop: string]: number }) {
+  constructor(props: SphereProp, canvas: HTMLCanvasElement, world: World, id: number) {
     super(props, canvas, world);
+    this._name = 'sphere';
     this.defaultValueHandler = new SphereDefaultValueHandler();
     const { position, radius, color, emissive, roughness, metallic, specTrans, specular, specColor, clearcoat, clearcoatGloss } = this.defaultValueHandler.process(props);
     this._intersection = intersection;
-    const id = table['sphere'];
-    this._parameters = new StructureObserver(`spheres[${id}]`, 'Sphere', new UStructData(
+    this._parameters = new StructureObserver(`sphere[${id}]`, 'Sphere', new UStructData(
       new StructureObserver('geometry', 'SphereGeometry', new UStructData(
         new SingleObserver('position', 'vec3', new USingleData(position)),
         new SingleObserver('radius', 'float', new USingleData(radius)),
@@ -29,14 +29,11 @@ export class Sphere extends Mesh {
         new SingleObserver('specular', 'float', new USingleData(specular)),
       )),
     ));
-    this._geometry = this.generateGeometryShader(id, 'geometry');
-    this._material = this.generateMaterialShader(id, 'material', 'spheres');
+    this._geometry = this.generateGeometryShader(id);
+    this._material = this.generateMaterialShader(id, 'material');
   }
-  private generateGeometryShader = (id: number, type: string) => {
-    const name = `spheres[${id}].${type}.`;
+  private generateGeometryShader = (id: number) => {
+    const name = `${this._name}[${id}].geometry.`;
     return `sphIntersection(ray,${name}position,${name}radius)`;
-  }
-  public get uniform() {
-    return `uniform Sphere spheres[${this.table['sphere']+1}];`;
   }
 }

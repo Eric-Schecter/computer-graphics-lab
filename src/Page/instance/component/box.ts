@@ -6,13 +6,13 @@ import intersection from '../../webglrenderer/shader/intersection/box.glsl';
 import { BoxDefaultValueHandler } from "../defaultvaluehandler";
 
 export class Box extends Mesh {
-  constructor(props: BoxProp , canvas: HTMLCanvasElement, world: World,private table:{[prop:string]:number}) {
+  constructor(props: BoxProp , canvas: HTMLCanvasElement, world: World,id:number) {
     super(props, canvas, world);
+    this._name = 'box';
     this.defaultValueHandler = new BoxDefaultValueHandler();
     const { position, size, color, emissive, roughness, metallic, specTrans, specular, specColor, clearcoat, clearcoatGloss } = this.defaultValueHandler.process(props);
     this._intersection = intersection;
-    const id = table['box'];
-    this._parameters = new StructureObserver(`boxes[${id}]`, 'Box', new UStructData(
+    this._parameters = new StructureObserver(`box[${id}]`, 'Box', new UStructData(
       new StructureObserver('geometry', 'BoxGeometry', new UStructData(
         new SingleObserver('position', 'vec3', new USingleData(position)),
         new SingleObserver('size', 'vec3', new USingleData(size)),
@@ -29,14 +29,11 @@ export class Box extends Mesh {
         new SingleObserver('specular', 'float', new USingleData(specular)),
       )),
     ))
-    this._geometry = this.generateGeometryShader(id, 'geometry');
-    this._material = this.generateMaterialShader(id, 'material', 'boxes');
+    this._geometry = this.generateGeometryShader(id);
+    this._material = this.generateMaterialShader(id, 'material');
   }
-  protected generateGeometryShader = (id: number, type: string) => {
-    const name = `boxes[${id}].${type}.`;
+  protected generateGeometryShader = (id: number) => {
+    const name = `${this._name}[${id}].geometry.`;
     return `boxIntersection(ray,${name}position,${name}size)`;
-  }
-  public get uniform() {
-    return `uniform Box boxes[${this.table['box']+1}];`;
   }
 }

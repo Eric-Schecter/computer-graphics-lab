@@ -1,0 +1,41 @@
+{
+  "name": "bvh",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@youyouzone/react-sdf": "^0.0.29",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "^4.0.3",
+    "typescript": "^4.3.5"
+  },
+  "scripts": {
+    "update": "npm i @youyouzone/react-sdf@latest",
+    "restart": "npm run update && react-app-rewired start",
+    "rebuild": "npm run update && react-app-rewired build",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.45",
+    "@types/react-dom": "^16.9.8",
+    "node-sass": "^6.0.1",
+    "react-app-rewired": "^2.1.8"
+  }
+}

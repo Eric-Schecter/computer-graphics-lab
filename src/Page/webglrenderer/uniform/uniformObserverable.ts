@@ -16,7 +16,7 @@ export class UniformObserverable {
   public remove = (name: string) => {
     this.observers.delete(name);
   }
-  public reset = () =>{
+  public reset = () => {
     this.observers.clear();
   }
   public setData = (data: UniformData, name: string) => {

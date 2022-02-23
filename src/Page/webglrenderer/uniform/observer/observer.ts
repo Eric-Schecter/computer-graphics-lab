@@ -16,7 +16,7 @@ export abstract class Observer {
   public get type() {
     return this._type;
   }
-  public get updater(){
+  public get updater() {
     return this._updater;
   }
 }
