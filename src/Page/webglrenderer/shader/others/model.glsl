@@ -21,7 +21,7 @@ BoxNode getBoxNode(float id){
   return BoxNode(data0,data1);
 }
 
-HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,inout int objID){
+HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,int objID){
   float stackID=0.;
   float size=model.size;
   const float MAX_STACK=24.;
@@ -115,8 +115,6 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,inout int 
     isIntersectInner=false;
   }
   if(t<res.geometry.dist){
-    objID++;
-    
     ivec2 uv2=ivec2(mod(id+2.,size),floor((id+2.)/size));
     ivec2 uv3=ivec2(mod(id+3.,size),floor((id+3.)/size));
     ivec2 uv4=ivec2(mod(id+4.,size),floor((id+4.)/size));

@@ -77,6 +77,6 @@ export class Model extends Mesh {
   //   return `boxIntersection(ray,${name}position,${name}size)`;
   // }
   public get hitInfo() {
-    return 'res = modelIntersect(ray,isShadowRay,preID,res,id);'
+    return 'id++;res = modelIntersect(ray,isShadowRay,preID,res,id);'
   }
 }
