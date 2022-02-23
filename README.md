@@ -62,8 +62,20 @@ export const App = () => {
 ```
 
 ## Examples
+### demos
 [https://cornell-box.netlify.app](https://cornell-box.netlify.app)  
 [https://disney-principled.netlify.app](https://disney-principled.netlify.app)  
+[https://bvh-example.netlify.app](https://bvh-example.netlify.app)  
+
+### images with bugs
+<p align="center">
+  <img src="./errorsamples/cornell-box-1.jpg" alt=''>
+</p>
+<p align="center">
+  <img src="./errorsamples/bvh-1.jpg" alt=''>
+</p>
+
+[For more samples](https://github.com/Eric-Schecter/computer-graphics-lab/tree/master/errorsamples)  
 
 ## License
 This project is licensed under [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
