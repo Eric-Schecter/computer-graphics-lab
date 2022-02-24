@@ -1,6 +1,7 @@
 //learn from threejs WebGLUniforms.js
 
 import { UniformData } from "../../../types";
+import { UpdateInfo } from "./updateinfo";
 
 type Setter = (data: UniformData) => void;
 
@@ -39,10 +40,16 @@ export class UniformHandler {
     }
     return Object.values(data);
   }
-  public update = (name: string, data: UniformData) => {
+  // public update = (name: string, data: UniformData) => {
+  //   const setter = this.table.get(name);
+  //   if (setter && data !== undefined) {
+  //     setter(this.handleData(data));
+  //   }
+  // }
+  public update = ({ name, value }: UpdateInfo) => {
     const setter = this.table.get(name);
-    if (setter && data !== undefined) {
-      setter(this.handleData(data));
+    if (setter && value !== undefined) {
+      setter(this.handleData(value));
     }
   }
   public getPureArraySetter(gl: WebGL2RenderingContext, type: number, addr: WebGLUniformLocation | null, textureID: number) {

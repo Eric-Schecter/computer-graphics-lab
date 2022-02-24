@@ -16,6 +16,7 @@ export class World {
   private clock = new Clock();
   private frame = new UFrame(0);
   private size: USingleData<number[]>;
+  private isStart = false;
   private static instance: World;
   public static getInstance = (canvas: HTMLCanvasElement, taskHandler: TaskHandler, inputStstem: InputSystem) => {
     if (!World.instance) {
@@ -33,7 +34,6 @@ export class World {
     const framebufferHandler = new FrameBufferHandler(this.gl, this.size);
     this.createComputeProgram(this.gl, framebufferHandler);
     this.createRenderProgram(this.gl);
-    this.draw();
   }
   private createComputeProgram = (gl: WebGL2RenderingContext, framebufferHandler: FrameBufferHandler) => {
     this.computeProgram = new ComputeProgram(gl, framebufferHandler, vertexShader, fragmentShader, this.size);
@@ -69,6 +69,11 @@ export class World {
     this.resize();
     this.renderProgram.update();
     this.timer = requestAnimationFrame(this.draw);
+  }
+  public start = () =>{
+    if(!this.isStart){
+      this.draw();
+    }
   }
   public reset = () => {
     this.frame.data = 0;
