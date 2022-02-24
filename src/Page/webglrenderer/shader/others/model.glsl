@@ -4,10 +4,11 @@ struct BoxNode
   vec4 data1;// corresponds to .x: rightchildID .y: max.x, .z: max.y, .w: max.z
 };
 
+const int MAX_STACK=24;
 struct StackData{
   float id;
   float dist;
-};
+}stackData[MAX_STACK];
 
 BoxNode getBoxNode(float id){
   float gap=2.;
@@ -21,11 +22,9 @@ BoxNode getBoxNode(float id){
   return BoxNode(data0,data1);
 }
 
-HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,int objID){
+HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,inout int objID){
   float stackID=0.;
   float size=model.size;
-  const float MAX_STACK=24.;
-  StackData stackData[int(MAX_STACK)];// store branch to be processed
   BoxNode currentNode=getBoxNode(stackID);
   float dist=BoundingBoxIntersect(currentNode.data0.yzw,currentNode.data1.yzw,ray);
   StackData currentStackData=StackData(stackID,dist);
@@ -48,6 +47,7 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,int objID)
         StackData biggerStack;
         BoxNode smallerNode;
         BoxNode biggerNode;
+        
         if(stackdataLeft.dist<stackdataRight.dist){
           smallerStack=stackdataLeft;
           biggerStack=stackdataRight;
@@ -126,6 +126,7 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,int objID)
     float w=1.-u-v;
     vec3 n=normalize(w*n1+u*n2+v*n3);
     // res =HitInfo(Geometry(t,n),DefaultMaterial,objID);
+    objID++;
     res=opUnion(res,HitInfo(Geometry(t,n),DefaultMaterial,objID),isShadowRay,preID);
   }
   return res;

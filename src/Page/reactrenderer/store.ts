@@ -15,6 +15,7 @@ export class Store {
     clearTimeout(this.timer);
     this.timer = setTimeout(() => {
       this.world.updateShader(this);
+      this.world.start();
     }, 0)
   }
   public get dataset() {

@@ -1,4 +1,4 @@
-import { SingleObserver, StructureObserver, USingleData, UStructData } from "../../webglrenderer/uniform";
+import { SingleObserver, StructureObserver, USingleData } from "../../webglrenderer/uniform";
 import { World } from "../../webglrenderer";
 import { ModelProp, Vec3 } from "../../..";
 import triIntersection from '../../webglrenderer/shader/intersection/triangle.glsl';
@@ -65,11 +65,16 @@ export class Model extends Mesh {
     const sizeUpdater = new USingleData(size);
     const triangleUpdater = new USingleData(triangleTexture);
     const aabbUpdater = new USingleData(aabbTexture);
-    this._parameters = new StructureObserver('model', 'Model', new UStructData(
+    // this._parameters = new StructureObserver('model', 'Model', new UStructData(
+    //   new SingleObserver('size', 'float', sizeUpdater),
+    //   new SingleObserver('triangleTexture', 'sampler2D', triangleUpdater),
+    //   new SingleObserver('aabbTexture', 'sampler2D', aabbUpdater)
+    // ));
+    this._parameters = new StructureObserver('model', 'Model',[
       new SingleObserver('size', 'float', sizeUpdater),
       new SingleObserver('triangleTexture', 'sampler2D', triangleUpdater),
       new SingleObserver('aabbTexture', 'sampler2D', aabbUpdater)
-    ));
+    ]);
     this.loadModel(gl, src, position, size, triangleUpdater, aabbUpdater);
   }
   // protected generateGeometryShader = (id: number, type: string) => {
@@ -77,6 +82,6 @@ export class Model extends Mesh {
   //   return `boxIntersection(ray,${name}position,${name}size)`;
   // }
   public get hitInfo() {
-    return 'id++;res = modelIntersect(ray,isShadowRay,preID,res,id);'
+    return 'res = modelIntersect(ray,isShadowRay,preID,res,id);'
   }
 }

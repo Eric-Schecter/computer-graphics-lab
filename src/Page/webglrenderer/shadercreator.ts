@@ -105,8 +105,6 @@ export class ShaderCreator {
       ...sampling,
       main
     ];
-    const shader = shaderArr.join('\n');
-    console.log(shader);
-    return shader;
+    return shaderArr.join('\n');
   }
 }

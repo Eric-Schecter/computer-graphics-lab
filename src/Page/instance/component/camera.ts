@@ -1,4 +1,4 @@
-import { SingleObserver, StructureObserver, USingleData, UStructData } from "../../webglrenderer/uniform";
+import { SingleObserver, StructureObserver, USingleData } from "../../webglrenderer/uniform";
 import { World } from "../../webglrenderer";
 import { Instance } from "..";
 import { CameraProp, UniformData, Vec3 } from "../../..";
@@ -33,40 +33,40 @@ class ViewMatrix extends Matrix3 {
 }
 
 class UCameraPos extends USingleData<Vec3> {
-  constructor(data:Vec3,private viewMatrix:ViewMatrix){
+  constructor(data: Vec3, private viewMatrix: ViewMatrix) {
     super(data)
   }
-  public update = (): UniformData => { 
+  public update = (): UniformData => {
     this.viewMatrix.setPosition(this._data).update();
     return this._data;
   }
 }
 
 class UCameraLookat extends USingleData<Vec3> {
-  constructor(data:Vec3,private viewMatrix:ViewMatrix){
+  constructor(data: Vec3, private viewMatrix: ViewMatrix) {
     super(data)
   }
-  public update = (): UniformData => { 
+  public update = (): UniformData => {
     this.viewMatrix.setLookat(this._data).update();
     return this._data;
   }
 }
 
 class UCameraRot extends USingleData<number> {
-  constructor(data:number,private viewMatrix:ViewMatrix){
+  constructor(data: number, private viewMatrix: ViewMatrix) {
     super(data)
   }
-  public update = (): UniformData => { 
+  public update = (): UniformData => {
     // this.viewMatrix.setLookat(this._data).update();
     return this._data;
   }
 }
 
 class UCameraFov extends USingleData<number> {
-  constructor(data:number,private viewMatrix:ViewMatrix){
+  constructor(data: number, private viewMatrix: ViewMatrix) {
     super(data)
   }
-  public update = (): UniformData => { 
+  public update = (): UniformData => {
     // this.viewMatrix.setFov(this._data).update();
     return this._data;
   }
@@ -74,10 +74,10 @@ class UCameraFov extends USingleData<number> {
 
 
 class UViewMatrixData extends USingleData<Vec3> {
-  constructor(private viewMatrix:ViewMatrix){
+  constructor(private viewMatrix: ViewMatrix) {
     super(viewMatrix.data)
   }
-  public update = (): UniformData => { 
+  public update = (): UniformData => {
     return this.viewMatrix.data;
   }
 }
@@ -87,13 +87,13 @@ export class Camera extends Instance {
     super(props, canvas, world);
     const { position, lookat, rotation, fov } = props;
     const viewMatrix = new ViewMatrix(position, lookat).update();
-    
-    this._parameters = new StructureObserver('uCamera', 'Camera', new UStructData(
-      new SingleObserver('position', 'vec3', new UCameraPos(position,viewMatrix)),
-      new SingleObserver('lookat', 'vec3', new UCameraLookat(lookat,viewMatrix)),
-      new SingleObserver('rotation', 'float', new UCameraRot(rotation,viewMatrix)),
-      new SingleObserver('fov', 'float', new UCameraFov(fov,viewMatrix)),
+
+    this._parameters = new StructureObserver('uCamera', 'Camera', [
+      new SingleObserver('position', 'vec3', new UCameraPos(position, viewMatrix)),
+      new SingleObserver('lookat', 'vec3', new UCameraLookat(lookat, viewMatrix)),
+      new SingleObserver('rotation', 'float', new UCameraRot(rotation, viewMatrix)),
+      new SingleObserver('fov', 'float', new UCameraFov(fov, viewMatrix)),
       new SingleObserver('viewMatrix', 'mat3', new UViewMatrixData(viewMatrix)),
-    ));
+    ]);
   }
 }

@@ -11,9 +11,9 @@ export class ComputeProgram extends Program {
     super(gl, vertex, fragment,size);
   }
   public draw = () => {
-    this.gl.useProgram(this.program);
     this.gl.clearColor(0, 0, 0, 1);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+    this.gl.useProgram(this.program);
     this.uniformObserverable.update();
     this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);
   }
