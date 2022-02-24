@@ -1,7 +1,6 @@
 import { SingleObserver } from ".";
 import { UniformHandler, UniformObserverable } from "..";
 import { UniformData } from "../../../../types";
-// import { UStructData } from "../updater";
 import { Observer } from "./observer";
 
 export class StructureObserver extends Observer {

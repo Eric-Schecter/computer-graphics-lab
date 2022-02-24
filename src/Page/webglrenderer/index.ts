@@ -4,7 +4,7 @@ import * as renderFragmentShader from './shader/template/render.frag';
 import { ComputeProgram, RenderProgram, FrameBufferHandler } from './program';
 import { Store } from '../reactrenderer/store';
 import { TaskHandler } from './taskHandler';
-import { SingleObserver, UFrame, UPixelCurrent, UPixelPre, USingleData, UClock } from './uniform';
+import { SingleObserver, UFrame, UPixelCurrent, UPixelPre, UpdaterKeep } from './uniform';
 import { Clock } from './clock';
 import { InputSystem } from '../inputSystem';
 
@@ -15,7 +15,7 @@ export class World {
   private computeProgram: ComputeProgram;
   private clock = new Clock();
   private frame = new UFrame(0);
-  private size: USingleData<number[]>;
+  private size: UpdaterKeep;
   private isStart = false;
   private static instance: World;
   public static getInstance = (canvas: HTMLCanvasElement, taskHandler: TaskHandler, inputStstem: InputSystem) => {
@@ -30,14 +30,14 @@ export class World {
       throw new Error('create webgl failed');
     }
     const { width, height } = canvas;
-    this.size = new USingleData([width, height]);
+    this.size = new UpdaterKeep([width, height]);
     const framebufferHandler = new FrameBufferHandler(this.gl, this.size);
     this.createComputeProgram(this.gl, framebufferHandler);
     this.createRenderProgram(this.gl);
   }
   private createComputeProgram = (gl: WebGL2RenderingContext, framebufferHandler: FrameBufferHandler) => {
     this.computeProgram = new ComputeProgram(gl, framebufferHandler, vertexShader, fragmentShader, this.size);
-    this.computeProgram.addParameter(new SingleObserver('uTime', 'float', new UClock(this.clock)));
+    // this.computeProgram.addParameter(new SingleObserver('uTime', 'float', new UClock(this.clock)));
     this.computeProgram.addParameter(new SingleObserver('uFrame', 'int', this.frame));
     this.computeProgram.addParameter(new SingleObserver('uPixel', 'sampler2D', new UPixelPre(this.computeProgram)));
     this.computeProgram.addParameter(new SingleObserver('uResolution', 'vec2', this.size));
@@ -70,8 +70,9 @@ export class World {
     this.renderProgram.update();
     this.timer = requestAnimationFrame(this.draw);
   }
-  public start = () =>{
-    if(!this.isStart){
+  public start = () => {
+    if (!this.isStart) {
+      this.isStart = true;
       this.draw();
     }
   }
@@ -84,7 +85,7 @@ export class World {
   // public updateParameter = (name: string, data: UniformData) => {
   //   this.computeProgram.updateParameter(name, data);
   // }
-  public get context(){
+  public get context() {
     return this.gl;
   }
 }

@@ -40,16 +40,10 @@ export class UniformHandler {
     }
     return Object.values(data);
   }
-  // public update = (name: string, data: UniformData) => {
-  //   const setter = this.table.get(name);
-  //   if (setter && data !== undefined) {
-  //     setter(this.handleData(data));
-  //   }
-  // }
-  public update = ({ name, value }: UpdateInfo) => {
+  public update = ({ name, updater }: UpdateInfo) => {
     const setter = this.table.get(name);
-    if (setter && value !== undefined) {
-      setter(this.handleData(value));
+    if (setter) {
+      setter(this.handleData(updater.update()));
     }
   }
   public getPureArraySetter(gl: WebGL2RenderingContext, type: number, addr: WebGLUniformLocation | null, textureID: number) {

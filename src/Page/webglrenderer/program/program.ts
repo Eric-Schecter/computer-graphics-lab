@@ -1,4 +1,4 @@
-import { UniformHandler, SingleObserver, UniformObserverable, StructureObserver, USingleData } from '../uniform';
+import { UniformHandler, SingleObserver, UniformObserverable, StructureObserver, UpdaterKeep } from '../uniform';
 
 export class Program {
   protected program: WebGLProgram;
@@ -6,7 +6,7 @@ export class Program {
   protected uniformObserverable = new UniformObserverable(this.uniformHandler);
   protected vertexShader: WebGLShader;
   protected fragmentShader: WebGLShader;
-  constructor(protected gl: WebGL2RenderingContext, vertex: string, fragment: string, private size: USingleData<number[]>) {
+  constructor(protected gl: WebGL2RenderingContext, vertex: string, fragment: string, private size: UpdaterKeep) {
     const vertexShader = this.createShader(this.gl, this.gl.VERTEX_SHADER, vertex);
     const fragmentShader = this.createShader(this.gl, this.gl.FRAGMENT_SHADER, fragment);
 
@@ -79,7 +79,7 @@ export class Program {
     this.gl.useProgram(this.program);
     this.gl.clearColor(0, 0, 0, 1);
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
-    const [width, height] = this.size.data;
+    const [width, height] = this.size.data as number[];
     this.gl.viewport(0, 0, width, height);
     this.uniformObserverable.update();
     this.gl.drawArrays(this.gl.TRIANGLES, 0, 6);

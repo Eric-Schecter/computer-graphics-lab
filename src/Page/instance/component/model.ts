@@ -1,4 +1,4 @@
-import { SingleObserver, StructureObserver, USingleData } from "../../webglrenderer/uniform";
+import { SingleObserver, StructureObserver, Updater } from "../../webglrenderer/uniform";
 import { World } from "../../webglrenderer";
 import { ModelProp, Vec3 } from "../../..";
 import triIntersection from '../../webglrenderer/shader/intersection/triangle.glsl';
@@ -27,7 +27,7 @@ export class Model extends Mesh {
     this._material = `DefaultMaterial`;
   }
   private loadModel = (gl: WebGL2RenderingContext, src: string,position:Vec3, size: number,
-    triangleUpdater: USingleData<WebGLTexture>, aabbUpdater: USingleData<WebGLTexture>) => {
+    triangleUpdater: Updater<WebGLTexture>, aabbUpdater: Updater<WebGLTexture>) => {
     const loader = new GLTFLoader();
     try {
       loader.load(
@@ -62,14 +62,9 @@ export class Model extends Mesh {
     const aabbTexture = DataTexture.generate(gl);
     if (!triangleTexture || !aabbTexture) { return }
     const size = 2048;
-    const sizeUpdater = new USingleData(size);
-    const triangleUpdater = new USingleData(triangleTexture);
-    const aabbUpdater = new USingleData(aabbTexture);
-    // this._parameters = new StructureObserver('model', 'Model', new UStructData(
-    //   new SingleObserver('size', 'float', sizeUpdater),
-    //   new SingleObserver('triangleTexture', 'sampler2D', triangleUpdater),
-    //   new SingleObserver('aabbTexture', 'sampler2D', aabbUpdater)
-    // ));
+    const sizeUpdater = new Updater(size);
+    const triangleUpdater = new Updater(triangleTexture);
+    const aabbUpdater = new Updater(aabbTexture);
     this._parameters = new StructureObserver('model', 'Model',[
       new SingleObserver('size', 'float', sizeUpdater),
       new SingleObserver('triangleTexture', 'sampler2D', triangleUpdater),

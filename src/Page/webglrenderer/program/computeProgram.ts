@@ -1,13 +1,12 @@
 import { Program } from "./program";
-import { UniformData } from "../../../types";
 import { ShaderCreator } from "../shadercreator";
 import { Store } from "../../reactrenderer/store";
 import { FrameBufferHandler } from "./framebufferHandler";
-import { USingleData } from "../uniform";
+import { UpdaterKeep } from "../uniform";
 
 export class ComputeProgram extends Program {
   private shaderCreator = new ShaderCreator();
-  constructor(gl: WebGL2RenderingContext, private frameBufferHandler: FrameBufferHandler, vertex: string, fragment: string, size: USingleData<number[]>) {
+  constructor(gl: WebGL2RenderingContext, private frameBufferHandler: FrameBufferHandler, vertex: string, fragment: string, size: UpdaterKeep) {
     super(gl, vertex, fragment,size);
   }
   public draw = () => {
@@ -35,11 +34,10 @@ export class ComputeProgram extends Program {
     for (const instance of store.dataset.values()) {
       this.uniformObserverable.add(instance.parameters);
     }
-
+    
     const shader = this.shaderCreator.create(store, settings, this.uniformObserverable.infos);
-    const frag = this.createShader(this.gl, this.gl.FRAGMENT_SHADER, shader);
     this.gl.detachShader(this.program, this.fragmentShader);
-    this.fragmentShader = frag;
+    this.fragmentShader = this.createShader(this.gl, this.gl.FRAGMENT_SHADER, shader);
     this.gl.attachShader(this.program, this.fragmentShader);
     this.gl.linkProgram(this.program);
     this.gl.useProgram(this.program);

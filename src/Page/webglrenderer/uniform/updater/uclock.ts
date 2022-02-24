@@ -1,7 +1,7 @@
-import { USingleData } from ".";
+import { Updater } from "./updater";
 import { Clock } from "../../clock";
 
-export class UClock extends USingleData<Clock>{
+export class UClock extends Updater<Clock>{
   constructor(private clock:Clock) {
     super(clock);
   }
