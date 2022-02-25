@@ -1,16 +1,16 @@
-import { USingleData } from "../uniform";
+import { UpdaterKeep } from "../uniform";
 
 export class FrameBufferHandler {
   private index = 0;
   private renderTargets: WebGLTexture[];
   private fb: WebGLFramebuffer;
   private presize = [[0, 0], [0, 0]];
-  constructor(private gl: WebGL2RenderingContext, private size: USingleData<number[]>) {
+  constructor(private gl: WebGL2RenderingContext, private size: UpdaterKeep) {
     this.fb = gl.createFramebuffer() as WebGLFramebuffer;
     this.renderTargets = new Array(2).fill(0).map(() => gl.createTexture()).flatMap(texture => texture ? [texture] : []);
   }
   private updateTexture = () => {
-    const [width, height] = this.size.data;
+    const [width, height] = this.size.data as number[];
     const [prewidth, preheight] = this.presize[this.index];
     if (prewidth === width && preheight === height) {
       return;

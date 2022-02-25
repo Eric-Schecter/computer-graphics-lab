@@ -1,6 +1,6 @@
 {
   "name": "@youyouzone/react-sdf",
-  "version": "0.0.31",
+  "version": "0.0.36",
   "description": "A React renderer for path tracing",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -19,7 +19,6 @@
   },
   "keywords": [
     "react-component",
-    "sdf",
     "shader"
   ],
   "author": "Eric Huang <eric199002@icloud.com>",

@@ -1,5 +1,5 @@
 import { Mesh } from "./mesh";
-import { SingleObserver, StructureObserver, USingleData } from "../../webglrenderer/uniform";
+import { SingleObserver, StructureObserver, Updater } from "../../webglrenderer/uniform";
 import { World } from "../../webglrenderer";
 import { BoxProp } from "../../..";
 import intersection from '../../webglrenderer/shader/intersection/box.glsl';
@@ -14,19 +14,19 @@ export class Box extends Mesh {
     this._intersection = intersection;
     this._parameters = new StructureObserver(`box[${id}]`, 'Box', [
       new StructureObserver('geometry', 'BoxGeometry', [
-        new SingleObserver('position', 'vec3', new USingleData(position)),
-        new SingleObserver('size', 'vec3', new USingleData(size)),
+        new SingleObserver('position', 'vec3', new Updater(position)),
+        new SingleObserver('size', 'vec3', new Updater(size)),
       ]),
       new StructureObserver('material', 'Material', [
-        new SingleObserver('color', 'vec3', new USingleData(color)),
-        new SingleObserver('emissive', 'vec3', new USingleData(emissive)),
-        new SingleObserver('roughness', 'float', new USingleData(roughness)),
-        new SingleObserver('metallic', 'float', new USingleData(metallic)),
-        new SingleObserver('specTrans', 'float', new USingleData(specTrans)),
-        new SingleObserver('specColor', 'vec3', new USingleData(specColor)),
-        new SingleObserver('clearcoat', 'float', new USingleData(clearcoat)),
-        new SingleObserver('clearcoatGloss', 'float', new USingleData(clearcoatGloss)),
-        new SingleObserver('specular', 'float', new USingleData(specular)),
+        new SingleObserver('color', 'vec3', new Updater(color)),
+        new SingleObserver('emissive', 'vec3', new Updater(emissive)),
+        new SingleObserver('roughness', 'float', new Updater(roughness)),
+        new SingleObserver('metallic', 'float', new Updater(metallic)),
+        new SingleObserver('specTrans', 'float', new Updater(specTrans)),
+        new SingleObserver('specColor', 'vec3', new Updater(specColor)),
+        new SingleObserver('clearcoat', 'float', new Updater(clearcoat)),
+        new SingleObserver('clearcoatGloss', 'float', new Updater(clearcoatGloss)),
+        new SingleObserver('specular', 'float', new Updater(specular)),
       ]),
     ])
     this._geometry = this.generateGeometryShader(id);
