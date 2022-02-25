@@ -1,4 +1,4 @@
-import { SingleObserver, StructureObserver, Updater } from "../../webglrenderer/uniform";
+import { SingleData, StructureData, Updater } from "../../webglrenderer/uniform";
 import { World } from "../../webglrenderer";
 import { ModelProp, Vec3 } from "../../..";
 import triIntersection from '../../webglrenderer/shader/intersection/triangle.glsl';
@@ -65,10 +65,10 @@ export class Model extends Mesh {
     const sizeUpdater = new Updater(size);
     const triangleUpdater = new Updater(triangleTexture);
     const aabbUpdater = new Updater(aabbTexture);
-    this._parameters = new StructureObserver('model', 'Model',[
-      new SingleObserver('size', 'float', sizeUpdater),
-      new SingleObserver('triangleTexture', 'sampler2D', triangleUpdater),
-      new SingleObserver('aabbTexture', 'sampler2D', aabbUpdater)
+    this._parameters = new StructureData('model', 'Model',[
+      new SingleData('size', 'float', sizeUpdater),
+      new SingleData('triangleTexture', 'sampler2D', triangleUpdater),
+      new SingleData('aabbTexture', 'sampler2D', aabbUpdater)
     ]);
     this.loadModel(gl, src, position, size, triangleUpdater, aabbUpdater);
   }

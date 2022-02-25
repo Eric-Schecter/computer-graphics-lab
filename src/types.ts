@@ -83,7 +83,7 @@ type CameraInstance = {
 }
 
 export type InstanceType = BasicInstance & (MeshInstance | CameraInstance);
-export type UniformData = number[] | number | { [prop: string]: number } | WebGLTexture;
+export type UniformDataType = number[] | number | { [prop: string]: number } | WebGLTexture;
 
 export type EventHandlers = {
   onClick?: (event: React.MouseEvent) => void

@@ -1,10 +1,10 @@
-import { Observer, SingleObserver } from "./observer";
+import { UniformData, SingleData } from "./unifromdata";
 import { UniformHandler } from "./uniformHandler";
 import { UpdateInfo } from "./updateinfo";
 
 export class UniformObserverable {
-  private observers = new Map<string, Observer>();
-  private updatequeue = new Set<SingleObserver>();
+  private observers = new Map<string, UniformData>();
+  private updatequeue = new Set<SingleData>();
   constructor(private uniformHandler: UniformHandler) { }
   public update = () => {
     for (const observer of this.updatequeue) {
@@ -14,11 +14,11 @@ export class UniformObserverable {
       }
     }
   }
-  public add = (observer: Observer) => {
+  public add = (observer: UniformData) => {
     this.observers.set(observer.name, observer);
     observer.setObserverable(this);
   }
-  public addUpdateQueue = (observer: SingleObserver) => {
+  public addUpdateQueue = (observer: SingleData) => {
     this.updatequeue.add(observer);
   }
   public reset = () => {

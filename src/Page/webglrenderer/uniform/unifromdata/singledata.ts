@@ -1,17 +1,16 @@
-import { Observer } from "./observer";
+import { UniformData } from "./abstractdata";
 import { Updater } from '../updater';
-import { UniformData } from "../../../../types";
+import { UniformDataType } from "../../../../types";
 import { UniformObserverable } from "..";
-import { UpdateInfo } from "../updateinfo";
 
-export class SingleObserver extends Observer {
+export class SingleData extends UniformData {
   private _uniformName: string;
   private _observerable: UniformObserverable;
-  constructor(_name: string, _type: string, protected _updater: Updater<UniformData>) {
+  constructor(_name: string, _type: string, protected _updater: Updater<UniformDataType>) {
     super(_name, _type);
     this._uniformName = _name;
   }
-  public setData = (data: UniformData) => {
+  public setData = (data: UniformDataType) => {
     this._updater.data = data;
     this._observerable.addUpdateQueue(this);
   }

@@ -1,6 +1,6 @@
 import { Updater } from ".";
-import { UniformData } from "../../..";
+import { UniformDataType } from "../../..";
 
 export class UpdateInfo {
-  constructor(public name: string, public updater: Updater<UniformData>) { }
+  constructor(public name: string, public updater: Updater<UniformDataType>) { }
 }

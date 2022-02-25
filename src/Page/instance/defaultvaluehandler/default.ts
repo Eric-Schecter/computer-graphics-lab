@@ -1,8 +1,8 @@
-import { UniformData } from "../../.."
+import { UniformDataType } from "../../.."
 import { CLEARCOAT, CLEARCOATGLOSS, COLOR, EMISSIVE, SPECULAR, METALLIC, POSITION, ROUGHNESS, SPECCOLOR, SPECTRANS } from "../../../parameters";
 
 export class DefaultValueHandler {
-  protected defaultValue = new Map<string, UniformData>([
+  protected defaultValue = new Map<string, UniformDataType>([
     ['position', POSITION],
     ['color', COLOR],
     ['emissive', EMISSIVE],

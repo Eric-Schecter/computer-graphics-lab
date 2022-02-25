@@ -1,5 +1,5 @@
 import { Mesh } from "./mesh";
-import { SingleObserver, StructureObserver, Updater } from "../../webglrenderer/uniform";
+import { SingleData, StructureData, Updater } from "../../webglrenderer/uniform";
 import { World } from "../../webglrenderer";
 import { SphereProp } from "../../..";
 import intersection from '../../webglrenderer/shader/intersection/sphere.glsl';
@@ -12,21 +12,21 @@ export class Sphere extends Mesh {
     this.defaultValueHandler = new SphereDefaultValueHandler();
     const { position, radius, color, emissive, roughness, metallic, specTrans, specular, specColor, clearcoat, clearcoatGloss } = this.defaultValueHandler.process(props);
     this._intersection = intersection;
-    this._parameters = new StructureObserver(`sphere[${id}]`, 'Sphere', [
-      new StructureObserver('geometry', 'SphereGeometry', [
-        new SingleObserver('position', 'vec3', new Updater(position)),
-        new SingleObserver('radius', 'float', new Updater(radius)),
+    this._parameters = new StructureData(`sphere[${id}]`, 'Sphere', [
+      new StructureData('geometry', 'SphereGeometry', [
+        new SingleData('position', 'vec3', new Updater(position)),
+        new SingleData('radius', 'float', new Updater(radius)),
       ]),
-      new StructureObserver('material', 'Material', [
-        new SingleObserver('color', 'vec3', new Updater(color)),
-        new SingleObserver('emissive', 'vec3', new Updater(emissive)),
-        new SingleObserver('roughness', 'float', new Updater(roughness)),
-        new SingleObserver('metallic', 'float', new Updater(metallic)),
-        new SingleObserver('specTrans', 'float', new Updater(specTrans)),
-        new SingleObserver('specColor', 'vec3', new Updater(specColor)),
-        new SingleObserver('clearcoat', 'float', new Updater(clearcoat)),
-        new SingleObserver('clearcoatGloss', 'float', new Updater(clearcoatGloss)),
-        new SingleObserver('specular', 'float', new Updater(specular)),
+      new StructureData('material', 'Material', [
+        new SingleData('color', 'vec3', new Updater(color)),
+        new SingleData('emissive', 'vec3', new Updater(emissive)),
+        new SingleData('roughness', 'float', new Updater(roughness)),
+        new SingleData('metallic', 'float', new Updater(metallic)),
+        new SingleData('specTrans', 'float', new Updater(specTrans)),
+        new SingleData('specColor', 'vec3', new Updater(specColor)),
+        new SingleData('clearcoat', 'float', new Updater(clearcoat)),
+        new SingleData('clearcoatGloss', 'float', new Updater(clearcoatGloss)),
+        new SingleData('specular', 'float', new Updater(specular)),
       ]),
     ]);
     this._geometry = this.generateGeometryShader(id);

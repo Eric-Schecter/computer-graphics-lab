@@ -1,4 +1,4 @@
 export { UniformHandler } from './uniformHandler';
 export { UniformObserverable } from './uniformObserverable';
-export { SingleObserver, StructureObserver, Observer } from './observer';
+export { SingleData, StructureData, UniformData } from './unifromdata';
 export * from './updater';

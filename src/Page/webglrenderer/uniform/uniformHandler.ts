@@ -1,9 +1,9 @@
 //learn from threejs WebGLUniforms.js
 
-import { UniformData } from "../../../types";
+import { UniformDataType } from "../../../types";
 import { UpdateInfo } from "./updateinfo";
 
-type Setter = (data: UniformData) => void;
+type Setter = (data: UniformDataType) => void;
 
 export class UniformHandler {
   private table = new Map<string, Setter>();
@@ -31,7 +31,7 @@ export class UniformHandler {
       }
     }
   }
-  private handleData = (data: UniformData) => {
+  private handleData = (data: UniformDataType) => {
     if (Array.isArray(data) || data instanceof WebGLTexture) {
       return data;
     }

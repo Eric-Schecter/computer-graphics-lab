@@ -1,9 +1,9 @@
-import { UniformData } from "../../../../types";
+import { UniformDataType } from "../../../../types";
 import { UniformObserverable } from "..";
 
-export abstract class Observer {
+export abstract class UniformData {
   constructor(protected _name: string, private _type: string) { }
-  public abstract setData: (data: UniformData, key?: string) => void;
+  public abstract setData: (data: UniformDataType, key?: string) => void;
   public abstract setName: (name: string) => void;
   public abstract setObserverable: (ob: UniformObserverable) => void;
   public get name() {

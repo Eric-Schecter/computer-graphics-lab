@@ -1,4 +1,4 @@
-import { UniformHandler, SingleObserver, UniformObserverable, StructureObserver, UpdaterKeep } from '../uniform';
+import { UniformHandler, UniformObserverable, UpdaterKeep, UniformData } from '../uniform';
 
 export class Program {
   protected program: WebGLProgram;
@@ -30,8 +30,8 @@ export class Program {
     }
     return program;
   }
-  public addParameter = (oberver: SingleObserver | StructureObserver) => {
-    this.uniformObserverable.add(oberver);
+  public addParameter = (data: UniformData) => {
+    this.uniformObserverable.add(data);
   }
   public remvoeParameter = () => {
 

@@ -4,7 +4,7 @@ import * as renderFragmentShader from './shader/template/render.frag';
 import { ComputeProgram, RenderProgram, FrameBufferHandler } from './program';
 import { Store } from '../reactrenderer/store';
 import { TaskHandler } from './taskHandler';
-import { SingleObserver, UFrame, UPixelCurrent, UPixelPre, UpdaterKeep } from './uniform';
+import { SingleData, UFrame, UPixelCurrent, UPixelPre, UpdaterKeep } from './uniform';
 import { Clock } from './clock';
 import { InputSystem } from '../inputSystem';
 
@@ -38,14 +38,14 @@ export class World {
   private createComputeProgram = (gl: WebGL2RenderingContext, framebufferHandler: FrameBufferHandler) => {
     this.computeProgram = new ComputeProgram(gl, framebufferHandler, vertexShader, fragmentShader, this.size);
     // this.computeProgram.addParameter(new SingleObserver('uTime', 'float', new UClock(this.clock)));
-    this.computeProgram.addParameter(new SingleObserver('uFrame', 'int', this.frame));
-    this.computeProgram.addParameter(new SingleObserver('uPixel', 'sampler2D', new UPixelPre(this.computeProgram)));
-    this.computeProgram.addParameter(new SingleObserver('uResolution', 'vec2', this.size));
+    this.computeProgram.addParameter(new SingleData('uFrame', 'int', this.frame));
+    this.computeProgram.addParameter(new SingleData('uPixel', 'sampler2D', new UPixelPre(this.computeProgram)));
+    this.computeProgram.addParameter(new SingleData('uResolution', 'vec2', this.size));
   }
   private createRenderProgram = (gl: WebGL2RenderingContext) => {
     this.renderProgram = new RenderProgram(gl, vertexShader, renderFragmentShader, this.size);
-    this.renderProgram.addParameter(new SingleObserver('uPixel', 'sampler2D', new UPixelCurrent(this.computeProgram)));
-    this.renderProgram.addParameter(new SingleObserver('uResolution', 'vec2', this.size));
+    this.renderProgram.addParameter(new SingleData('uPixel', 'sampler2D', new UPixelCurrent(this.computeProgram)));
+    this.renderProgram.addParameter(new SingleData('uResolution', 'vec2', this.size));
   }
   public destory = () => {
     cancelAnimationFrame(this.timer);
