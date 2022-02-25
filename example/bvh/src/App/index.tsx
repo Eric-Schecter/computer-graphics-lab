@@ -29,8 +29,5 @@ export const App = () => {
       src={'models/StanfordDragon.glb'}
       position={[0,-50,0]}
     />
-    {/* <model
-      src={'models/glTF/box.gltf'}
-    /> */}
   </Page>
 }
