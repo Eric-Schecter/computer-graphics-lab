@@ -83,8 +83,8 @@ class UViewMatrixData extends Updater<Vec3> {
 }
 
 export class Camera extends Instance {
-  constructor(props: CameraProp, canvas: HTMLCanvasElement, world: World) {
-    super(props, canvas, world);
+  constructor(props: CameraProp, world: World) {
+    super(props, world);
     const { position, lookat, rotation, fov } = props;
     const viewMatrix = new ViewMatrix(position, lookat).update();
     

@@ -1,5 +1,5 @@
 import { GUI } from 'dat.gui';
-import { UniformData } from '@youyouzone/react-sdf';
+import { UniformDataType } from '@youyouzone/react-sdf';
 
 export class GUIHelper {
   private gui: any;
@@ -9,9 +9,9 @@ export class GUIHelper {
     this.gui.domElement.style.position = 'absolute';
     this.gui.domElement.style.top = '0';
   }
-  public init = (state: { [prop: string]: UniformData }, setState: any) => {
-    const change = (key: string, value: UniformData) => setState((pre: any) => { return { ...pre, ...{ [key]: value } } });
-    const addItem = (folder: any, itemName: string, down: number, up: number) => folder.add(state, itemName, down, up, (up - down) / 100).onChange((value: UniformData) => change(itemName, value));
+  public init = (state: { [prop: string]: UniformDataType }, setState: any) => {
+    const change = (key: string, value: UniformDataType) => setState((pre: any) => { return { ...pre, ...{ [key]: value } } });
+    const addItem = (folder: any, itemName: string, down: number, up: number) => folder.add(state, itemName, down, up, (up - down) / 100).onChange((value: UniformDataType) => change(itemName, value));
     const addColorItem = (folder: any, itemName: string) => folder.addColor(state, itemName).onChange((value: number[]) => change(itemName, value));
 
     const geometry = this.gui.addFolder('Geometry');

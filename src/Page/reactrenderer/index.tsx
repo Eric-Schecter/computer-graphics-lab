@@ -6,6 +6,10 @@ import { Instance, Factory } from '../instance';
 import { context } from '../../context';
 import { TaskHandler } from '../webglrenderer/taskHandler';
 import { InputSystem } from '../inputSystem';
+import { EventsHandler } from '../eventsHandler';
+import { Comparator } from './comparator';
+
+let world: World;
 
 const appendChild = (parent: Store, child: Instance) => {
   parent.add(child);
@@ -33,8 +37,9 @@ const HostConfig: any = {
   },
   createInstance(type: string, props: { [prop: string]: any }, store: Store, hostContext: Store, internalInstanceHandle: Fiber) {
     // console.log('createInstance')
-    const { facotry, canvas, world } = store;
-    return facotry.build(type, props, canvas, world);
+    const { facotry, world, eventHandler } = store;
+    eventHandler.addEvents(props);
+    return facotry.build(type, props, world);
   },
   appendInitialChild(parent: Store, child: Instance) {
     // console.log('appendInitialChild', child);
@@ -47,7 +52,7 @@ const HostConfig: any = {
   prepareUpdate(instance: Instance, type: string, oldProps: object, newProps: object) {
     // console.log("prepareUpdate", instance, type, oldProps, newProps);
     const result = {};
-    const isChanged = instance.compare(oldProps, newProps, result);
+    const isChanged = Comparator.compare(oldProps, newProps, result);
     if (!isChanged) {
       return null;
     }
@@ -115,6 +120,7 @@ const HostConfig: any = {
   commitUpdate(instance: Instance, changedProps: object, type: string, oldProps: object, newProps: object, fiber: Fiber) {
     // console.log("commitUpdate", changedProps, instance, fiber);
     instance.update(changedProps);
+    world.isMoving = true;
   },
   insertBefore(...args: any[]) {
     // console.log("insertBefore", args);
@@ -187,10 +193,11 @@ const reconciler = Reconciler(HostConfig);
 const Renderer = {
   render: (component: ReactNode, container: HTMLCanvasElement) => {
     const taskHandler = new TaskHandler();
-    const inputSystem = InputSystem.getInstance();
-    const world = World.getInstance(container, taskHandler, inputSystem);
+    const inputSystem = new InputSystem();
+    world = World.getInstance(container, taskHandler, inputSystem);
     const facotry = new Factory();
-    const store = new Store(container, world, taskHandler, facotry);
+    const eventHandlers = new EventsHandler(container);
+    const store = new Store(world, taskHandler, facotry, eventHandlers);
     const fiber = reconciler.createContainer(store, 0, false, null);
     const root = <context.Provider value={store}>{component}</context.Provider>;
     reconciler.updateContainer(root, fiber, null);

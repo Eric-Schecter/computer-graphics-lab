@@ -6,8 +6,8 @@ import intersection from '../../webglrenderer/shader/intersection/box.glsl';
 import { BoxDefaultValueHandler } from "../defaultvaluehandler";
 
 export class Box extends Mesh {
-  constructor(props: BoxProp, canvas: HTMLCanvasElement, world: World, id: number) {
-    super(props, canvas, world);
+  constructor(props: BoxProp, world: World, id: number) {
+    super(props, world);
     this._name = 'box';
     this.defaultValueHandler = new BoxDefaultValueHandler();
     const { position, size, color, emissive, roughness, metallic, specTrans, specular, specColor, clearcoat, clearcoatGloss } = this.defaultValueHandler.process(props);

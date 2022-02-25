@@ -14,9 +14,10 @@ export class World {
   private renderProgram: RenderProgram;
   private computeProgram: ComputeProgram;
   private clock = new Clock();
-  private frame = new UFrame(0);
+  private frame = new UFrame(0, this);
   private size: UpdaterKeep;
   private isStart = false;
+  public isMoving = false;
   private static instance: World;
   public static getInstance = (canvas: HTMLCanvasElement, taskHandler: TaskHandler, inputStstem: InputSystem) => {
     if (!World.instance) {
@@ -60,7 +61,7 @@ export class World {
     this.canvas.width = clientWidth;
     this.canvas.height = clientHeight;
     this.size.data = [clientWidth, clientHeight];
-    this.reset();
+    this.isMoving = true;
   }
   private draw = () => {
     this.clock.update();
@@ -75,9 +76,6 @@ export class World {
       this.isStart = true;
       this.draw();
     }
-  }
-  public reset = () => {
-    this.frame.data = 0;
   }
   public updateShader = (store: Store) => {
     this.computeProgram.updateShader(store);

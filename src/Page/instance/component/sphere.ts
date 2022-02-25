@@ -6,8 +6,8 @@ import intersection from '../../webglrenderer/shader/intersection/sphere.glsl';
 import { SphereDefaultValueHandler } from "../defaultvaluehandler";
 
 export class Sphere extends Mesh {
-  constructor(props: SphereProp, canvas: HTMLCanvasElement, world: World, id: number) {
-    super(props, canvas, world);
+  constructor(props: SphereProp, world: World, id: number) {
+    super(props, world);
     this._name = 'sphere';
     this.defaultValueHandler = new SphereDefaultValueHandler();
     const { position, radius, color, emissive, roughness, metallic, specTrans, specular, specColor, clearcoat, clearcoatGloss } = this.defaultValueHandler.process(props);

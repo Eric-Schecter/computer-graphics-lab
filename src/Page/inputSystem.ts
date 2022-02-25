@@ -2,7 +2,22 @@ import { World } from "./webglrenderer";
 
 type CallBack = () => void;
 
-class KeyboardSystem {
+enum CommandCode {
+
+}
+
+class CommandList {
+  private table = new Map();
+  public match = () => {
+
+  }
+}
+
+class State {
+  
+}
+
+class KeyboardState {
   private set = new Set();
   public add = (key: string) => {
     this.set.add(key);
@@ -15,16 +30,13 @@ class KeyboardSystem {
   }
 }
 
+class MouseState {
+
+}
+
+/** record input state, include key and mouse */
 export class InputSystem {
-  private static instance: InputSystem;
-  public static getInstance = () => {
-    if (!InputSystem.instance) {
-      InputSystem.instance = new InputSystem();
-    }
-    return InputSystem.instance;
-  }
   private table = new Map<string, Set<CallBack>>();
-  private constructor() { }
   public update = () => {
     for (const cbs of this.table.values()) {
       cbs.forEach(cb => cb());

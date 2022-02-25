@@ -14,8 +14,8 @@ import { DataTexture } from "../../webglrenderer/datatexture";
 
 export class Model extends Mesh {
   private bvh: BVH;
-  constructor(props: ModelProp, canvas: HTMLCanvasElement, world: World) {
-    super(props, canvas, world);
+  constructor(props: ModelProp,  world: World) {
+    super(props, world);
     // this._name = 'model';
     this.defaultValueHandler = new DefaultValueHandler();
     const { position, src } = this.defaultValueHandler.process(props);

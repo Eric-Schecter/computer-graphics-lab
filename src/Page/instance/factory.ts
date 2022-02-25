@@ -7,16 +7,16 @@ export class Factory {
     'box': -1,
     'sphere': -1,
   }
-  public build = (type: string, props: object, canvas: HTMLCanvasElement, world: World) => {
+  public build = (type: string, props: object, world: World) => {
     if (type in this.table) {
       this.table[type]++;
     }
     const id = this.table[type];
     switch (type) {
-      case 'box': return new Box(props as BoxProp, canvas, world, id);
-      case 'sphere': return new Sphere(props as SphereProp, canvas, world, id);
-      case 'camera': return new Camera(props as CameraProp, canvas, world);
-      case 'model': return new Model(props as ModelProp, canvas, world);
+      case 'box': return new Box(props as BoxProp, world, id);
+      case 'sphere': return new Sphere(props as SphereProp, world, id);
+      case 'camera': return new Camera(props as CameraProp, world);
+      case 'model': return new Model(props as ModelProp, world);
     }
   }
   public get getUniforms() {
