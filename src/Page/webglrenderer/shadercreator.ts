@@ -1,5 +1,5 @@
 import main from './shader/others/main.glsl';
-import opUnion from './shader/others/opUnion.glsl';
+import testVisibility from './shader/others/testVisibility.glsl';
 import random from './shader/others/random.glsl';
 import prefix from './shader/others/prefix.glsl';
 import ray from './shader/struct/ray.glsl';
@@ -54,20 +54,52 @@ export class ShaderCreator {
       intersections.add(d.intersection);
     }
 
+    // const geometries = [
+    //   'bool scene(Ray ray,bool isShadowRay,inout HitInfo res,int preID){',
+    //   'int id = 0;',
+
+    //   'res = HitInfo(DefaultGeometry,DefaultMaterial,id);',
+    //   ...meshes.map(mesh => mesh.hitInfo),
+    //   'res.material.roughness = max(res.material.roughness,ROUGHNESS);', // limit roughness not to be 0
+    //   'res.material.clearcoatGloss = max(res.material.clearcoatGloss,ROUGHNESS);', // limit clearcoatGloss not to be 0
+    //   'res.material.specular = max(res.material.specular,0.001);', // limit specular not to be 0 to avoid bug
+    //   'return res.geometry.dist<LIMIT;',
+    //   '}'
+    // ]
+
     const geometries = [
       'bool scene(Ray ray,bool isShadowRay,inout HitInfo res,int preID){',
-      'int id = 0;',
-      'res = HitInfo(DefaultGeometry,DefaultMaterial,id);',
+      'vec4 gInfo = vec4(vec3(0.),LIMIT);', // xyz:normal,w:dist
+      'ivec4 oInfo = ivec4(0);',             // x:id,y:idIntersected,z:index,w:type
       ...meshes.map(mesh => mesh.hitInfo),
-      'res.material.roughness = max(res.material.roughness,ROUGHNESS);', // limit roughness not to be 0
-      'res.material.clearcoatGloss = max(res.material.clearcoatGloss,ROUGHNESS);', // limit clearcoatGloss not to be 0
-      'res.material.specular = max(res.material.specular,0.001);', // limit specular not to be 0 to avoid bug
-      'return res.geometry.dist<LIMIT;',
+
+      'Material material;',
+      'if(oInfo.w==DefaultPrimitive){',
+      'return false;',
+      '}else if(oInfo.w==BOX){',
+      'material = box[oInfo.z].material;',
+      '}else if(oInfo.w == SPHERE){',
+      'material = sphere[oInfo.z].material;',
+      '}',
+
+      'res.geometry.dist = gInfo.w;',
+      'res.geometry.normal = gInfo.xyz;',
+      'res.id = oInfo.y;',
+      'res.material.color = material.color;',
+      'res.material.emissive = material.emissive;',
+      'res.material.roughness = max(material.roughness,ROUGHNESS);',
+      'res.material.metallic = material.metallic;',
+      'res.material.specTrans = material.specTrans;',
+      'res.material.specular = max(material.specular,0.001);',
+      'res.material.specColor = material.specColor;',
+      'res.material.clearcoat = material.clearcoat;',
+      'res.material.clearcoatGloss = max(material.clearcoatGloss,ROUGHNESS);',
+      'return true;',
       '}'
     ]
 
     return [
-      opUnion,
+      testVisibility,
       ...intersections,
       ...geometries,
     ]
@@ -77,7 +109,7 @@ export class ShaderCreator {
       .filter(({ name }) => !name.includes('['))
       .map(({ name, type }) => `uniform ${type} ${name};`);
     const uniforms2 = store.facotry.getUniforms;
-    const structs = [ray, camera, hitinfo, sphere, box, weight,model];
+    const structs = [ray, camera, hitinfo, sphere, box, weight, model];
     const maths = [translate];
     const postprocess = [gamacorrect, acesfilm, vignette];
     const bsdf = [dielectricFresnel, distribution, schlickFresnel, geometry, diffuseBRDF, metallicBRDF, computePdf, clearcoat, BTDF, BSDF];
@@ -105,6 +137,8 @@ export class ShaderCreator {
       ...sampling,
       main
     ];
-    return shaderArr.join('\n');
+    const a = shaderArr.join('\n');
+    console.log(a);
+    return a;
   }
 }

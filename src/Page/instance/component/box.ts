@@ -6,7 +6,7 @@ import intersection from '../../webglrenderer/shader/intersection/box.glsl';
 import { BoxDefaultValueHandler } from "../defaultvaluehandler";
 
 export class Box extends Mesh {
-  constructor(props: BoxProp, world: World, id: number) {
+  constructor(props: BoxProp, world: World, private id: number) {
     super(props, world);
     this._name = 'box';
     this.defaultValueHandler = new BoxDefaultValueHandler();
@@ -29,11 +29,9 @@ export class Box extends Mesh {
         new SingleData('specular', 'float', new Updater(specular)),
       ]),
     ])
-    this._geometry = this.generateGeometryShader(id);
-    this._material = this.generateMaterialShader(id, 'material');
   }
-  protected generateGeometryShader = (id: number) => {
-    const name = `${this._name}[${id}].geometry.`;
-    return `boxIntersection(ray,${name}position,${name}size)`;
+  public get hitInfo() {
+    const name = `${this._name}[${this.id}].geometry.`;
+    return `oInfo.x++;boxIntersection(ray,${name}position,${name}size,gInfo,oInfo,${this.id});`;
   }
 }

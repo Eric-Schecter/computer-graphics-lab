@@ -23,8 +23,6 @@ export class Model extends Mesh {
     if (world.context) {
       this.createTexture(world.context, src,position);
     }
-    this._geometry = `DefaultGeometry`;
-    this._material = `DefaultMaterial`;
   }
   private loadModel = (gl: WebGL2RenderingContext, src: string,position:Vec3, size: number,
     triangleUpdater: Updater<WebGLTexture>, aabbUpdater: Updater<WebGLTexture>) => {
@@ -77,6 +75,6 @@ export class Model extends Mesh {
   //   return `boxIntersection(ray,${name}position,${name}size)`;
   // }
   public get hitInfo() {
-    return 'res = modelIntersect(ray,isShadowRay,preID,res,id);'
+    return 'modelIntersect(ray,isShadowRay,preID,res,id);'
   }
 }

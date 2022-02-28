@@ -13,5 +13,11 @@
 
 #define AirIoR 1.
 
+#define DefaultPrimitive 0
+#define BOX 1
+#define SPHERE 2
+
+#define Background vec3(0.)
+
 #define DefaultGeometry Geometry(LIMIT,vec3(0.))
 #define DefaultMaterial Material(vec3(1.,1.,1.),vec3(0.),1.,0.,0.,0.,vec3(1.),0.,0.)

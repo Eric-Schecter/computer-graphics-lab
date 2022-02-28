@@ -6,7 +6,7 @@ import intersection from '../../webglrenderer/shader/intersection/sphere.glsl';
 import { SphereDefaultValueHandler } from "../defaultvaluehandler";
 
 export class Sphere extends Mesh {
-  constructor(props: SphereProp, world: World, id: number) {
+  constructor(props: SphereProp, world: World, private id: number) {
     super(props, world);
     this._name = 'sphere';
     this.defaultValueHandler = new SphereDefaultValueHandler();
@@ -29,11 +29,9 @@ export class Sphere extends Mesh {
         new SingleData('specular', 'float', new Updater(specular)),
       ]),
     ]);
-    this._geometry = this.generateGeometryShader(id);
-    this._material = this.generateMaterialShader(id, 'material');
   }
-  private generateGeometryShader = (id: number) => {
-    const name = `${this._name}[${id}].geometry.`;
-    return `sphIntersection(ray,${name}position,${name}radius)`;
+  public get hitInfo() {
+    const name = `${this._name}[${this.id}].geometry.`;
+    return `oInfo.x++;sphIntersection(ray,${name}position,${name}radius,gInfo,oInfo,${this.id});`;
   }
 }

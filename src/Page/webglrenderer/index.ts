@@ -7,6 +7,7 @@ import { TaskHandler } from './taskHandler';
 import { SingleData, UFrame, UPixelCurrent, UPixelPre, UpdaterKeep } from './uniform';
 import { Clock } from './clock';
 import { InputSystem } from '../inputSystem';
+import { KeyboardEvent } from 'react';
 
 export class World {
   private timer = 0;
@@ -19,6 +20,7 @@ export class World {
   private isStart = false;
   public isMoving = false;
   private static instance: World;
+  private ispaused = false;
   public static getInstance = (canvas: HTMLCanvasElement, taskHandler: TaskHandler, inputStstem: InputSystem) => {
     if (!World.instance) {
       World.instance = new World(canvas, taskHandler, inputStstem);
@@ -35,6 +37,12 @@ export class World {
     const framebufferHandler = new FrameBufferHandler(this.gl, this.size);
     this.createComputeProgram(this.gl, framebufferHandler);
     this.createRenderProgram(this.gl);
+
+    window.addEventListener('keydown',(e:any)=>{
+      if(e.key==='p'){
+        this.ispaused = !this.ispaused;
+      }
+    })
   }
   private createComputeProgram = (gl: WebGL2RenderingContext, framebufferHandler: FrameBufferHandler) => {
     this.computeProgram = new ComputeProgram(gl, framebufferHandler, vertexShader, fragmentShader, this.size);
@@ -64,11 +72,13 @@ export class World {
     this.isMoving = true;
   }
   private draw = () => {
-    this.clock.update();
-    this.inputStstem.update();
-    this.taskHandler.update(this.clock.delta, this.clock.now);
-    this.resize();
-    this.renderProgram.update();
+    if(!this.ispaused){
+      this.clock.update();
+      this.inputStstem.update();
+      this.taskHandler.update(this.clock.delta, this.clock.now);
+      this.resize();
+      this.renderProgram.update();
+    }
     this.timer = requestAnimationFrame(this.draw);
   }
   public start = () => {

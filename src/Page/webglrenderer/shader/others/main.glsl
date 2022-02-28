@@ -1,7 +1,7 @@
 vec3 render(Ray ray){
-  vec3 col=vec3(0.);
+  vec3 col=Background;
   vec3 mask=vec3(1.);
-  const int iteration=6;
+  const int iteration=4;
   HitInfo res;
   HitInfo preRes;
   if(!scene(ray,false,res,-1)){
