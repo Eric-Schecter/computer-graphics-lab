@@ -22,7 +22,7 @@ BoxNode getBoxNode(float id){
   return BoxNode(data0,data1);
 }
 
-HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,inout int objID){
+void modelIntersect(Ray ray,bool isShadowRay,int preID,inout vec4 gInfo,inout ivec4 oInfo,inout Material material){
   float stackID=0.;
   float size=model.size;
   BoxNode currentNode=getBoxNode(stackID);
@@ -32,7 +32,12 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,inout int 
   bool isIntersectInner=false;
   
   float u,v,id;
-  float t=res.geometry.dist;
+  float t=gInfo.w;
+  StackData smallerStack;
+  StackData biggerStack;
+  BoxNode smallerNode;
+  BoxNode biggerNode;
+  
   while(true){
     if(currentStackData.dist<t){// when intersected
       if(currentNode.data0.x>=0.){// inner node
@@ -42,11 +47,6 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,inout int 
         float distRightchild=BoundingBoxIntersect(rightchild.data0.yzw,rightchild.data1.yzw,ray);
         StackData stackdataLeft=StackData(currentNode.data0.x,distLeftchild);
         StackData stackdataRight=StackData(currentNode.data1.x,distRightchild);
-        
-        StackData smallerStack;
-        StackData biggerStack;
-        BoxNode smallerNode;
-        BoxNode biggerNode;
         
         if(stackdataLeft.dist<stackdataRight.dist){
           smallerStack=stackdataLeft;
@@ -93,7 +93,7 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,inout int 
         
         float uTemp,vTemp;
         float d=triIntersect(ray,p1,p2,p3,uTemp,vTemp);
-        if(d<t){
+        if(testVisibility(t,d)){
           id=idTemp;
           t=d;
           u=uTemp;
@@ -113,7 +113,7 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,inout int 
     }
     isIntersectInner=false;
   }
-  if(t<res.geometry.dist){
+  if(t<gInfo.w){
     ivec2 uv2=ivec2(mod(id+2.,size),floor((id+2.)/size));
     ivec2 uv3=ivec2(mod(id+3.,size),floor((id+3.)/size));
     ivec2 uv4=ivec2(mod(id+4.,size),floor((id+4.)/size));
@@ -125,9 +125,12 @@ HitInfo modelIntersect(Ray ray,bool isShadowRay,int preID,HitInfo res,inout int 
     vec3 n3=vec3(v3.w,v4.xy);
     float w=1.-u-v;
     vec3 n=normalize(w*n1+u*n2+v*n3);
-    // res =HitInfo(Geometry(t,n),DefaultMaterial,objID);
-    objID++;
-    res=opUnion(res,HitInfo(Geometry(t,n),DefaultMaterial,objID),isShadowRay,preID);
+    
+    gInfo.xyz=n;
+    gInfo.w=t;
+    oInfo.w=MODEL;
+    oInfo.y=oInfo.x;
+    
+    material=DefaultMaterial;
   }
-  return res;
 }

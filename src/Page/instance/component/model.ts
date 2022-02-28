@@ -3,7 +3,7 @@ import { World } from "../../webglrenderer";
 import { ModelProp, Vec3 } from "../../..";
 import triIntersection from '../../webglrenderer/shader/intersection/triangle.glsl';
 import boundingBoxIntersection from '../../webglrenderer/shader/intersection/boundingbox.glsl';
-import modelIntersect from '../../webglrenderer/shader/others/model.glsl';
+import modelIntersect from '../../webglrenderer/shader/intersection/model.glsl';
 import { Mesh } from "./mesh";
 import { DefaultValueHandler } from "../defaultvaluehandler";
 import * as Three from 'three';
@@ -16,7 +16,7 @@ export class Model extends Mesh {
   private bvh: BVH;
   constructor(props: ModelProp,  world: World) {
     super(props, world);
-    // this._name = 'model';
+    this._name = 'model';
     this.defaultValueHandler = new DefaultValueHandler();
     const { position, src } = this.defaultValueHandler.process(props);
     this._intersection = [triIntersection, boundingBoxIntersection, modelIntersect].join('\n');
@@ -70,11 +70,7 @@ export class Model extends Mesh {
     ]);
     this.loadModel(gl, src, position, size, triangleUpdater, aabbUpdater);
   }
-  // protected generateGeometryShader = (id: number, type: string) => {
-  //   const name = `boxes[${id}].${type}.`;
-  //   return `boxIntersection(ray,${name}position,${name}size)`;
-  // }
   public get hitInfo() {
-    return 'modelIntersect(ray,isShadowRay,preID,res,id);'
+    return 'oInfo.x++;modelIntersect(ray,isShadowRay,preID,gInfo,oInfo,material);'
   }
 }

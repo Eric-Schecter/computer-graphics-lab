@@ -16,6 +16,7 @@
 #define DefaultPrimitive 0
 #define BOX 1
 #define SPHERE 2
+#define MODEL 3
 
 #define Background vec3(0.)
 

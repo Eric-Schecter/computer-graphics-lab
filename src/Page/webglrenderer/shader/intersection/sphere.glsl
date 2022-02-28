@@ -1,4 +1,4 @@
-void sphIntersection(Ray ray,in vec3 ce,float ra,inout vec4 gInfo,ivec4 oInfo,int index)
+void sphIntersection(Ray ray,in vec3 ce,float ra,inout vec4 gInfo,inout ivec4 oInfo,int index)
 {
   vec3 oc=ray.origin-ce;
   float b=dot(oc,ray.direction);
@@ -11,10 +11,7 @@ void sphIntersection(Ray ray,in vec3 ce,float ra,inout vec4 gInfo,ivec4 oInfo,in
   float t1=-b-h;
   float t2=-b+h;
   float dist=t1>0.?t1:t2;
-  if(dist<=0.){// intersections are behind the ray
-    return;
-  }
-  if(!testVisibility(gInfo.w,dist)){
+  if(dist<=0.||!testVisibility(gInfo.w,dist)){
     return;
   }
   vec3 hitpoint=ray.origin+dist*ray.direction;

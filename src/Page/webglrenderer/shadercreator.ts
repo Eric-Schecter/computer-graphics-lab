@@ -50,37 +50,32 @@ export class ShaderCreator {
       }
     }
     const intersections = new Set<string>();
+    const names = new Set<string>();
+    const types = ['if(oInfo.w==DefaultPrimitive){return false;}'];
     for (const d of meshes) {
       intersections.add(d.intersection);
+      if (!names.has(d.name)) {
+        switch (d.name) {
+          case 'box': {
+            types.push('else if(oInfo.w==BOX){material = box[oInfo.z].material;}');
+            break;
+          }
+          case 'sphere': {
+            types.push('else if(oInfo.w==SPHERE){material = sphere[oInfo.z].material;}');
+          }
+        }
+        names.add(d.name);
+      }
     }
-
-    // const geometries = [
-    //   'bool scene(Ray ray,bool isShadowRay,inout HitInfo res,int preID){',
-    //   'int id = 0;',
-
-    //   'res = HitInfo(DefaultGeometry,DefaultMaterial,id);',
-    //   ...meshes.map(mesh => mesh.hitInfo),
-    //   'res.material.roughness = max(res.material.roughness,ROUGHNESS);', // limit roughness not to be 0
-    //   'res.material.clearcoatGloss = max(res.material.clearcoatGloss,ROUGHNESS);', // limit clearcoatGloss not to be 0
-    //   'res.material.specular = max(res.material.specular,0.001);', // limit specular not to be 0 to avoid bug
-    //   'return res.geometry.dist<LIMIT;',
-    //   '}'
-    // ]
 
     const geometries = [
       'bool scene(Ray ray,bool isShadowRay,inout HitInfo res,int preID){',
-      'vec4 gInfo = vec4(vec3(0.),LIMIT);', // xyz:normal,w:dist
+      'vec4 gInfo = vec4(vec3(0.),LIMIT);',  // xyz:normal,w:dist
       'ivec4 oInfo = ivec4(0);',             // x:id,y:idIntersected,z:index,w:type
+      'Material material;',
       ...meshes.map(mesh => mesh.hitInfo),
 
-      'Material material;',
-      'if(oInfo.w==DefaultPrimitive){',
-      'return false;',
-      '}else if(oInfo.w==BOX){',
-      'material = box[oInfo.z].material;',
-      '}else if(oInfo.w == SPHERE){',
-      'material = sphere[oInfo.z].material;',
-      '}',
+      types.join('\n'),
 
       'res.geometry.dist = gInfo.w;',
       'res.geometry.normal = gInfo.xyz;',
