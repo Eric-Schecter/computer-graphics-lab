@@ -8,11 +8,17 @@ import { TaskHandler } from '../webglrenderer/taskHandler';
 import { InputSystem } from '../inputSystem';
 import { EventsHandler } from '../eventsHandler';
 import { Comparator } from './comparator';
+import { Object3D } from '../instance/object3D';
 
 let world: World;
 
-const appendChild = (parent: Store, child: Instance) => {
-  parent.add(child);
+const appendChild = (parent: Store | Instance | Object3D, child: Instance | Object3D) => {
+  if (child instanceof Instance) {
+    if (!(parent instanceof Store)) {
+      parent.root.add(child);
+    }
+    parent.add(child);
+  }
 };
 
 const HostConfig: any = {
@@ -39,7 +45,7 @@ const HostConfig: any = {
     // console.log('createInstance')
     const { facotry, world, eventHandler } = store;
     eventHandler.addEvents(props);
-    return facotry.build(type, props, world);
+    return facotry.build(type, props, world, store);
   },
   appendInitialChild(parent: Store, child: Instance) {
     // console.log('appendInitialChild', child);

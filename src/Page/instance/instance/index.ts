@@ -1,12 +1,24 @@
-import { World } from "../../webglrenderer";
+import { Store } from "../../reactrenderer/store";
 import { UniformData } from "../../webglrenderer/uniform";
-import { DefaultValueHandler } from "../defaultvaluehandler";
+import { Object3D } from "../object3D";
 
-export abstract class Instance {
+// class Paramters {
+
+//   public translate = () =>{
+
+//   }
+//   public rotate = () =>{
+
+//   }
+//   public 
+// }
+
+export abstract class Instance extends Object3D {
   protected _parameters: UniformData;
   protected _intersection: string;
-  protected defaultValueHandler:DefaultValueHandler;
-  constructor(protected _props: object, protected _world: World) {}
+  constructor(_props: object, root: Store) {
+    super(_props, root);
+  }
   public update = (props: object) => {
     for (const [key, data] of Object.entries(props)) {
       this._parameters.setData(data, key);
@@ -18,7 +30,5 @@ export abstract class Instance {
   public get parameters() {
     return this._parameters;
   }
-  public get props() {
-    return this._props;
-  }
+
 }

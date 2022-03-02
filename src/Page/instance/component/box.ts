@@ -1,13 +1,13 @@
 import { Mesh } from "./mesh";
 import { SingleData, StructureData, Updater } from "../../webglrenderer/uniform";
-import { World } from "../../webglrenderer";
 import { BoxProp } from "../../..";
 import intersection from '../../webglrenderer/shader/intersection/box.glsl';
 import { BoxDefaultValueHandler } from "../defaultvaluehandler";
+import { Store } from "../../reactrenderer/store";
 
 export class Box extends Mesh {
-  constructor(props: BoxProp, world: World, private id: number) {
-    super(props, world);
+  constructor(props: BoxProp,store:Store, private id: number) {
+    super(props,store);
     this._name = 'box';
     this.defaultValueHandler = new BoxDefaultValueHandler();
     const { position, size, color, emissive, roughness, metallic, specTrans, specular, specColor, clearcoat, clearcoatGloss } = this.defaultValueHandler.process(props);

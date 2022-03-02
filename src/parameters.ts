@@ -10,3 +10,6 @@ export const SPECULAR = 0;
 export const CLEARCOAT = 0;
 export const CLEARCOATGLOSS = 0;
 export const RADIUS = 1;
+export const ROTATION = 0;
+export const LOOKAT = [0, 0, 0];
+export const FOV = 50 / 180 * Math.PI;

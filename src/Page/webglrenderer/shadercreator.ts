@@ -9,6 +9,8 @@ import box from './shader/struct/box.glsl';
 import hitinfo from './shader/struct/hitinfo.glsl';
 import weight from './shader/struct/weight.glsl';
 import model from './shader/struct/model.glsl';
+import cylinder from './shader/struct/cylinder.glsl';
+import photon from './shader/struct/photonvertex.glsl';
 
 import acesfilm from './shader/postprocess/acesfilm.glsl';
 import gamacorrect from './shader/postprocess/gamacorrect.glsl';
@@ -26,6 +28,7 @@ import luminance from './shader/others/luminance.glsl';
 import getLobe from './shader/others/lobe.glsl';
 import getWeight from './shader/others/weight.glsl';
 import mixedApproxFresnel from './shader/others/mixedApproxFresnel.glsl';
+import render from './shader/others/render.glsl';
 
 import diffuseBRDF from './shader/bsdf/diffuseBRDF.glsl';
 import metallicBRDF from './shader/bsdf/metallicBRDF.glsl';
@@ -36,6 +39,9 @@ import clearcoat from './shader/bsdf/clearcoat.glsl';
 import BSDF from './shader/bsdf/bsdf.glsl';
 import BTDF from './shader/bsdf/btdf.glsl';
 import dielectricFresnel from './shader/bsdf/dielectricFresnel.glsl';
+
+import lighttrace from './shader/trace/lighttrace.glsl';
+import eyetrace from './shader/trace/eyetrace.glsl';
 
 import { Store } from '../reactrenderer/store';
 import { Mesh } from '../instance/component';
@@ -63,6 +69,9 @@ export class ShaderCreator {
           case 'sphere': {
             types.push('else if(oInfo.w==SPHERE){material = sphere[oInfo.z].material;}');
           }
+          // case 'cylinder': {
+          //   types.push('else if(oInfo.w==CYLINDER){material = cylinder[oInfo.z].material;}');
+          // }
         }
         names.add(d.name);
       }
@@ -104,12 +113,13 @@ export class ShaderCreator {
       .filter(({ name }) => !name.includes('['))
       .map(({ name, type }) => `uniform ${type} ${name};`);
     const uniforms2 = store.facotry.getUniforms;
-    const structs = [ray, camera, hitinfo, sphere, box, weight, model];
+    const structs = [ray, camera, hitinfo, sphere, box, weight, model, cylinder, photon];
     const maths = [translate];
     const postprocess = [gamacorrect, acesfilm, vignette];
     const bsdf = [dielectricFresnel, distribution, schlickFresnel, geometry, diffuseBRDF, metallicBRDF, computePdf, clearcoat, BTDF, BSDF];
     const algrithem = [russianRoulette];
     const sampling = [misWeight, sampleLight];
+    const tracing = [lighttrace, eyetrace];
 
     const shaderArr = [
       prefix,
@@ -130,6 +140,8 @@ export class ShaderCreator {
       generateRay,
       getLight,
       ...sampling,
+      ...tracing,
+      render,
       main
     ];
     const a = shaderArr.join('\n');

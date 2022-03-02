@@ -3,6 +3,8 @@ import { World } from "../../webglrenderer";
 import { Instance } from "..";
 import { CameraProp, UniformDataType, Vec3 } from "../../..";
 import { Matrix3, Matrix4, Vector3 } from "../../math";
+import { CameraDefaultValueHandler } from "../defaultvaluehandler";
+import { Store } from "../../reactrenderer/store";
 
 class ViewMatrix extends Matrix3 {
   constructor(private _position = [0, 0, 0], private _lookat = [0, 0, 0]) {
@@ -83,9 +85,10 @@ class UViewMatrixData extends Updater<Vec3> {
 }
 
 export class Camera extends Instance {
-  constructor(props: CameraProp, world: World) {
-    super(props, world);
-    const { position, lookat, rotation, fov } = props;
+  constructor(props: CameraProp,store:Store) {
+    super(props,store);
+    this.defaultValueHandler = new CameraDefaultValueHandler();
+    const { position, lookat, rotation, fov } = this.defaultValueHandler.process(props);
     const viewMatrix = new ViewMatrix(position, lookat).update();
     
     this._parameters = new StructureData('uCamera', 'Camera', [

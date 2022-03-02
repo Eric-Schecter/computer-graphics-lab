@@ -1,20 +1,21 @@
 import { Mesh } from "./mesh";
 import { SingleData, StructureData, Updater } from "../../webglrenderer/uniform";
-import { SphereProp } from "../../..";
-import intersection from '../../webglrenderer/shader/intersection/sphere.glsl';
-import { SphereDefaultValueHandler } from "../defaultvaluehandler";
+import { CylinderProp } from "../../..";
+import intersection from '../../webglrenderer/shader/intersection/cylinder.glsl';
+import { CylinderDefaultValueHandler } from "../defaultvaluehandler";
 import { Store } from "../../reactrenderer/store";
 
-export class Sphere extends Mesh {
-  constructor(props: SphereProp, store: Store, private id: number) {
+export class Cylinder extends Mesh {
+  constructor(props: CylinderProp, store: Store, private id: number) {
     super(props, store);
-    this._name = 'sphere';
-    this.defaultValueHandler = new SphereDefaultValueHandler();
-    const { position, radius, color, emissive, roughness, metallic, specTrans, specular, specColor, clearcoat, clearcoatGloss } = this.defaultValueHandler.process(props);
+    this._name = 'cylinder';
+    this.defaultValueHandler = new CylinderDefaultValueHandler();
+    const { top, bottom, radius, color, emissive, roughness, metallic, specTrans, specular, specColor, clearcoat, clearcoatGloss } = this.defaultValueHandler.process(props);
     this._intersection = intersection;
-    this._parameters = new StructureData(`sphere[${id}]`, 'Sphere', [
-      new StructureData('geometry', 'SphereGeometry', [
-        new SingleData('position', 'vec3', new Updater(position)),
+    this._parameters = new StructureData(`cylinder[${id}]`, 'Cylinder', [
+      new StructureData('geometry', 'CylinderGeometry', [
+        new SingleData('top', 'vec3', new Updater(top)),
+        new SingleData('bottom', 'vec3', new Updater(bottom)),
         new SingleData('radius', 'float', new Updater(radius)),
       ]),
       new StructureData('material', 'Material', [
@@ -28,10 +29,10 @@ export class Sphere extends Mesh {
         new SingleData('clearcoatGloss', 'float', new Updater(clearcoatGloss)),
         new SingleData('specular', 'float', new Updater(specular)),
       ]),
-    ]);
+    ])
   }
   public get hitInfo() {
     const name = `${this._name}[${this.id}].geometry.`;
-    return `oInfo.x++;sphIntersection(ray,${name}position,${name}radius,gInfo,oInfo,${this.id});`;
+    return `oInfo.x++;cylinderIntersection(ray,${name}top,${name}bottom,${name}radius,gInfo,oInfo,${this.id});`;
   }
 }

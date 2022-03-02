@@ -1,21 +1,13 @@
 import { UniformDataType } from "../../.."
-import { CLEARCOAT, CLEARCOATGLOSS, COLOR, EMISSIVE, SPECULAR, METALLIC, POSITION, ROUGHNESS, SPECCOLOR, SPECTRANS } from "../../../parameters";
+import { POSITION,ROTATION } from "../../../parameters";
 
 export class DefaultValueHandler {
   protected defaultValue = new Map<string, UniformDataType>([
     ['position', POSITION],
-    ['color', COLOR],
-    ['emissive', EMISSIVE],
-    ['roughness', ROUGHNESS],
-    ['metallic', METALLIC],
-    ['specTrans', SPECTRANS],
-    ['specular', SPECULAR],
-    ['specColor', SPECCOLOR],
-    ['clearcoat', CLEARCOAT],
-    ['clearcoatGloss', CLEARCOATGLOSS],
+    ['rotation', ROTATION],
   ])
   public process = (props: { [key: string]: any }) => {
-    const handledProps = {...props};
+    const handledProps = { ...props };
     for (const key of this.defaultValue.keys()) {
       const value = this.defaultValue.get(key);
       const isUndefined = props[key] === undefined && value !== undefined;

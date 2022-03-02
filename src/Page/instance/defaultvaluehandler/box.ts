@@ -1,8 +1,8 @@
 
 import { SIZE } from "../../../parameters";
-import { DefaultValueHandler } from "./default";
+import { MeshValueHandler } from "./mesh";
 
-export class BoxDefaultValueHandler extends DefaultValueHandler{
+export class BoxDefaultValueHandler extends MeshValueHandler{
   constructor(){
     super();
     this.defaultValue.set('size',SIZE)

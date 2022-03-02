@@ -22,8 +22,14 @@ export type MyEvent = {
 }
 
 type Basic = {
-  position: Vec3,
+  position?: Vec3,
+  children?: ReactNode,
 }
+
+export type GroupProp = {
+  key: Key,
+  ref: Ref<ReactNode>
+} & Basic
 
 export type ModelProp = {
   src: string,
@@ -38,6 +44,12 @@ type Props = {
 
 export type SphereProp = {
   radius: number
+} & Props
+
+export type CylinderProp = {
+  top: Vec3,
+  bottom: Vec3,
+  radius: number,
 } & Props
 
 export type CameraProp = {
@@ -73,10 +85,6 @@ export type LightProp = {
 
 type MeshInstance = SphereInstance | BoxInstance;
 
-// type LightInstance = {
-//   type: 'light',
-//   props: LightProp
-// };
 type CameraInstance = {
   type: 'camera',
   props: CameraProp
@@ -116,7 +124,9 @@ declare global {
     interface IntrinsicElements {
       sphere: Partial<SphereProp & EventHandlers>,
       box: Partial<BoxProp & EventHandlers>,
+      cylinder: Partial<CylinderProp & EventHandlers>,
       camera: Partial<CameraProp & EventHandlers>,
+      group: Partial<GroupProp & EventHandlers>,
       model: Partial<ModelProp & EventHandlers>,
     }
   }
