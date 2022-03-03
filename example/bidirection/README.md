@@ -2,7 +2,7 @@
   <img src="./screenshot/profile.jpg" alt=''>
 </p> -->
 
-##Example of Bi-Direction Pathtracing.  
+##Example of Bi-Direction Pathtracing(wip).  
 
 run locally
 
