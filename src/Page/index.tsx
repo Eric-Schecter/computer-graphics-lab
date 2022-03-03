@@ -2,7 +2,13 @@ import React, { useEffect, useRef, HTMLAttributes } from 'react';
 // import mergeRefs from 'react-merge-refs';
 import Renderer from './reactrenderer';
 
-interface Props extends HTMLAttributes<HTMLCanvasElement> { }
+interface ElementProps extends HTMLAttributes<HTMLCanvasElement> { }
+
+type RendererProps = Partial<{
+  bidirection: boolean,
+}>
+
+type Props = ElementProps & RendererProps;
 
 export const Page = ({ children, style, className, ...props }: Props) => {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -16,7 +22,7 @@ export const Page = ({ children, style, className, ...props }: Props) => {
 
   useEffect(() => {
     if (!ref.current) { return; }
-    Renderer.render(children, ref.current);
+    Renderer.render(children, ref.current, props);
   }, [children, ref])
 
   return <div

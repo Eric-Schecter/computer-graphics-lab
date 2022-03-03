@@ -28,14 +28,12 @@ export class ComputeProgram extends Program {
     this.uniformObserverable.reset();
   }
   public updateShader = (store: Store) => {
-    const settings = {}; // todo get settings from data
-
     // this.reset();
     for (const instance of store.dataset.values()) {
       this.uniformObserverable.add(instance.parameters);
     }
     
-    const shader = this.shaderCreator.create(store, settings, this.uniformObserverable.infos);
+    const shader = this.shaderCreator.create(store, store.settings, this.uniformObserverable.infos);
     this.gl.detachShader(this.program, this.fragmentShader);
     this.fragmentShader = this.createShader(this.gl, this.gl.FRAGMENT_SHADER, shader);
     this.gl.attachShader(this.program, this.fragmentShader);

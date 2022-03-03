@@ -197,13 +197,13 @@ const HostConfig: any = {
 
 const reconciler = Reconciler(HostConfig);
 const Renderer = {
-  render: (component: ReactNode, container: HTMLCanvasElement) => {
+  render: (component: ReactNode, container: HTMLCanvasElement, props: object) => {
     const taskHandler = new TaskHandler();
     const inputSystem = new InputSystem();
     world = World.getInstance(container, taskHandler, inputSystem);
     const facotry = new Factory();
     const eventHandlers = new EventsHandler(container);
-    const store = new Store(world, taskHandler, facotry, eventHandlers);
+    const store = new Store(world, taskHandler, facotry, eventHandlers,props);
     const fiber = reconciler.createContainer(store, 0, false, null);
     const root = <context.Provider value={store}>{component}</context.Provider>;
     reconciler.updateContainer(root, fiber, null);

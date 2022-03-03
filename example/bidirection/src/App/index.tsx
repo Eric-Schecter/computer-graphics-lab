@@ -75,6 +75,7 @@ export const App = () => {
 
   return <Page
     style={{ width: '100%', height: '100vh' }}
+    bidirection
   >
     <Camera
       position={[0, 50, 250]}

@@ -7,7 +7,6 @@ import { TaskHandler } from './taskHandler';
 import { SingleData, UFrame, UPixelCurrent, UPixelPre, UpdaterKeep } from './uniform';
 import { Clock } from './clock';
 import { InputSystem } from '../inputSystem';
-import { KeyboardEvent } from 'react';
 
 export class World {
   private timer = 0;
@@ -38,11 +37,11 @@ export class World {
     this.createComputeProgram(this.gl, framebufferHandler);
     this.createRenderProgram(this.gl);
 
-    window.addEventListener('keydown',(e:any)=>{
-      if(e.key==='p'){
-        this.ispaused = !this.ispaused;
-      }
-    })
+    // window.addEventListener('keydown', (e: any) => {
+    //   if (e.key === 'p') {
+    //     this.ispaused = !this.ispaused;
+    //   }
+    // })
   }
   private createComputeProgram = (gl: WebGL2RenderingContext, framebufferHandler: FrameBufferHandler) => {
     this.computeProgram = new ComputeProgram(gl, framebufferHandler, vertexShader, fragmentShader, this.size);
@@ -72,7 +71,7 @@ export class World {
     this.isMoving = true;
   }
   private draw = () => {
-    if(!this.ispaused){
+    if (!this.ispaused) {
       this.clock.update();
       this.inputStstem.update();
       this.taskHandler.update(this.clock.delta, this.clock.now);

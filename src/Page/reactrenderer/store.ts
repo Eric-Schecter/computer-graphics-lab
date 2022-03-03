@@ -9,7 +9,7 @@ export class Store {
   private timer = 0;
   // public inputSystem: InputSystem;
   constructor(public world: World, public taskHandler: TaskHandler,public facotry:Factory,
-    public eventHandler:EventsHandler) {
+    public eventHandler:EventsHandler,public settings:object) {
     // this.inputSystem = InputSystem.getInstance(world);
   }
   public add = (instance: Instance) => {

@@ -46,6 +46,7 @@ import eyetrace from './shader/trace/eyetrace.glsl';
 import { Store } from '../reactrenderer/store';
 import { Mesh } from '../instance/component';
 import { Instance } from '../instance';
+import { Settings } from '../..';
 
 export class ShaderCreator {
   private generate = (set: Set<Instance>) => {
@@ -108,7 +109,16 @@ export class ShaderCreator {
       ...geometries,
     ]
   }
-  public create = (store: Store, settings = {}, infos: Array<{ name: string, type: string }>) => {
+  private handleSettings = (settings: Settings) => {
+    if (settings.bidirection) {
+      return defines + '\n#define BIDIR 1';
+    } else {
+      return defines + '\n#define BIDIR 0';
+    }
+  }
+
+  public create = (store: Store, settings: Settings = {}, infos: Array<{ name: string, type: string }>) => {
+    const handledDefines = this.handleSettings(settings);
     const uniforms1 = infos
       .filter(({ name }) => !name.includes('['))
       .map(({ name, type }) => `uniform ${type} ${name};`);
@@ -123,7 +133,7 @@ export class ShaderCreator {
 
     const shaderArr = [
       prefix,
-      defines,
+      handledDefines,
       ...structs,
       ...uniforms1,
       ...uniforms2,

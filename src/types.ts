@@ -93,6 +93,10 @@ type CameraInstance = {
 export type InstanceType = BasicInstance & (MeshInstance | CameraInstance);
 export type UniformDataType = number[] | number | { [prop: string]: number } | WebGLTexture;
 
+export type Settings = Partial<{
+  bidirection: boolean,
+}>
+
 export type EventHandlers = {
   onClick?: (event: React.MouseEvent) => void
   onContextMenu?: (event: React.MouseEvent) => void
